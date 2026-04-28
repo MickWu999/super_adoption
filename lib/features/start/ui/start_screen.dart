@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:super_adoption/core/router/app_router.dart';
 
 class StartScreen extends StatelessWidget {
   const StartScreen({super.key});
@@ -62,7 +64,9 @@ class StartScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 14),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context.go(AppRoutes.home);
+                      },
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
