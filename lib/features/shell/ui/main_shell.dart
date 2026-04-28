@@ -23,6 +23,11 @@ class MainShell extends StatelessWidget {
     return Scaffold(
       backgroundColor: colorScheme.surface,
       body: navigationShell,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: _PetCenterButton(
+        selected: navigationShell.currentIndex == 1,
+        onTap: () => _go(1),
+      ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: colorScheme.surface,
@@ -51,19 +56,13 @@ class MainShell extends StatelessWidget {
                   onTap: () => _go(0),
                 ),
                 _NavItem(
-                  icon: Icons.pets_outlined,
-                  activeIcon: Icons.pets_rounded,
-                  label: '毛孩',
-                  selected: navigationShell.currentIndex == 1,
-                  onTap: () => _go(1),
-                ),
-                _NavItem(
                   icon: Icons.map_outlined,
                   activeIcon: Icons.map_rounded,
                   label: '地圖',
                   selected: navigationShell.currentIndex == 2,
                   onTap: () => _go(2),
                 ),
+                const SizedBox(width: 76),
                 _NavItem(
                   icon: Icons.notifications_none_rounded,
                   activeIcon: Icons.notifications_rounded,
@@ -90,6 +89,62 @@ class MainShell extends StatelessWidget {
     navigationShell.goBranch(
       index,
       initialLocation: index == navigationShell.currentIndex,
+    );
+  }
+}
+
+class _PetCenterButton extends StatelessWidget {
+  const _PetCenterButton({
+    required this.selected,
+    required this.onTap,
+  });
+
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final primaryColor = theme.colorScheme.primary;
+    final shadowColor = theme.shadowColor.withValues(
+      alpha: theme.brightness == Brightness.dark ? 0.26 : 0.16,
+    );
+
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        curve: Curves.easeOut,
+        width: 60,
+        height: 60,
+        margin: const EdgeInsets.only(top: 18),
+        decoration: BoxDecoration(
+          color: primaryColor,
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: shadowColor,
+              blurRadius: 18,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        child: AnimatedScale(
+          scale: selected ? 1.08 : 1,
+          duration: const Duration(milliseconds: 180),
+          curve: Curves.easeOut,
+          child: const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.pets_rounded,
+                color: Colors.white,
+                size: 26,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -135,7 +190,7 @@ class _NavItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               AnimatedScale(
-                scale: selected ? 1.2 : 1,
+                scale: selected ? 1.08 : 1,
                 duration: const Duration(milliseconds: 180),
                 curve: Curves.easeOut,
                 child: Icon(
