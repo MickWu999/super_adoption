@@ -5,14 +5,19 @@ import 'package:super_adoption/core/router/app_router.dart';
 class StartScreen extends StatelessWidget {
   const StartScreen({super.key});
 
+  static const _sheetRadius = 36.0;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     final deviceTopPadding = MediaQuery.of(context).padding.top;
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(child: Container(color: const Color(0xFFFFF3D6))),
+          Positioned.fill(
+            child: ColoredBox(color: colorScheme.surfaceContainerHighest),
+          ),
           Column(
             children: [
               SizedBox(height: deviceTopPadding + 24),
@@ -26,16 +31,15 @@ class StartScreen extends StatelessWidget {
               const Spacer(),
               Container(
                 width: double.infinity,
-          
                 padding: const EdgeInsets.fromLTRB(24, 32, 24, 40),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
+                decoration: BoxDecoration(
+                  color: colorScheme.surface,
                   borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(36),
+                    top: Radius.circular(_sheetRadius),
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Color(0xFFEAEAEA),
+                      color: theme.shadowColor.withValues(alpha: 0.06),
                       blurRadius: 20,
                       offset: Offset(0, -5),
                     ),
@@ -117,7 +121,6 @@ class StartScreen extends StatelessWidget {
                         fontSize: 12,
                       ),
                     ),
-              
                   ],
                 ),
               ),

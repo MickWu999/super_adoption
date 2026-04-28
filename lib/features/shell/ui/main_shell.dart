@@ -9,6 +9,7 @@ class MainShell extends StatelessWidget {
 
   static const double _navHeight = 74;
   static const double _borderWidth = 0.25;
+  static const double _itemRadius = 24;
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +65,9 @@ class MainShell extends StatelessWidget {
                 ),
                 const SizedBox(width: 76),
                 _NavItem(
-                  icon: Icons.notifications_none_rounded,
-                  activeIcon: Icons.notifications_rounded,
-                  label: '通知',
+                  icon: Icons.favorite_border_rounded,
+                  activeIcon: Icons.favorite_rounded,
+                  label: '收藏',
                   selected: navigationShell.currentIndex == 3,
                   onTap: () => _go(3),
                 ),
@@ -94,10 +95,7 @@ class MainShell extends StatelessWidget {
 }
 
 class _PetCenterButton extends StatelessWidget {
-  const _PetCenterButton({
-    required this.selected,
-    required this.onTap,
-  });
+  const _PetCenterButton({required this.selected, required this.onTap});
 
   final bool selected;
   final VoidCallback onTap;
@@ -135,13 +133,7 @@ class _PetCenterButton extends StatelessWidget {
           curve: Curves.easeOut,
           child: const Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.pets_rounded,
-                color: Colors.white,
-                size: 26,
-              ),
-            ],
+            children: [Icon(Icons.pets_rounded, color: Colors.white, size: 26)],
           ),
         ),
       ),
@@ -176,7 +168,7 @@ class _NavItem extends StatelessWidget {
     return Expanded(
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(MainShell._itemRadius),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 180),
           curve: Curves.easeOut,
@@ -184,7 +176,7 @@ class _NavItem extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
           decoration: BoxDecoration(
             color: selected ? selectedBackground : Colors.transparent,
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(MainShell._itemRadius),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

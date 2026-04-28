@@ -6,6 +6,7 @@ import 'package:super_adoption/features/animals/ui/animal_list_page.dart';
 import 'package:super_adoption/features/home/ui/home_page.dart';
 import 'package:super_adoption/features/map/ui/map_scree.dart';
 import 'package:super_adoption/features/profile/ui/profile_screen.dart';
+import 'package:super_adoption/features/favorites/ui/favorite_page.dart';
 import 'package:super_adoption/features/shell/ui/main_shell.dart';
 
 import '../../features/start/ui/start_screen.dart';
@@ -20,7 +21,8 @@ class AppRoutes {
   static const home = '/home';
   static const animals = '/animals';
   static const notifications = '/notifications';
-    static const map = '/map';
+  static const favorites = '/favorites';
+  static const map = '/map';
   static const profile = '/profile';
 
   static String animalDetail(String animalId) => '/animals/$animalId';
@@ -41,6 +43,10 @@ GoRouter appRouter(Ref ref) {
       GoRoute(
         path: AppRoutes.start,
         builder: (context, state) => const StartScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.notifications,
+        builder: (context, state) => const NotificationScreen(),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
@@ -63,10 +69,7 @@ GoRouter appRouter(Ref ref) {
                   final kind = state.uri.queryParameters['kind'];
                   final age = state.uri.queryParameters['age'];
 
-                  return AnimalListScreen(
-                    initialKind: kind,
-                    initialAge: age,
-                  );
+                  return AnimalListScreen(initialKind: kind, initialAge: age);
                 },
                 routes: [
                   GoRoute(
@@ -91,8 +94,8 @@ GoRouter appRouter(Ref ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: AppRoutes.notifications,
-                builder: (context, state) => const NotificationScreen(),
+                path: AppRoutes.favorites,
+                builder: (context, state) => const FavoritePage(),
               ),
             ],
           ),
@@ -110,17 +113,11 @@ GoRouter appRouter(Ref ref) {
   );
 }
 
-
-
-
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('通知')),
-    );
+    return const Scaffold(body: Center(child: Text('通知')));
   }
 }
-
