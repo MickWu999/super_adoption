@@ -1,8 +1,9 @@
-
 import 'package:flutter/material.dart';
+import 'package:super_adoption/features/animals/model/animal.dart';
 
 class AnimalCardSection extends StatelessWidget {
-  const AnimalCardSection({super.key, 
+  const AnimalCardSection({
+    super.key,
     required this.title,
     required this.animals,
     required this.onMoreTap,
@@ -14,7 +15,7 @@ class AnimalCardSection extends StatelessWidget {
   static const _headerSpacing = 14.0;
 
   final String title;
-  final List<HomeAnimal> animals;
+  final List<Animal> animals;
   final VoidCallback onMoreTap;
   final Axis direction;
 
@@ -91,9 +92,13 @@ class _AnimalCard extends StatelessWidget {
   const _AnimalCard({required this.animal, this.width = 180});
 
   static const _radius = 14.0;
+  static const _imageHeight = 136.0;
 
-  final HomeAnimal animal;
+  final Animal animal;
   final double width;
+
+  bool get _hasImageUrl => animal.imageUrl.trim().isNotEmpty;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -121,16 +126,27 @@ class _AnimalCard extends StatelessWidget {
           Stack(
             children: [
               Container(
-                height: 136,
+                height: _imageHeight,
                 width: double.infinity,
                 color: colorScheme.surfaceContainerHighest,
-                child: Image.asset(
-                  animal.imagePath,
-                  width: double.infinity,
-                  height: double.infinity,
-                  fit: BoxFit.cover,
-                  alignment: Alignment.topCenter,
-                ),
+                child: _hasImageUrl
+                    ? Image.network(
+                        animal.imageUrl,
+                        width: double.infinity,
+                        height: double.infinity,
+                        fit: BoxFit.cover,
+                        alignment: Alignment.topCenter,
+                        errorBuilder: (context, error, stackTrace) {
+                          return _AnimalImagePlaceholder(
+                            name: animal.name,
+                            height: _imageHeight,
+                          );
+                        },
+                      )
+                    : _AnimalImagePlaceholder(
+                        name: animal.name,
+                        height: _imageHeight,
+                      ),
               ),
               Positioned(
                 right: 8,
@@ -162,7 +178,7 @@ class _AnimalCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  animal.description,
+                  '${animal.gender}・${animal.bodyType}・${animal.age}',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.bodyMedium?.copyWith(
@@ -197,18 +213,57 @@ class _AnimalCard extends StatelessWidget {
     );
   }
 }
-class HomeAnimal {
-  const HomeAnimal({
-    required this.name,
-    required this.description,
-    required this.location,
-    required this.imagePath,
-    this.isFavorite = false,
-  });
+
+class _AnimalImagePlaceholder extends StatelessWidget {
+  const _AnimalImagePlaceholder({required this.name, required this.height});
 
   final String name;
-  final String description;
-  final String location;
-  final String imagePath;
-  final bool isFavorite;
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return SizedBox(
+      width: double.infinity,
+      height: height,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              colorScheme.surfaceContainerHighest,
+              colorScheme.surfaceContainerHighest.withValues(alpha: 0.72),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.pets_rounded,
+              size: 34,
+              color: colorScheme.primary.withValues(alpha: 0.85),
+            ),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Text(
+                name.isEmpty ? '暫無照片' : '$name\n暫無照片',
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.textTheme.bodyMedium?.color,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
