@@ -1,4 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:super_adoption/core/enum/load_status.dart';
 import 'package:super_adoption/core/log/app_logger.dart';
 
 import '../data/query/animal_filter.dart';
@@ -17,7 +18,10 @@ class AnimalNotifier extends _$AnimalNotifier {
     Future.microtask(load);
     AppLogger.instance.i('AnimalNotifier build');
 
-    return AnimalListState(filter: AnimalFilter.initial(), isLoading: true);
+    return AnimalListState(
+      filter: AnimalFilter.initial(),
+      status: LoadStatus.loading,
+    );
   }
 
   Future<void> load() async {
@@ -27,7 +31,7 @@ class AnimalNotifier extends _$AnimalNotifier {
     state = state.copyWith(
       items: [],
       filter: filter,
-      isLoading: true,
+      status: LoadStatus.loading,
       isLoadingMore: false,
       error: null,
     );
@@ -38,12 +42,13 @@ class AnimalNotifier extends _$AnimalNotifier {
       state = state.copyWith(
         items: items,
         filter: filter.copyWith(skip: items.length),
-        isLoading: false,
+        status: items.isEmpty ? LoadStatus.empty : LoadStatus.success,
         hasMore: items.length == filter.top,
+        error: null,
       );
       AppLogger.instance.i('AnimalNotifier load success count=${items.length}');
     } catch (e) {
-      state = state.copyWith(isLoading: false, error: e.toString());
+      state = state.copyWith(status: LoadStatus.error, error: e.toString());
       AppLogger.instance.e(
         'AnimalNotifier load failed',
         error: e,
@@ -62,7 +67,7 @@ class AnimalNotifier extends _$AnimalNotifier {
 
     state = state.copyWith(
       filter: nextFilter,
-      isLoading: true,
+      status: LoadStatus.loading,
       isLoadingMore: false,
       error: null,
     );
@@ -73,14 +78,15 @@ class AnimalNotifier extends _$AnimalNotifier {
       state = state.copyWith(
         items: items,
         filter: nextFilter.copyWith(skip: items.length),
-        isLoading: false,
+        status: items.isEmpty ? LoadStatus.empty : LoadStatus.success,
         hasMore: items.length == nextFilter.top,
+        error: null,
       );
       AppLogger.instance.i(
         'AnimalNotifier applyFilter success count=${items.length}',
       );
     } catch (e) {
-      state = state.copyWith(isLoading: false, error: e.toString());
+      state = state.copyWith(status: LoadStatus.error, error: e.toString());
       AppLogger.instance.e(
         'AnimalNotifier applyFilter failed',
         error: e,
@@ -107,8 +113,12 @@ class AnimalNotifier extends _$AnimalNotifier {
       state = state.copyWith(
         items: [...state.items, ...items],
         filter: nextFilter.copyWith(skip: nextFilter.skip + items.length),
+        status: state.items.isEmpty && items.isEmpty
+            ? LoadStatus.empty
+            : LoadStatus.success,
         isLoadingMore: false,
         hasMore: items.length == nextFilter.top,
+        error: null,
       );
       AppLogger.instance.i(
         'AnimalNotifier loadMore success added=${items.length} total=${state.items.length}',

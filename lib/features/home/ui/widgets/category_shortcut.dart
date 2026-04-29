@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CategoryShortcut extends StatelessWidget {
-  const CategoryShortcut({required this.assetPath, required this.label});
+  const CategoryShortcut({
+    super.key,
+    required this.assetPath,
+    required this.label,
+  });
 
   static const _radius = 24.0;
 

@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:super_adoption/core/router/app_router.dart';
 
 class HomeHeader extends StatelessWidget {
-  const HomeHeader();
+  const HomeHeader({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -59,19 +59,19 @@ class _AnimalListScreenState extends ConsumerState<AnimalListScreen>
           key: const PageStorageKey('animal-list-scroll-position'),
           padding: const EdgeInsets.all(20),
           children: [
-            if (state.isLoading && state.items.isEmpty)
+            if (state.isLoading && !state.hasContent)
               const _StatusPanel(
                 icon: Icons.hourglass_top_rounded,
                 title: '載入中',
                 message: '正在整理最新的可認養毛孩資料。',
               )
-            else if (state.error != null && state.items.isEmpty)
+            else if (state.showFullscreenError)
               _StatusPanel(
                 icon: Icons.error_outline_rounded,
                 title: '載入失敗',
-                message: state.error!,
+                message: state.error ?? '資料暫時無法載入，請稍後再試。',
               )
-            else if (state.items.isEmpty)
+            else if (state.isEmpty)
               const _StatusPanel(
                 icon: Icons.search_off_rounded,
                 title: '沒有資料',

@@ -1,8 +1,7 @@
-
 import 'package:flutter/material.dart';
 
 class AdoptionReminderCard extends StatelessWidget {
-  const AdoptionReminderCard();
+  const AdoptionReminderCard({super.key});
 
   static const _radius = 18.0;
 

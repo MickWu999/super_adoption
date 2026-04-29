@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:super_adoption/core/widgets/error_fallback_card.dart';
+import 'package:super_adoption/core/widgets/skeleton_box.dart';
 import 'package:super_adoption/features/animals/model/animal.dart';
 
 class AnimalCardSection extends StatelessWidget {
@@ -8,6 +10,8 @@ class AnimalCardSection extends StatelessWidget {
     required this.animals,
     required this.onMoreTap,
     this.direction = Axis.horizontal,
+    this.isLoading = false,
+    this.isError = false,
   });
 
   static const _horizontalHeight = 260.0;
@@ -18,13 +22,16 @@ class AnimalCardSection extends StatelessWidget {
   final List<Animal> animals;
   final VoidCallback onMoreTap;
   final Axis direction;
-
+  final bool isLoading;
+  final bool isError;
   bool get _isHorizontal => direction == Axis.horizontal;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
+    if (isError) {
+      return const ErrorFallbackCard();
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -62,28 +69,63 @@ class AnimalCardSection extends StatelessWidget {
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               clipBehavior: Clip.none,
-              itemCount: animals.length,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: isLoading ? 2 : animals.length,
               separatorBuilder: (_, _) => const SizedBox(width: _itemSpacing),
               itemBuilder: (context, index) {
+                if (isLoading) {
+                  return const _AnimalCardSkeleton();
+                }
                 return _AnimalCard(animal: animals[index]);
               },
             ),
           )
         else
           Column(
-            children: List.generate(animals.length, (index) {
+            children: List.generate(isLoading ? 3 : animals.length, (index) {
               final isLast = index == animals.length - 1;
 
               return Padding(
-                padding: EdgeInsets.only(bottom: isLast ? 0 : _itemSpacing),
-                child: _AnimalCard(
-                  animal: animals[index],
-                  width: double.infinity,
+                padding: EdgeInsets.only(
+                  bottom: isLoading || !isLast ? _itemSpacing : 0,
                 ),
+                child: isLoading
+                    ? const _AnimalCardSkeleton(width: double.infinity)
+                    : _AnimalCard(
+                        animal: animals[index],
+                        width: double.infinity,
+                      ),
               );
             }),
           ),
       ],
+    );
+  }
+}
+
+class _AnimalCardSkeleton extends StatelessWidget {
+  const _AnimalCardSkeleton({this.width = 180});
+
+  final double width;
+
+  @override
+  Widget build(BuildContext context) {
+    return SkeletonShimmer(
+      child: SizedBox(
+        width: width,
+        child: const Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SkeletonBox(height: 136, radius: 14),
+            SizedBox(height: 10),
+            SkeletonBox(width: 96, height: 16, radius: 8),
+            SizedBox(height: 8),
+            SkeletonBox(width: 128, height: 14, radius: 8),
+            SizedBox(height: 8),
+            SkeletonBox(width: 110, height: 12, radius: 8),
+          ],
+        ),
+      ),
     );
   }
 }

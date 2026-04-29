@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:super_adoption/core/enum/load_status.dart';
+import 'package:super_adoption/core/widgets/error_fallback_card.dart';
+import 'package:super_adoption/core/widgets/skeleton_box.dart';
 import 'package:super_adoption/features/home/model/home_banner.dart';
 
 class ActivityBanner extends StatefulWidget {
-  const ActivityBanner({super.key, required this.banners, this.onTap});
+  const ActivityBanner({
+    super.key,
+    required this.banners,
+    required this.status,
+    this.onTap,
+  });
 
   final List<HomeBanner> banners;
+  final LoadStatus status;
   final ValueChanged<HomeBanner>? onTap;
 
   @override
@@ -24,13 +33,24 @@ class _ActivityBannerState extends State<ActivityBanner> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
     final banners = widget.banners;
+
+    if (widget.status == LoadStatus.loading) {
+      return const SkeletonShimmer(
+        child: SkeletonBox(height: 150, radius: _radius),
+      );
+    }
+
+    if (widget.status == LoadStatus.error) {
+      return const ErrorFallbackCard();
+    }
 
     if (banners.isEmpty) {
       return const SizedBox.shrink();
     }
+
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
     return Column(
       children: [
