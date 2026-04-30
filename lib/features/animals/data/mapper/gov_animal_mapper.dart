@@ -18,6 +18,11 @@ extension GovAnimalMapper on GovAnimalDto {
       imageUrl: imageUrl ?? '',
       shelterPhone: shelterTel ?? '',
       shelterAddress: shelterAddress ?? '',
+      foundPlace: foundPlace ?? '',
+      sterilization: _mapSterilization(sterilization),
+      bacterin: _mapBacterin(bacterin),
+      openDate: openDate ?? '',
+      remark: _buildRemark(),
       isFavorite: false,
     );
   }
@@ -50,5 +55,24 @@ extension GovAnimalMapper on GovAnimalDto {
     if (v == '狗') return '狗';
     if (v == '貓') return '貓';
     return '其他';
+  }
+
+  String _mapSterilization(String? v) {
+    if (v == 'T') return '已絕育';
+    if (v == 'F') return '未絕育';
+    return '未知';
+  }
+
+  String _mapBacterin(String? v) {
+    if (v == 'T') return '已施打';
+    if (v == 'F') return '未施打';
+    return '未知';
+  }
+
+  String _buildRemark() {
+    if ((remark ?? '').isNotEmpty) return remark!;
+    if ((variety ?? '').isNotEmpty) return variety!;
+    if ((caption ?? '').isNotEmpty) return caption!;
+    return '目前尚未提供更多說明，歡迎直接與收容單位聯繫了解毛孩狀況。';
   }
 }

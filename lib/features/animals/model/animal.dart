@@ -17,6 +17,11 @@ abstract class Animal with _$Animal {
     required String imageUrl,
     required String shelterPhone,
     required String shelterAddress,
+    @Default('') String foundPlace,
+    @Default('') String sterilization,
+    @Default('') String bacterin,
+    @Default('') String openDate,
+    @Default('') String remark,
     required bool isFavorite,
   }) = _Animal;
 }

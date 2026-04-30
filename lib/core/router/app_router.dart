@@ -14,6 +14,8 @@ import '../../features/start/ui/start_screen.dart';
 
 part 'app_router.g.dart';
 
+final _rootNavigatorKey = GlobalKey<NavigatorState>();
+
 /// App route paths 統一管理。
 class AppRoutes {
   const AppRoutes._();
@@ -43,6 +45,7 @@ class AppRoutes {
 @Riverpod(keepAlive: true)
 GoRouter appRouter(Ref ref) {
   return GoRouter(
+    navigatorKey: _rootNavigatorKey,
     initialLocation: AppRoutes.start,
     routes: [
       GoRoute(
@@ -54,6 +57,7 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) => const NotificationScreen(),
       ),
       StatefulShellRoute.indexedStack(
+        parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state, navigationShell) {
           return MainShell(navigationShell: navigationShell);
         },
@@ -79,6 +83,7 @@ GoRouter appRouter(Ref ref) {
                 routes: [
                   GoRoute(
                     path: ':animalId',
+                    parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) {
                       final animalId = state.pathParameters['animalId']!;
                       return AnimalDetailScreen(animalId: animalId);

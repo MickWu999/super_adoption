@@ -26,12 +26,14 @@ class AnimalCardSection extends StatelessWidget {
     required this.animals,
     required this.onMoreTap,
     this.status = LoadStatus.success,
+    this.onAnimalTap,
   });
 
   final String title;
   final List<Animal> animals;
   final VoidCallback onMoreTap;
   final LoadStatus status;
+  final ValueChanged<Animal>? onAnimalTap;
   bool get _isLoading => status == LoadStatus.loading;
   bool get _isError => status == LoadStatus.error;
 
@@ -58,7 +60,12 @@ class AnimalCardSection extends StatelessWidget {
               separatorBuilder: (_, _) =>
                   const SizedBox(width: _AnimalCardTokens.itemSpacing),
               itemBuilder: (context, index) {
-                return _AnimalCard(animal: animals[index]);
+                return _AnimalCard(
+                  animal: animals[index],
+                  onTap: onAnimalTap == null
+                      ? null
+                      : () => onAnimalTap!(animals[index]),
+                );
               },
             ),
           ),
@@ -154,101 +161,109 @@ class _AnimalCardSkeleton extends StatelessWidget {
 }
 
 class _AnimalCard extends StatelessWidget {
-  const _AnimalCard({required this.animal});
+  const _AnimalCard({required this.animal, this.onTap});
 
   final Animal animal;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    return Container(
-      width: _AnimalCardTokens.defaultWidth,
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
         borderRadius: BorderRadius.circular(_AnimalCardTokens.radius),
-        border: Border.all(color: colorScheme.outlineVariant),
-        boxShadow: [
-          BoxShadow(
-            color: theme.shadowColor.withValues(
-              alpha: theme.brightness == Brightness.dark ? 0.18 : 0.06,
-            ),
-            blurRadius: 12,
-            offset: const Offset(0, 6),
-          ),
-        ],
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            children: [
-              AnimalNetworkImage(
-                imageUrl: animal.imageUrl,
-                height: _AnimalCardTokens.imageHeight,
+        onTap: onTap,
+        child: Container(
+          width: _AnimalCardTokens.defaultWidth,
+          decoration: BoxDecoration(
+            color: colorScheme.surface,
+            borderRadius: BorderRadius.circular(_AnimalCardTokens.radius),
+            border: Border.all(color: colorScheme.outlineVariant),
+            boxShadow: [
+              BoxShadow(
+                color: theme.shadowColor.withValues(
+                  alpha: theme.brightness == Brightness.dark ? 0.18 : 0.06,
+                ),
+                blurRadius: 12,
+                offset: const Offset(0, 6),
               ),
-              Positioned(
-                right: 8,
-                top: 8,
-                child: Icon(
-                  animal.isFavorite
-                      ? Icons.favorite_rounded
-                      : Icons.favorite_border_rounded,
-                  color: animal.isFavorite
-                      ? colorScheme.secondary
-                      : Colors.white,
-                  size: 28,
+            ],
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
+                children: [
+                  AnimalNetworkImage(
+                    imageUrl: animal.imageUrl,
+                    height: _AnimalCardTokens.imageHeight,
+                  ),
+                  Positioned(
+                    right: 8,
+                    top: 8,
+                    child: Icon(
+                      animal.isFavorite
+                          ? Icons.favorite_rounded
+                          : Icons.favorite_border_rounded,
+                      color: animal.isFavorite
+                          ? colorScheme.secondary
+                          : Colors.white,
+                      size: 28,
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      animal.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      '${animal.gender}・${animal.bodyType}・${animal.age}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.textTheme.bodyLarge?.color,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.location_on_outlined,
+                          size: 15,
+                          color: theme.textTheme.bodySmall?.color,
+                        ),
+                        const SizedBox(width: 3),
+                        Expanded(
+                          child: Text(
+                            animal.location,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: theme.textTheme.bodySmall,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  animal.name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  '${animal.gender}・${animal.bodyType}・${animal.age}',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.textTheme.bodyLarge?.color,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.location_on_outlined,
-                      size: 15,
-                      color: theme.textTheme.bodySmall?.color,
-                    ),
-                    const SizedBox(width: 3),
-                    Expanded(
-                      child: Text(
-                        animal.location,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodySmall,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:super_adoption/core/router/app_router.dart';
 import 'package:super_adoption/features/animals/data/query/animal_filter.dart';
+import 'package:super_adoption/features/animals/model/animal.dart';
 import 'package:super_adoption/features/animals/state/animal_list_state.dart';
 import 'package:super_adoption/features/animals/state/animal_list_provider.dart';
 import 'package:super_adoption/core/widgets/error_fallback_card.dart';
@@ -101,6 +104,10 @@ class _AnimalListScreenState extends ConsumerState<AnimalListScreen> {
     );
   }
 
+  void _openAnimalDetail(Animal animal) {
+    context.push(AppRoutes.animalDetail(animal.id));
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -166,7 +173,10 @@ class _AnimalListScreenState extends ConsumerState<AnimalListScreen> {
         SliverList.separated(
           itemCount: state.items.length,
           itemBuilder: (context, index) {
-            return AnimalLargeCard(animal: state.items[index]);
+            return AnimalLargeCard(
+              animal: state.items[index],
+              onTap: () => _openAnimalDetail(state.items[index]),
+            );
           },
           separatorBuilder: (context, index) => const SizedBox(height: 18),
         ),

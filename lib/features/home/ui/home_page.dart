@@ -18,6 +18,10 @@ class HomeScreen extends ConsumerWidget {
     context.go(AppRoutes.animalsUri(filter).toString());
   }
 
+  void _openAnimalDetail(BuildContext context, String animalId) {
+    context.push(AppRoutes.animalDetail(animalId));
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -96,6 +100,7 @@ class HomeScreen extends ConsumerWidget {
                 title: '本週新毛孩',
                 animals: newAnimals,
                 status: homeState.status,
+                onAnimalTap: (animal) => _openAnimalDetail(context, animal.id),
                 onMoreTap: () {
                   context.push(AppRoutes.animals);
                 },
@@ -104,8 +109,8 @@ class HomeScreen extends ConsumerWidget {
               AnimalCardSection(
                 title: '熱門毛孩',
                 animals: popularAnimals,
-
                 status: homeState.status,
+                onAnimalTap: (animal) => _openAnimalDetail(context, animal.id),
                 onMoreTap: () {
                   context.push(AppRoutes.animals);
                 },
