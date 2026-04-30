@@ -1,33 +1,34 @@
-
 import 'package:flutter/material.dart';
 
 class AnimalImagePlaceholder extends StatelessWidget {
-  const AnimalImagePlaceholder({required this.name, required this.height});
+  const AnimalImagePlaceholder({
+    super.key,
+    this.height,
+    this.message = '此毛孩沒有照片',
+  });
 
-  final String name;
-  final double height;
+  final double? height;
+  final String message;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    return SizedBox(
-      width: double.infinity,
-      height: height,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              colorScheme.surfaceContainerHighest,
-              colorScheme.surfaceContainerHighest.withValues(alpha: 0.72),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+    final child = DecoratedBox(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            colorScheme.surfaceContainerHighest,
+            colorScheme.surfaceContainerHighest.withValues(alpha: 0.72),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
+      ),
+      child: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
               Icons.pets_rounded,
@@ -36,15 +37,13 @@ class AnimalImagePlaceholder extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                name.isEmpty ? '暫無照片' : '$name\n暫無照片',
+                message,
                 textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.textTheme.bodyMedium?.color,
-                  fontWeight: FontWeight.w600,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: colorScheme.primary.withValues(alpha: 0.9),
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),
@@ -52,5 +51,11 @@ class AnimalImagePlaceholder extends StatelessWidget {
         ),
       ),
     );
+
+    if (height != null) {
+      return SizedBox(width: double.infinity, height: height, child: child);
+    }
+
+    return SizedBox.expand(child: child);
   }
 }

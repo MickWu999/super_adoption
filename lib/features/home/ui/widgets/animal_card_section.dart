@@ -203,13 +203,11 @@ class _AnimalCard extends StatelessWidget {
                         alignment: Alignment.topCenter,
                         errorBuilder: (context, error, stackTrace) {
                           return AnimalImagePlaceholder(
-                            name: animal.name,
                             height: _AnimalCardTokens.imageHeight,
                           );
                         },
                       )
                     : AnimalImagePlaceholder(
-                        name: animal.name,
                         height: _AnimalCardTokens.imageHeight,
                       ),
               ),
