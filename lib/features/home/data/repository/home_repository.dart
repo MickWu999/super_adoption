@@ -34,18 +34,24 @@ class HomeRepositoryImpl implements HomeRepository {
     // - websiteUrl: target web page when user taps the banner
     // The UI already consumes `List<HomeBanner>`, so swapping data source
     // should only require changing this repository.
-    const banners = [
+     List<HomeBanner> banners = [
       HomeBanner(
         imageUrl: 'assets/images/home-activity-banner.png',
-        websiteUrl: 'https://example.com/adoption-campaign',
-        title: '給毛孩一個',
-        subtitle: '溫暖的家',
+        websiteUrl: 'https://www.youtube.com/watch?v=VE5vIgK_RJA',
+        title:'4月認養活動',
+        description: '讓全台灣找家的毛孩一起等幸福😻  想添加新成員的你就別再猶豫拉～也歡迎大家告知親朋好友多一個人知道就多一份機會！我們一起動起來讓浪浪們早日回家💝讓全台灣找家的毛孩一起等幸福😻  想添加新成員的你就別再猶豫拉～也歡迎大家告知親朋好友多一個人知道就多一份機會！我們一起動起來讓浪浪們早日回家💝讓全台灣找家的毛孩一起等幸福😻  想添加新成員的你就別再猶豫拉～也歡迎大家告知親朋好友多一個人知道就多一份機會！我們一起動起來讓浪浪們早日回家💝讓全台灣找家的毛孩一起等幸福😻  想添加新成員的你就別再猶豫拉～也歡迎大家告知親朋好友多一個人知道就多一份機會！我們一起動起來讓浪浪們早日回家💝讓全台灣找家的毛孩一起等幸福😻  想添加新成員的你就別再猶豫拉～也歡迎大家告知親朋好友多一個人知道就多一份機會！我們一起動起來讓浪浪們早日回家💝',
+        startAt: DateTime.parse("2027-04-30T09:00:00+08:00"),
+        endAt: DateTime.parse("2027-05-01T18:00:00+08:00"),
+        displayDate: '04/30 - 05/01',
       ),
       HomeBanner(
         imageUrl: 'assets/images/home-activity-banner.png',
-        websiteUrl: 'https://example.com/pet-care',
+        websiteUrl: 'https://www.youtube.com/watch?v=VE5vIgK_RJA',
         title: '認養不棄養',
-        subtitle: '一起成為好家人',
+        description: '一起成為好家人',
+        startAt: DateTime.parse("2027-05-05T09:00:00+08:00"),
+        endAt: DateTime.parse("2027-05-08T18:00:00+08:00"),
+        displayDate: '05/05 - 05/08',
       ),
     ];
 

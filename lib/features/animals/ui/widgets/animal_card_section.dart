@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:super_adoption/core/enum/load_status.dart';
 import 'package:super_adoption/core/widgets/error_fallback_card.dart';
 import 'package:super_adoption/core/widgets/skeleton_box.dart';
 import 'package:super_adoption/features/animals/model/animal.dart';
@@ -10,8 +11,7 @@ class AnimalCardSection extends StatelessWidget {
     required this.animals,
     required this.onMoreTap,
     this.direction = Axis.horizontal,
-    this.isLoading = false,
-    this.isError = false,
+    this.status = LoadStatus.success,
   });
 
   static const _horizontalHeight = 260.0;
@@ -22,14 +22,15 @@ class AnimalCardSection extends StatelessWidget {
   final List<Animal> animals;
   final VoidCallback onMoreTap;
   final Axis direction;
-  final bool isLoading;
-  final bool isError;
+  final LoadStatus status;
   bool get _isHorizontal => direction == Axis.horizontal;
+  bool get _isLoading => status == LoadStatus.loading;
+  bool get _isError => status == LoadStatus.error;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    if (isError) {
+    if (_isError) {
       return const ErrorFallbackCard();
     }
     return Column(
@@ -69,11 +70,11 @@ class AnimalCardSection extends StatelessWidget {
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               clipBehavior: Clip.none,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: isLoading ? 2 : animals.length,
+              // physics: const NeverScrollableScrollPhysics(),
+              itemCount: _isLoading ? 2 : animals.length,
               separatorBuilder: (_, _) => const SizedBox(width: _itemSpacing),
               itemBuilder: (context, index) {
-                if (isLoading) {
+                if (_isLoading) {
                   return const _AnimalCardSkeleton();
                 }
                 return _AnimalCard(animal: animals[index]);
@@ -82,14 +83,14 @@ class AnimalCardSection extends StatelessWidget {
           )
         else
           Column(
-            children: List.generate(isLoading ? 3 : animals.length, (index) {
+            children: List.generate(_isLoading ? 3 : animals.length, (index) {
               final isLast = index == animals.length - 1;
 
               return Padding(
                 padding: EdgeInsets.only(
-                  bottom: isLoading || !isLast ? _itemSpacing : 0,
+                  bottom: _isLoading || !isLast ? _itemSpacing : 0,
                 ),
-                child: isLoading
+                child: _isLoading
                     ? const _AnimalCardSkeleton(width: double.infinity)
                     : _AnimalCard(
                         animal: animals[index],

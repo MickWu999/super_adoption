@@ -8,6 +8,9 @@ abstract class HomeBanner with _$HomeBanner {
     required String imageUrl,
     String? websiteUrl,
     String? title,
-    String? subtitle,
+    String? description,
+    DateTime? startAt,
+    DateTime? endAt,
+    String? displayDate,
   }) = _HomeBanner;
 }

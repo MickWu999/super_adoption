@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:super_adoption/core/enum/load_status.dart';
 import 'package:super_adoption/core/router/app_router.dart';
 import 'package:super_adoption/core/widgets/app_info_bar.dart';
 import 'package:super_adoption/features/animals/ui/widgets/animal_card_section.dart';
@@ -12,6 +13,24 @@ import 'package:super_adoption/features/home/ui/widgets/home_header.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
+
+  void _openAnimalsWithShortcut(
+    BuildContext context, {
+    String? kind,
+    String? age,
+  }) {
+    final queryParameters = <String, String>{};
+
+    if (kind != null) {
+      queryParameters['kind'] = kind;
+    }
+    if (age != null) {
+      queryParameters['age'] = age;
+    }
+
+    final uri = Uri(path: AppRoutes.animals, queryParameters: queryParameters);
+    context.go(uri.toString());
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,7 +49,6 @@ class HomeScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const HomeHeader(),
-              const SizedBox(height: 20),
               if (homeState.hasError)
                 AppInfoBar(
                   type: InfoBarType.error,
@@ -52,22 +70,28 @@ class HomeScreen extends ConsumerWidget {
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   CategoryShortcut(
                     assetPath: 'assets/svgs/dog.svg',
                     label: '狗狗',
+                    onTap: () => _openAnimalsWithShortcut(context, kind: '狗'),
                   ),
                   CategoryShortcut(
                     assetPath: 'assets/svgs/cat.svg',
                     label: '貓貓',
+                    onTap: () => _openAnimalsWithShortcut(context, kind: '貓'),
                   ),
                   CategoryShortcut(
                     assetPath: 'assets/svgs/dog.svg',
                     label: '幼年',
+                    onTap: () =>
+                        _openAnimalsWithShortcut(context, age: 'CHILD'),
                   ),
                   CategoryShortcut(
                     assetPath: 'assets/svgs/dog.svg',
                     label: '成犬',
+                    onTap: () =>
+                        _openAnimalsWithShortcut(context, age: 'ADULT'),
                   ),
                 ],
               ),
@@ -76,7 +100,9 @@ class HomeScreen extends ConsumerWidget {
                 title: '本週新毛孩',
                 animals: newAnimals,
                 direction: Axis.horizontal,
-                isLoading: homeState.isLoading,
+                status: homeState.status == LoadStatus.loading
+                    ? LoadStatus.loading
+                    : LoadStatus.success,
                 onMoreTap: () {
                   context.push(AppRoutes.animals);
                 },
@@ -86,7 +112,9 @@ class HomeScreen extends ConsumerWidget {
                 title: '熱門毛孩',
                 animals: popularAnimals,
                 direction: Axis.horizontal,
-                isLoading: homeState.isLoading,
+                status: homeState.status == LoadStatus.loading
+                    ? LoadStatus.loading
+                    : LoadStatus.success,
                 onMoreTap: () {
                   context.push(AppRoutes.animals);
                 },

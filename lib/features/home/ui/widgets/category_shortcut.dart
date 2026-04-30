@@ -6,12 +6,14 @@ class CategoryShortcut extends StatelessWidget {
     super.key,
     required this.assetPath,
     required this.label,
+    this.onTap,
   });
 
   static const _radius = 24.0;
 
   final String assetPath;
   final String label;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class CategoryShortcut extends StatelessWidget {
     final colorScheme = theme.colorScheme;
     return InkWell(
       borderRadius: BorderRadius.circular(_radius),
-      onTap: () {},
+      onTap: onTap,
       child: Column(
         children: [
           Container(
