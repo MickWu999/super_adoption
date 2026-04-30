@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:super_adoption/features/animals/data/query/animal_filter.dart';
 import 'package:super_adoption/features/animals/model/animal.dart';
 import 'package:super_adoption/features/animals/state/animal_list_provider.dart';
+import 'package:super_adoption/core/widgets/error_fallback_card.dart';
 
 class AnimalListScreen extends ConsumerStatefulWidget {
   const AnimalListScreen({super.key, this.initialKind, this.initialAge});
@@ -156,20 +157,16 @@ class _AnimalListScreenState extends ConsumerState<AnimalListScreen>
     }
 
     if (state.showFullscreenError) {
-      return SliverToBoxAdapter(
-        child: _StatusPanel(
-          icon: Icons.error_outline_rounded,
-          title: '載入失敗',
-          message: state.error ?? '資料暫時無法載入，請稍後再試。',
+      return const SliverToBoxAdapter(
+        child: ErrorFallbackCard(
+          message: '資料暫時無法載入，請稍後再試。',
         ),
       );
     }
 
     if (state.isEmpty) {
       return const SliverToBoxAdapter(
-        child: _StatusPanel(
-          icon: Icons.search_off_rounded,
-          title: '沒有資料',
+        child: ErrorFallbackCard(
           message: '目前沒有符合條件的毛孩。',
         ),
       );
@@ -305,11 +302,13 @@ class _FilterChipButton extends StatelessWidget {
           duration: const Duration(milliseconds: 160),
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
           decoration: BoxDecoration(
-            color: selected ? colorScheme.primary : colorScheme.surface,
+            color: selected
+                ? colorScheme.primary.withValues(alpha: 0.14)
+                : colorScheme.surface,
             borderRadius: BorderRadius.circular(999),
             border: Border.all(
               color: selected
-                  ? colorScheme.primary
+                  ? colorScheme.primary.withValues(alpha: 0.32)
                   : colorScheme.outlineVariant,
             ),
             boxShadow: selected
@@ -325,7 +324,7 @@ class _FilterChipButton extends StatelessWidget {
           child: Text(
             label,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: selected ? colorScheme.onPrimary : colorScheme.onSurface,
+              color: selected ? colorScheme.primary : colorScheme.onSurface,
               fontWeight: FontWeight.w800,
             ),
           ),
@@ -626,13 +625,7 @@ class _AnimalCoverImage extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     if (imageUrl.isEmpty) {
-      return Image.asset(
-        'assets/images/home-dog.png',
-        height: 230,
-        width: double.infinity,
-        fit: BoxFit.cover,
-        alignment: Alignment.topCenter,
-      );
+      return const _AnimalImageFallback();
     }
 
     return Image.network(
@@ -656,14 +649,23 @@ class _AnimalCoverImage extends StatelessWidget {
         );
       },
       errorBuilder: (context, error, stackTrace) {
-        return Image.asset(
-          'assets/images/home-dog.png',
-          height: 230,
-          width: double.infinity,
-          fit: BoxFit.cover,
-          alignment: Alignment.topCenter,
-        );
+        return const _AnimalImageFallback();
       },
+    );
+  }
+}
+
+class _AnimalImageFallback extends StatelessWidget {
+  const _AnimalImageFallback();
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset(
+      'assets/images/error_fallback.png',
+      height: 230,
+      width: double.infinity,
+      fit: BoxFit.cover,
+      alignment: Alignment.center,
     );
   }
 }

@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:super_adoption/core/router/app_router.dart';
 import 'package:super_adoption/core/widgets/app_info_bar.dart';
 import 'package:super_adoption/features/animals/data/query/animal_filter.dart';
-import 'package:super_adoption/features/animals/ui/widgets/animal_card_section.dart';
+import 'package:super_adoption/features/home/ui/widgets/animal_card_section.dart';
 import 'package:super_adoption/features/home/state/home_provider.dart';
 import 'package:super_adoption/features/home/ui/widgets/activity_banner.dart';
 import 'package:super_adoption/features/home/ui/widgets/adoption_reminder_card.dart';
@@ -95,7 +95,6 @@ class HomeScreen extends ConsumerWidget {
               AnimalCardSection(
                 title: '本週新毛孩',
                 animals: newAnimals,
-                direction: Axis.horizontal,
                 status: homeState.status,
                 onMoreTap: () {
                   context.push(AppRoutes.animals);
@@ -105,7 +104,7 @@ class HomeScreen extends ConsumerWidget {
               AnimalCardSection(
                 title: '熱門毛孩',
                 animals: popularAnimals,
-                direction: Axis.horizontal,
+
                 status: homeState.status,
                 onMoreTap: () {
                   context.push(AppRoutes.animals);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:super_adoption/core/enum/load_status.dart';
+import 'package:super_adoption/core/widgets/animal_image_placeholder.dart';
 import 'package:super_adoption/core/widgets/error_fallback_card.dart';
 import 'package:super_adoption/core/widgets/skeleton_box.dart';
 import 'package:super_adoption/features/animals/model/animal.dart';
@@ -24,16 +25,13 @@ class AnimalCardSection extends StatelessWidget {
     required this.title,
     required this.animals,
     required this.onMoreTap,
-    this.direction = Axis.horizontal,
     this.status = LoadStatus.success,
   });
 
   final String title;
   final List<Animal> animals;
   final VoidCallback onMoreTap;
-  final Axis direction;
   final LoadStatus status;
-  bool get _isHorizontal => direction == Axis.horizontal;
   bool get _isLoading => status == LoadStatus.loading;
   bool get _isError => status == LoadStatus.error;
 
@@ -43,49 +41,27 @@ class AnimalCardSection extends StatelessWidget {
       return const ErrorFallbackCard();
     }
 
-    if (_isLoading) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _SectionHeader(title: title, onMoreTap: onMoreTap),
-          const SizedBox(height: _AnimalCardTokens.headerSpacing),
-          _LoadingBody(isHorizontal: _isHorizontal),
-        ],
-      );
-    }
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _SectionHeader(title: title, onMoreTap: onMoreTap),
         const SizedBox(height: _AnimalCardTokens.headerSpacing),
-        if (_isHorizontal)
+        if (_isLoading)
+          const _LoadingBody()
+        else
           SizedBox(
             height: _AnimalCardTokens.horizontalHeight,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               clipBehavior: Clip.none,
-              // physics: const NeverScrollableScrollPhysics(),
               itemCount: animals.length,
-              separatorBuilder: (_, _) => const SizedBox(width: _AnimalCardTokens.itemSpacing),
+              separatorBuilder: (_, _) => const SizedBox(
+                width: _AnimalCardTokens.itemSpacing,
+              ),
               itemBuilder: (context, index) {
                 return _AnimalCard(animal: animals[index]);
               },
             ),
-          )
-        else
-          Column(
-            children: List.generate(animals.length, (index) {
-              final isLast = index == animals.length - 1;
-
-              return Padding(
-                padding: EdgeInsets.only(bottom: !isLast ? _AnimalCardTokens.itemSpacing : 0),
-                child: _AnimalCard(
-                  animal: animals[index],
-                  width: double.infinity,
-                ),
-              );
-            }),
           ),
       ],
     );
@@ -133,42 +109,35 @@ class _SectionHeader extends StatelessWidget {
 }
 
 class _LoadingBody extends StatelessWidget {
-  const _LoadingBody({required this.isHorizontal});
-
-  final bool isHorizontal;
+  const _LoadingBody();
 
   @override
   Widget build(BuildContext context) {
-    if (isHorizontal) {
-      return SizedBox(
-        height: _AnimalCardTokens.horizontalHeight,
-        child: ListView.separated(
-          scrollDirection: Axis.horizontal,
-          clipBehavior: Clip.none,
-          itemCount: 2,
-          separatorBuilder: (_, _) =>
-              const SizedBox(width: _AnimalCardTokens.itemSpacing),
-          itemBuilder: (context, index) {
-            return const _AnimalCardSkeleton();
-          },
+    return SizedBox(
+      height: _AnimalCardTokens.horizontalHeight,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        clipBehavior: Clip.none,
+        itemCount: 2,
+        separatorBuilder: (_, _) => const SizedBox(
+          width: _AnimalCardTokens.itemSpacing,
         ),
-      );
-    }
-
-    return const _AnimalCardSkeleton(width: double.infinity);
+        itemBuilder: (context, index) {
+          return const _AnimalCardSkeleton();
+        },
+      ),
+    );
   }
 }
 
 class _AnimalCardSkeleton extends StatelessWidget {
-  const _AnimalCardSkeleton({this.width = _AnimalCardTokens.defaultWidth});
-
-  final double width;
+  const _AnimalCardSkeleton();
 
   @override
   Widget build(BuildContext context) {
     return SkeletonShimmer(
       child: SizedBox(
-        width: width,
+        width: _AnimalCardTokens.defaultWidth,
         child: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -189,11 +158,9 @@ class _AnimalCardSkeleton extends StatelessWidget {
 class _AnimalCard extends StatelessWidget {
   const _AnimalCard({
     required this.animal,
-    this.width = _AnimalCardTokens.defaultWidth,
   });
 
   final Animal animal;
-  final double width;
 
   bool get _hasImageUrl => animal.imageUrl.trim().isNotEmpty;
 
@@ -202,7 +169,7 @@ class _AnimalCard extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     return Container(
-      width: width,
+      width: _AnimalCardTokens.defaultWidth,
       decoration: BoxDecoration(
         color: colorScheme.surface,
         borderRadius: BorderRadius.circular(_AnimalCardTokens.radius),
@@ -235,13 +202,13 @@ class _AnimalCard extends StatelessWidget {
                         fit: BoxFit.cover,
                         alignment: Alignment.topCenter,
                         errorBuilder: (context, error, stackTrace) {
-                          return _AnimalImagePlaceholder(
+                          return AnimalImagePlaceholder(
                             name: animal.name,
                             height: _AnimalCardTokens.imageHeight,
                           );
                         },
                       )
-                    : _AnimalImagePlaceholder(
+                    : AnimalImagePlaceholder(
                         name: animal.name,
                         height: _AnimalCardTokens.imageHeight,
                       ),
@@ -307,60 +274,6 @@ class _AnimalCard extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _AnimalImagePlaceholder extends StatelessWidget {
-  const _AnimalImagePlaceholder({required this.name, required this.height});
-
-  final String name;
-  final double height;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
-    return SizedBox(
-      width: double.infinity,
-      height: height,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              colorScheme.surfaceContainerHighest,
-              colorScheme.surfaceContainerHighest.withValues(alpha: 0.72),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.pets_rounded,
-              size: 34,
-              color: colorScheme.primary.withValues(alpha: 0.85),
-            ),
-            const SizedBox(height: 8),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Text(
-                name.isEmpty ? '暫無照片' : '$name\n暫無照片',
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.textTheme.bodyMedium?.color,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
