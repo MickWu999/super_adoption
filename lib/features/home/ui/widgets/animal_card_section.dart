@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:super_adoption/core/enum/load_status.dart';
-import 'package:super_adoption/core/widgets/animal_image_placeholder.dart';
 import 'package:super_adoption/core/widgets/error_fallback_card.dart';
+import 'package:super_adoption/core/widgets/animal_network_image.dart';
 import 'package:super_adoption/core/widgets/skeleton_box.dart';
 import 'package:super_adoption/features/animals/model/animal.dart';
 
@@ -55,9 +55,8 @@ class AnimalCardSection extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               clipBehavior: Clip.none,
               itemCount: animals.length,
-              separatorBuilder: (_, _) => const SizedBox(
-                width: _AnimalCardTokens.itemSpacing,
-              ),
+              separatorBuilder: (_, _) =>
+                  const SizedBox(width: _AnimalCardTokens.itemSpacing),
               itemBuilder: (context, index) {
                 return _AnimalCard(animal: animals[index]);
               },
@@ -119,9 +118,8 @@ class _LoadingBody extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         clipBehavior: Clip.none,
         itemCount: 2,
-        separatorBuilder: (_, _) => const SizedBox(
-          width: _AnimalCardTokens.itemSpacing,
-        ),
+        separatorBuilder: (_, _) =>
+            const SizedBox(width: _AnimalCardTokens.itemSpacing),
         itemBuilder: (context, index) {
           return const _AnimalCardSkeleton();
         },
@@ -156,13 +154,9 @@ class _AnimalCardSkeleton extends StatelessWidget {
 }
 
 class _AnimalCard extends StatelessWidget {
-  const _AnimalCard({
-    required this.animal,
-  });
+  const _AnimalCard({required this.animal});
 
   final Animal animal;
-
-  bool get _hasImageUrl => animal.imageUrl.trim().isNotEmpty;
 
   @override
   Widget build(BuildContext context) {
@@ -190,26 +184,9 @@ class _AnimalCard extends StatelessWidget {
         children: [
           Stack(
             children: [
-              Container(
+              AnimalNetworkImage(
+                imageUrl: animal.imageUrl,
                 height: _AnimalCardTokens.imageHeight,
-                width: double.infinity,
-                color: colorScheme.surfaceContainerHighest,
-                child: _hasImageUrl
-                    ? Image.network(
-                        animal.imageUrl,
-                        width: double.infinity,
-                        height: double.infinity,
-                        fit: BoxFit.cover,
-                        alignment: Alignment.topCenter,
-                        errorBuilder: (context, error, stackTrace) {
-                          return AnimalImagePlaceholder(
-                            height: _AnimalCardTokens.imageHeight,
-                          );
-                        },
-                      )
-                    : AnimalImagePlaceholder(
-                        height: _AnimalCardTokens.imageHeight,
-                      ),
               ),
               Positioned(
                 right: 8,

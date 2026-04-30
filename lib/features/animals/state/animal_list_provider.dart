@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:super_adoption/core/enum/load_status.dart';
 import 'package:super_adoption/core/log/app_logger.dart';
+import 'package:super_adoption/features/animals/model/animal.dart';
 
 import '../data/query/animal_filter.dart';
 import '../data/repository/animal_repository.dart';
@@ -37,16 +39,21 @@ class AnimalNotifier extends _$AnimalNotifier {
     );
 
     try {
-      final items = await _repo.fetchAnimals(filter);
+      final fetchedItems = await _repo.fetchAnimals(filter);
+      final items = _dedupeAnimals(fetchedItems);
 
       state = state.copyWith(
         items: items,
-        filter: filter.copyWith(skip: items.length),
+        filter: filter.copyWith(skip: fetchedItems.length),
         status: items.isEmpty ? LoadStatus.empty : LoadStatus.success,
-        hasMore: items.length == filter.top,
+        hasMore: fetchedItems.length == filter.top,
         error: null,
       );
-      AppLogger.instance.i('AnimalNotifier load success count=${items.length}');
+
+      debugPrint(items.toString());
+      AppLogger.instance.i(
+        'AnimalNotifier load success raw=${fetchedItems.length} unique=${items.length}',
+      );
     } catch (e) {
       state = state.copyWith(status: LoadStatus.error, error: e.toString());
       AppLogger.instance.e(
@@ -73,17 +80,18 @@ class AnimalNotifier extends _$AnimalNotifier {
     );
 
     try {
-      final items = await _repo.fetchAnimals(nextFilter);
+      final fetchedItems = await _repo.fetchAnimals(nextFilter);
+      final items = _dedupeAnimals(fetchedItems);
 
       state = state.copyWith(
         items: items,
-        filter: nextFilter.copyWith(skip: items.length),
+        filter: nextFilter.copyWith(skip: fetchedItems.length),
         status: items.isEmpty ? LoadStatus.empty : LoadStatus.success,
-        hasMore: items.length == nextFilter.top,
+        hasMore: fetchedItems.length == nextFilter.top,
         error: null,
       );
       AppLogger.instance.i(
-        'AnimalNotifier applyFilter success count=${items.length}',
+        'AnimalNotifier applyFilter success raw=${fetchedItems.length} unique=${items.length}',
       );
     } catch (e) {
       state = state.copyWith(status: LoadStatus.error, error: e.toString());
@@ -108,20 +116,25 @@ class AnimalNotifier extends _$AnimalNotifier {
     state = state.copyWith(isLoadingMore: true, error: null);
 
     try {
-      final items = await _repo.fetchAnimals(nextFilter);
+      final fetchedItems = await _repo.fetchAnimals(nextFilter);
+      final mergedItems = _dedupeAnimals([...state.items, ...fetchedItems]);
+      final uniqueAddedCount = mergedItems.length - state.items.length;
 
       state = state.copyWith(
-        items: [...state.items, ...items],
-        filter: nextFilter.copyWith(skip: nextFilter.skip + items.length),
-        status: state.items.isEmpty && items.isEmpty
+        items: mergedItems,
+        filter: nextFilter.copyWith(
+          skip: nextFilter.skip + fetchedItems.length,
+        ),
+        status: state.items.isEmpty && mergedItems.isEmpty
             ? LoadStatus.empty
             : LoadStatus.success,
         isLoadingMore: false,
-        hasMore: items.length == nextFilter.top,
+        hasMore: fetchedItems.length == nextFilter.top,
         error: null,
       );
+          debugPrint(mergedItems.toString());
       AppLogger.instance.i(
-        'AnimalNotifier loadMore success added=${items.length} total=${state.items.length}',
+        'AnimalNotifier loadMore success raw=${fetchedItems.length} added=$uniqueAddedCount total=${mergedItems.length}',
       );
     } catch (e) {
       state = state.copyWith(isLoadingMore: false, error: e.toString());
@@ -131,5 +144,15 @@ class AnimalNotifier extends _$AnimalNotifier {
         stackTrace: StackTrace.current,
       );
     }
+  }
+
+  List<Animal> _dedupeAnimals(List<Animal> animals) {
+    final uniqueById = <String, Animal>{};
+
+    for (final animal in animals) {
+      uniqueById[animal.id] = animal;
+    }
+
+    return uniqueById.values.toList();
   }
 }

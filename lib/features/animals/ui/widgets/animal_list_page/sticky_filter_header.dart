@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:super_adoption/features/animals/data/query/animal_filter.dart';
-import 'package:super_adoption/features/animals/ui/widgets/anima_list_page.dart/quick_filter_chips.dart';
+import 'package:super_adoption/features/animals/ui/widgets/animal_list_page/quick_filter_chips.dart';
 
 class StickyFilterHeader extends StatelessWidget {
   const StickyFilterHeader({

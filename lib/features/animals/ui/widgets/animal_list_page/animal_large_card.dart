@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:super_adoption/core/widgets/animal_image_placeholder.dart';
+import 'package:super_adoption/core/widgets/animal_network_image.dart';
 import 'package:super_adoption/features/animals/model/animal.dart';
 
 class AnimalLargeCard extends StatelessWidget {
@@ -142,40 +142,13 @@ class AnimalLargeCard extends StatelessWidget {
 class _AnimalCoverImage extends StatelessWidget {
   const _AnimalCoverImage({required this.imageUrl});
 
+  static const _imageHeight = 230.0;
+
   final String imageUrl;
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    if (imageUrl.isEmpty) {
-      return const AnimalImagePlaceholder();
-    }
-
-    return Image.network(
-      imageUrl,
-      height: 230,
-      width: double.infinity,
-      fit: BoxFit.cover,
-      alignment: Alignment.topCenter,
-      loadingBuilder: (context, child, loadingProgress) {
-        if (loadingProgress == null) return child;
-
-        return Container(
-          height: 230,
-          color: colorScheme.surfaceContainerHighest,
-          alignment: Alignment.center,
-          child: const SizedBox(
-            width: 24,
-            height: 24,
-            child: CircularProgressIndicator(strokeWidth: 2.4),
-          ),
-        );
-      },
-      errorBuilder: (context, error, stackTrace) {
-        return const AnimalImagePlaceholder(height: 230);
-      },
-    );
+    return AnimalNetworkImage(imageUrl: imageUrl, height: _imageHeight);
   }
 }
 

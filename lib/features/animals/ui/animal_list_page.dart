@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:super_adoption/features/animals/data/query/animal_filter.dart';
+import 'package:super_adoption/features/animals/state/animal_list_state.dart';
 import 'package:super_adoption/features/animals/state/animal_list_provider.dart';
 import 'package:super_adoption/core/widgets/error_fallback_card.dart';
-import 'package:super_adoption/features/animals/ui/widgets/anima_list_page.dart/animal_filter_sheet.dart';
-import 'package:super_adoption/features/animals/ui/widgets/anima_list_page.dart/animal_list_header.dart';
-import 'package:super_adoption/features/animals/ui/widgets/anima_list_page.dart/animal_list_loading.dart';
-import 'package:super_adoption/features/animals/ui/widgets/anima_list_page.dart/animal_large_card.dart';
-import 'package:super_adoption/features/animals/ui/widgets/anima_list_page.dart/sticky_filter_header.dart';
+import 'package:super_adoption/features/animals/ui/widgets/animal_list_page/animal_filter_sheet.dart';
+import 'package:super_adoption/features/animals/ui/widgets/animal_list_page/animal_list_header.dart';
+import 'package:super_adoption/features/animals/ui/widgets/animal_list_page/animal_list_loading.dart';
+import 'package:super_adoption/features/animals/ui/widgets/animal_list_page/animal_large_card.dart';
+import 'package:super_adoption/features/animals/ui/widgets/animal_list_page/sticky_filter_header.dart';
 
 class AnimalListScreen extends ConsumerStatefulWidget {
   const AnimalListScreen({super.key, this.initialKind, this.initialAge});
@@ -143,7 +144,7 @@ class _AnimalListScreenState extends ConsumerState<AnimalListScreen> {
     );
   }
 
-  Widget _buildBodySliver(ThemeData theme, dynamic state) {
+  Widget _buildBodySliver(ThemeData theme, AnimalListState state) {
     if (state.isLoading && !state.hasContent) {
       return const AnimalListLoadingSliver();
     }
