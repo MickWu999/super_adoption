@@ -4,6 +4,20 @@ import 'package:super_adoption/core/widgets/error_fallback_card.dart';
 import 'package:super_adoption/core/widgets/skeleton_box.dart';
 import 'package:super_adoption/features/animals/model/animal.dart';
 
+class _AnimalCardTokens {
+  const _AnimalCardTokens._();
+
+  // Section layout sizes
+  static const horizontalHeight = 260.0; // 橫向列表高度
+  static const itemSpacing = 12.0; // 卡片之間間距
+  static const headerSpacing = 14.0; // 標題與內容距離
+
+  // Card sizes
+  static const defaultWidth = 180.0; // 預設卡片寬度
+  static const radius = 14.0; // 卡片圓角
+  static const imageHeight = 136.0; // 卡片圖片高度
+}
+
 class AnimalCardSection extends StatelessWidget {
   const AnimalCardSection({
     super.key,
@@ -13,10 +27,6 @@ class AnimalCardSection extends StatelessWidget {
     this.direction = Axis.horizontal,
     this.status = LoadStatus.success,
   });
-
-  static const _horizontalHeight = 260.0;
-  static const _itemSpacing = 12.0;
-  static const _headerSpacing = 14.0;
 
   final String title;
   final List<Animal> animals;
@@ -29,73 +39,51 @@ class AnimalCardSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     if (_isError) {
       return const ErrorFallbackCard();
     }
+
+    if (_isLoading) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _SectionHeader(title: title, onMoreTap: onMoreTap),
+          const SizedBox(height: _AnimalCardTokens.headerSpacing),
+          _LoadingBody(isHorizontal: _isHorizontal),
+        ],
+      );
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Text(
-              title,
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w900,
-              ),
-            ),
-            const Spacer(),
-            TextButton(
-              onPressed: onMoreTap,
-              style: TextButton.styleFrom(
-                foregroundColor: theme.textTheme.bodyMedium?.color,
-                padding: EdgeInsets.zero,
-                minimumSize: const Size(0, 32),
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-              child: const Row(
-                children: [
-                  Text('更多'),
-                  SizedBox(width: 2),
-                  Icon(Icons.chevron_right_rounded, size: 20),
-                ],
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: _headerSpacing),
+        _SectionHeader(title: title, onMoreTap: onMoreTap),
+        const SizedBox(height: _AnimalCardTokens.headerSpacing),
         if (_isHorizontal)
           SizedBox(
-            height: _horizontalHeight,
+            height: _AnimalCardTokens.horizontalHeight,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               clipBehavior: Clip.none,
               // physics: const NeverScrollableScrollPhysics(),
-              itemCount: _isLoading ? 2 : animals.length,
-              separatorBuilder: (_, _) => const SizedBox(width: _itemSpacing),
+              itemCount: animals.length,
+              separatorBuilder: (_, _) => const SizedBox(width: _AnimalCardTokens.itemSpacing),
               itemBuilder: (context, index) {
-                if (_isLoading) {
-                  return const _AnimalCardSkeleton();
-                }
                 return _AnimalCard(animal: animals[index]);
               },
             ),
           )
         else
           Column(
-            children: List.generate(_isLoading ? 3 : animals.length, (index) {
+            children: List.generate(animals.length, (index) {
               final isLast = index == animals.length - 1;
 
               return Padding(
-                padding: EdgeInsets.only(
-                  bottom: _isLoading || !isLast ? _itemSpacing : 0,
+                padding: EdgeInsets.only(bottom: !isLast ? _AnimalCardTokens.itemSpacing : 0),
+                child: _AnimalCard(
+                  animal: animals[index],
+                  width: double.infinity,
                 ),
-                child: _isLoading
-                    ? const _AnimalCardSkeleton(width: double.infinity)
-                    : _AnimalCard(
-                        animal: animals[index],
-                        width: double.infinity,
-                      ),
               );
             }),
           ),
@@ -104,8 +92,75 @@ class AnimalCardSection extends StatelessWidget {
   }
 }
 
+class _SectionHeader extends StatelessWidget {
+  const _SectionHeader({required this.title, required this.onMoreTap});
+
+  final String title;
+  final VoidCallback onMoreTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Row(
+      children: [
+        Text(
+          title,
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+        const Spacer(),
+        TextButton(
+          onPressed: onMoreTap,
+          style: TextButton.styleFrom(
+            foregroundColor: theme.textTheme.bodyMedium?.color,
+            padding: EdgeInsets.zero,
+            minimumSize: const Size(0, 32),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          child: const Row(
+            children: [
+              Text('更多'),
+              SizedBox(width: 2),
+              Icon(Icons.chevron_right_rounded, size: 20),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _LoadingBody extends StatelessWidget {
+  const _LoadingBody({required this.isHorizontal});
+
+  final bool isHorizontal;
+
+  @override
+  Widget build(BuildContext context) {
+    if (isHorizontal) {
+      return SizedBox(
+        height: _AnimalCardTokens.horizontalHeight,
+        child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          clipBehavior: Clip.none,
+          itemCount: 2,
+          separatorBuilder: (_, _) =>
+              const SizedBox(width: _AnimalCardTokens.itemSpacing),
+          itemBuilder: (context, index) {
+            return const _AnimalCardSkeleton();
+          },
+        ),
+      );
+    }
+
+    return const _AnimalCardSkeleton(width: double.infinity);
+  }
+}
+
 class _AnimalCardSkeleton extends StatelessWidget {
-  const _AnimalCardSkeleton({this.width = 180});
+  const _AnimalCardSkeleton({this.width = _AnimalCardTokens.defaultWidth});
 
   final double width;
 
@@ -132,10 +187,10 @@ class _AnimalCardSkeleton extends StatelessWidget {
 }
 
 class _AnimalCard extends StatelessWidget {
-  const _AnimalCard({required this.animal, this.width = 180});
-
-  static const _radius = 14.0;
-  static const _imageHeight = 136.0;
+  const _AnimalCard({
+    required this.animal,
+    this.width = _AnimalCardTokens.defaultWidth,
+  });
 
   final Animal animal;
   final double width;
@@ -150,7 +205,7 @@ class _AnimalCard extends StatelessWidget {
       width: width,
       decoration: BoxDecoration(
         color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(_radius),
+        borderRadius: BorderRadius.circular(_AnimalCardTokens.radius),
         border: Border.all(color: colorScheme.outlineVariant),
         boxShadow: [
           BoxShadow(
@@ -169,7 +224,7 @@ class _AnimalCard extends StatelessWidget {
           Stack(
             children: [
               Container(
-                height: _imageHeight,
+                height: _AnimalCardTokens.imageHeight,
                 width: double.infinity,
                 color: colorScheme.surfaceContainerHighest,
                 child: _hasImageUrl
@@ -182,13 +237,13 @@ class _AnimalCard extends StatelessWidget {
                         errorBuilder: (context, error, stackTrace) {
                           return _AnimalImagePlaceholder(
                             name: animal.name,
-                            height: _imageHeight,
+                            height: _AnimalCardTokens.imageHeight,
                           );
                         },
                       )
                     : _AnimalImagePlaceholder(
                         name: animal.name,
-                        height: _imageHeight,
+                        height: _AnimalCardTokens.imageHeight,
                       ),
               ),
               Positioned(

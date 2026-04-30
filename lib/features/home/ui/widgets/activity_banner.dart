@@ -17,7 +17,8 @@ class ActivityBanner extends StatefulWidget {
   final List<HomeBanner> banners;
   final LoadStatus status;
   final ValueChanged<HomeBanner>? onTap;
-
+  bool get _isLoading => status == LoadStatus.loading;
+  bool get _isError => status == LoadStatus.error;
   @override
   State<ActivityBanner> createState() => _ActivityBannerState();
 }
@@ -47,14 +48,14 @@ class _ActivityBannerState extends State<ActivityBanner> {
   @override
   Widget build(BuildContext context) {
     final banners = widget.banners;
-
-    if (widget.status == LoadStatus.loading) {
+    
+    if (widget._isLoading) {
       return const SkeletonShimmer(
         child: SkeletonBox(height: _height, radius: _radius),
       );
     }
 
-    if (widget.status == LoadStatus.error) {
+    if (widget._isError) {
       return const ErrorFallbackCard();
     }
 
