@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:super_adoption/core/enum/load_status.dart';
 import 'package:super_adoption/core/router/app_router.dart';
 import 'package:super_adoption/core/widgets/app_info_bar.dart';
+import 'package:super_adoption/features/animals/data/query/animal_filter.dart';
 import 'package:super_adoption/features/animals/ui/widgets/animal_card_section.dart';
 import 'package:super_adoption/features/home/state/home_provider.dart';
 import 'package:super_adoption/features/home/ui/widgets/activity_banner.dart';
@@ -14,22 +14,8 @@ import 'package:super_adoption/features/home/ui/widgets/home_header.dart';
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
-  void _openAnimalsWithShortcut(
-    BuildContext context, {
-    String? kind,
-    String? age,
-  }) {
-    final queryParameters = <String, String>{};
-
-    if (kind != null) {
-      queryParameters['kind'] = kind;
-    }
-    if (age != null) {
-      queryParameters['age'] = age;
-    }
-
-    final uri = Uri(path: AppRoutes.animals, queryParameters: queryParameters);
-    context.go(uri.toString());
+  void _openAnimals(BuildContext context, AnimalFilter filter) {
+    context.go(AppRoutes.animalsUri(filter).toString());
   }
 
   @override
@@ -74,24 +60,34 @@ class HomeScreen extends ConsumerWidget {
                   CategoryShortcut(
                     assetPath: 'assets/svgs/dog.svg',
                     label: '狗狗',
-                    onTap: () => _openAnimalsWithShortcut(context, kind: '狗'),
+                    onTap: () => _openAnimals(
+                      context,
+                      AnimalFilter.initial().copyWith(kind: '狗'),
+                    ),
                   ),
                   CategoryShortcut(
                     assetPath: 'assets/svgs/cat.svg',
                     label: '貓貓',
-                    onTap: () => _openAnimalsWithShortcut(context, kind: '貓'),
+                    onTap: () => _openAnimals(
+                      context,
+                      AnimalFilter.initial().copyWith(kind: '貓'),
+                    ),
                   ),
                   CategoryShortcut(
                     assetPath: 'assets/svgs/dog.svg',
                     label: '幼年',
-                    onTap: () =>
-                        _openAnimalsWithShortcut(context, age: 'CHILD'),
+                    onTap: () => _openAnimals(
+                      context,
+                      AnimalFilter.initial().copyWith(age: 'CHILD'),
+                    ),
                   ),
                   CategoryShortcut(
                     assetPath: 'assets/svgs/dog.svg',
                     label: '成犬',
-                    onTap: () =>
-                        _openAnimalsWithShortcut(context, age: 'ADULT'),
+                    onTap: () => _openAnimals(
+                      context,
+                      AnimalFilter.initial().copyWith(age: 'ADULT'),
+                    ),
                   ),
                 ],
               ),
@@ -100,9 +96,7 @@ class HomeScreen extends ConsumerWidget {
                 title: '本週新毛孩',
                 animals: newAnimals,
                 direction: Axis.horizontal,
-                status: homeState.status == LoadStatus.loading
-                    ? LoadStatus.loading
-                    : LoadStatus.success,
+                status: homeState.status,
                 onMoreTap: () {
                   context.push(AppRoutes.animals);
                 },
@@ -112,9 +106,7 @@ class HomeScreen extends ConsumerWidget {
                 title: '熱門毛孩',
                 animals: popularAnimals,
                 direction: Axis.horizontal,
-                status: homeState.status == LoadStatus.loading
-                    ? LoadStatus.loading
-                    : LoadStatus.success,
+                status: homeState.status,
                 onMoreTap: () {
                   context.push(AppRoutes.animals);
                 },

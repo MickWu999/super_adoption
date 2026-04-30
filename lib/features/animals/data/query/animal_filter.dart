@@ -86,4 +86,18 @@ abstract class AnimalFilter with _$AnimalFilter {
   AnimalFilter nextPage() {
     return copyWith(skip: skip + top);
   }
+
+  /// 轉成路由 query parameters，供頁面導頁使用。
+  ///
+  /// 只包含目前會影響畫面篩選的欄位，不包含分頁參數。
+  Map<String, String> toQueryParameters() {
+    return {
+      if (status.hasValue) 'status': status!,
+      if (kind.hasValue) 'kind': kind!,
+      if (sex.hasValue) 'sex': sex!,
+      if (age.hasValue) 'age': age!,
+      if (bodyType.hasValue) 'bodyType': bodyType!,
+      if (areaId != null) 'areaId': areaId.toString(),
+    };
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:super_adoption/features/animals/data/query/animal_filter.dart';
 import 'package:super_adoption/features/animals/ui/animal_detail_page.dart';
 import 'package:super_adoption/features/animals/ui/animal_list_page.dart';
 import 'package:super_adoption/features/home/ui/home_page.dart';
@@ -26,6 +27,10 @@ class AppRoutes {
   static const profile = '/profile';
 
   static String animalDetail(String animalId) => '/animals/$animalId';
+
+  static Uri animalsUri(AnimalFilter filter) {
+    return Uri(path: animals, queryParameters: filter.toQueryParameters());
+  }
 }
 
 /// 你的 App 是 Bottom Tab 架構，建議使用 StatefulShellRoute.indexedStack。
