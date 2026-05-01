@@ -26,7 +26,7 @@ extension GovAnimalMapper on GovAnimalDto {
       sterilization: _mapSterilization(sterilization),
       bacterin: _mapBacterin(bacterin),
       openDate: openDate.safe,
-      createdDate: _mapCreatedDate(createDate),
+      createdDate: createDate.safe,
       status: _mapStatus(status),
       updateDate: updateDate.safe,
       remark: remark.safe,
@@ -34,26 +34,22 @@ extension GovAnimalMapper on GovAnimalDto {
     );
   }
 
-  String _mapCreatedDate(String? value) {
-    return value.safe;
-  }
-
   String _buildName() {
     final normalizedTitle = title.safe;
-    if (normalizedTitle.hasValue) return normalizedTitle;
+    if (normalizedTitle.isNotBlank) return normalizedTitle;
 
     final typeName = _mapType(kind);
     final colorName = color.safe;
     final colorWithType = '$colorName$typeName'.trim();
-    if (colorName.hasValue && typeName.hasValue) return colorWithType;
+    if (colorName.isNotBlank && typeName.isNotBlank) return colorWithType;
 
     final varietyName = _mapVariety(variety);
     final varietyWithType = '$varietyName$typeName'.trim();
-    if (varietyName.hasValue && typeName.hasValue) return varietyWithType;
+    if (varietyName.isNotBlank && typeName.isNotBlank) return varietyWithType;
 
-    if (varietyName.hasValue) return varietyName;
-    if (typeName.hasValue) return typeName;
-    if (colorName.hasValue) return colorName;
+    if (varietyName.isNotBlank) return varietyName;
+    if (typeName.isNotBlank) return typeName;
+    if (colorName.isNotBlank) return colorName;
 
     return '';
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AnimalListHeader extends StatelessWidget {
-  const AnimalListHeader();
+  const AnimalListHeader({super.key});
 
   @override
   Widget build(BuildContext context) {

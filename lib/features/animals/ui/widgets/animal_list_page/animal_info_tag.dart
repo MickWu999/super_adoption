@@ -34,12 +34,9 @@ class AnimalInfoTag extends StatelessWidget {
     final theme = Theme.of(context);
 
     final text = label.safe;
-    final hasText = text.hasValue;
+    final hasText = text.isNotBlank;
     final hasIcon = icon != null;
 
-    if (!hasText && !hasIcon) {
-      return const SizedBox.shrink();
-    }
 
     return Container(
       padding:

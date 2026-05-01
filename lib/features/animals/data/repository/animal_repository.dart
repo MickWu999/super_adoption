@@ -67,12 +67,12 @@ class GovAnimalRepository implements AnimalRepository {
       'UnitId': _unitId,
       r'$top': filter.top,
       r'$skip': filter.skip,
-      if (filter.kind.hasValue) 'animal_kind': filter.kind,
-      if (filter.sex.hasValue) 'animal_sex': filter.sex,
-      if (filter.age.hasValue) 'animal_age': filter.age,
-      if (filter.bodyType.hasValue) 'animal_bodytype': filter.bodyType,
-      if (filter.status.hasValue) 'animal_status': filter.status,
-      if (filter.areaId.hasValue) 'animal_area_pkid': filter.areaId,
+      if (filter.kind.isNotBlank) 'animal_kind': filter.kind,
+      if (filter.sex.isNotBlank) 'animal_sex': filter.sex,
+      if (filter.age.isNotBlank) 'animal_age': filter.age,
+      if (filter.bodyType.isNotBlank) 'animal_bodytype': filter.bodyType,
+      if (filter.status.isNotBlank) 'animal_status': filter.status,
+      if (filter.areaId != null) 'animal_area_pkid': filter.areaId,
     };
   }
 }

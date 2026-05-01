@@ -140,9 +140,9 @@ class _BannerInfoSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final hasDate = banner.displayDate.hasValue;
+    final hasDate = banner.displayDate.isNotBlank;
     final linkUrl = banner.websiteUrl;
-    final linkUri = linkUrl.hasValue ? Uri.tryParse(linkUrl!) : null;
+    final linkUri = linkUrl.isNotBlank ? Uri.tryParse(linkUrl!) : null;
     final hasLink = linkUri != null && linkUri.hasScheme;
 
     return DraggableScrollableSheet(

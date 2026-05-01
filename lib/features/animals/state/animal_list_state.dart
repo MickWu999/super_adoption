@@ -21,7 +21,7 @@ abstract class AnimalListState with _$AnimalListState {
   }) = _AnimalListState;
 
   bool get isLoading => status == LoadStatus.loading;
-  bool get hasError => status == LoadStatus.error && error.hasValue;
+  bool get hasError => status == LoadStatus.error && error.isNotBlank;
   bool get isEmpty => status == LoadStatus.empty;
   bool get hasContent => items.isNotEmpty;
   bool get showFullscreenError => hasError && !hasContent;

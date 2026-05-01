@@ -57,12 +57,18 @@ abstract class AnimalFilter with _$AnimalFilter {
   /// 是否有套用使用者篩選條件。
   ///
   /// top / skip / 不算使用者篩選，因為它們通常是列表預設條件與分頁條件。
-  bool get hasFilter => _filterFields.any((e) => e.hasValue);
+  bool get hasFilter => _filterFields.any(_isActiveFilter);
 
   /// 目前有幾個篩選條件。
   ///
   /// 可用於篩選按鈕 badge，例如顯示「已套用 3 個條件」。
-  int get filterCount => _filterFields.where((e) => e.hasValue).length;
+  int get filterCount => _filterFields.where(_isActiveFilter).length;
+
+  bool _isActiveFilter(Object? value) {
+    if (value is String) return value.isNotBlank;
+
+    return value != null;
+  }
 
   /// 清除使用者篩選條件，但保留列表預設條件。
   AnimalFilter clearFilters() {
@@ -92,11 +98,11 @@ abstract class AnimalFilter with _$AnimalFilter {
   /// 只包含目前會影響畫面篩選的欄位，不包含分頁參數。
   Map<String, String> toQueryParameters() {
     return {
-      if (status.hasValue) 'status': status!,
-      if (kind.hasValue) 'kind': kind!,
-      if (sex.hasValue) 'sex': sex!,
-      if (age.hasValue) 'age': age!,
-      if (bodyType.hasValue) 'bodyType': bodyType!,
+      if (status.isNotBlank) 'status': status!,
+      if (kind.isNotBlank) 'kind': kind!,
+      if (sex.isNotBlank) 'sex': sex!,
+      if (age.isNotBlank) 'age': age!,
+      if (bodyType.isNotBlank) 'bodyType': bodyType!,
       if (areaId != null) 'areaId': areaId.toString(),
     };
   }

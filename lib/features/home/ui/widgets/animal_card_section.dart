@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:super_adoption/core/enum/load_status.dart';
+import 'package:super_adoption/core/extension/ext.dart';
 import 'package:super_adoption/core/widgets/error_fallback_card.dart';
 import 'package:super_adoption/core/widgets/animal_network_image.dart';
 import 'package:super_adoption/core/widgets/skeleton_box.dart';
@@ -144,16 +145,41 @@ class _AnimalCardSkeleton extends StatelessWidget {
     return SkeletonShimmer(
       child: SizedBox(
         width: _AnimalCardTokens.defaultWidth,
-        child: const Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SkeletonBox(height: 136, radius: 14),
-            Gap(10),
-            SkeletonBox(width: 96, height: 16, radius: 8),
-            Gap(8),
-            SkeletonBox(width: 128, height: 14, radius: 8),
-            Gap(8),
-            SkeletonBox(width: 110, height: 12, radius: 8),
+            // 對應 AnimalNetworkImage(height: imageHeight)
+            const SkeletonBox(
+              height: _AnimalCardTokens.imageHeight,
+              radius: _AnimalCardTokens.radius,
+            ),
+            // 對應 Padding(EdgeInsets.fromLTRB(12, 10, 12, 10))
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 對應 Row([Text(name), Gap(8), AnimalInfoTag])
+                  // tag 高度 = icon(15) + padding(v:4×2) = 23px，決定 Row 高度
+                  Row(
+                    children: const [
+                      Expanded(
+                        flex: 3,
+                        child: SkeletonBox(height: 18, radius: 8),
+                      ),
+                      Gap(8),
+                      SkeletonBox(width: 35, height: 23, radius: 999),
+                    ],
+                  ),
+                  // 對應 Gap(6) + Text(detailText, bodyMedium≈14px)
+                  const Gap(6),
+                  const SkeletonBox(width: 128, height: 14, radius: 8),
+                  // 對應 Gap(8) + Row(location, icon size 15)
+                  const Gap(8),
+                  const SkeletonBox(height: 15, radius: 8),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -171,59 +197,56 @@ class _AnimalCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(_AnimalCardTokens.radius),
-        onTap: onTap,
-        child: Container(
-          width: _AnimalCardTokens.defaultWidth,
-          decoration: BoxDecoration(
-            color: colorScheme.surface,
-            borderRadius: BorderRadius.circular(_AnimalCardTokens.radius),
-            border: Border.all(color: colorScheme.outlineVariant),
-            boxShadow: [
-              BoxShadow(
-                color: theme.shadowColor.withValues(
-                  alpha: theme.brightness == Brightness.dark ? 0.18 : 0.06,
+    return InkWell(
+      borderRadius: BorderRadius.circular(_AnimalCardTokens.radius),
+      onTap: onTap,
+      child: Container(
+        width: _AnimalCardTokens.defaultWidth,
+        decoration: BoxDecoration(
+          color: colorScheme.surface,
+          borderRadius: BorderRadius.circular(_AnimalCardTokens.radius),
+          border: Border.all(color: colorScheme.outlineVariant),
+          boxShadow: [
+            BoxShadow(
+              color: theme.shadowColor.withValues(
+                alpha: theme.brightness == Brightness.dark ? 0.18 : 0.06,
+              ),
+              blurRadius: 12,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                AnimalNetworkImage(
+                  imageUrl: animal.imageUrl,
+                  height: _AnimalCardTokens.imageHeight,
+                  fit: BoxFit.cover,
                 ),
-                blurRadius: 12,
-                offset: const Offset(0, 6),
-              ),
-            ],
-          ),
-          clipBehavior: Clip.antiAlias,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
-                children: [
-                  AnimalNetworkImage(
-                    imageUrl: animal.imageUrl,
-                    height: _AnimalCardTokens.imageHeight,
-                    fit: BoxFit.cover,
+                Positioned(
+                  right: 8,
+                  top: 8,
+                  child: Icon(
+                    animal.isFavorite
+                        ? Icons.favorite_rounded
+                        : Icons.favorite_border_rounded,
+                    color: animal.isFavorite
+                        ? colorScheme.secondary
+                        : Colors.white,
+                    size: 28,
                   ),
-                  Positioned(
-                    right: 8,
-                    top: 8,
-                    child: Icon(
-                      animal.isFavorite
-                          ? Icons.favorite_rounded
-                          : Icons.favorite_border_rounded,
-                      color: animal.isFavorite
-                          ? colorScheme.secondary
-                          : Colors.white,
-                      size: 28,
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-                child: AnimalCardContent(animal: animal, theme: theme),
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+              child: AnimalCardContent(animal: animal, theme: theme),
+            ),
+          ],
         ),
       ),
     );
@@ -245,8 +268,7 @@ class AnimalCardContent extends StatelessWidget {
     final detailText = [
       animal.bodyType,
       animal.age,
-    ].where((e) => e.trim().isNotEmpty).join(' ・ ');
-
+    ].where((e) => e.isNotBlank).join(' ・ ');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -282,7 +304,7 @@ class AnimalCardContent extends StatelessWidget {
             ),
           ],
         ),
-        if (detailText.isNotEmpty) ...[
+        if (detailText.isNotBlank) ...[
           const Gap(6),
           Text(
             detailText,

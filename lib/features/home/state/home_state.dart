@@ -22,7 +22,7 @@ abstract class HomeState with _$HomeState {
   }) = _HomeState;
 
   bool get isLoading => status == LoadStatus.loading;
-  bool get hasError => status == LoadStatus.error && error.hasValue;
+  bool get hasError => status == LoadStatus.error && error.isNotBlank;
   bool get hasContent =>
       banners.isNotEmpty || newAnimals.isNotEmpty || popularAnimals.isNotEmpty;
 }

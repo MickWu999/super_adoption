@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:super_adoption/core/extension/ext.dart';
 import 'package:super_adoption/core/widgets/animal_image_placeholder.dart';
 import 'package:super_adoption/core/widgets/skeleton_box.dart';
 
@@ -15,7 +16,7 @@ class AnimalNetworkImage extends StatelessWidget {
   final double height;
   final BoxFit fit;
 
-  bool get _hasImageUrl => imageUrl.trim().isNotEmpty;
+  bool get _hasImageUrl => imageUrl.isNotBlank;
 
   @override
   Widget build(BuildContext context) {

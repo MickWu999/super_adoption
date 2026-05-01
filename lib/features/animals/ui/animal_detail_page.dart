@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:super_adoption/core/extension/ext.dart';
 import 'package:super_adoption/core/router/app_router.dart';
 import 'package:super_adoption/core/widgets/animal_network_image.dart';
 import 'package:super_adoption/core/widgets/error_fallback_card.dart';
@@ -357,13 +358,11 @@ class _ShelterInfoCard extends StatelessWidget {
           const Gap(12),
           _CardInfoRow(
             label: '地址',
-            value: animal.shelterAddress.isNotEmpty
-                ? animal.shelterAddress
-                : '未提供',
+            value: animal.shelterAddress.or('未提供'),
           ),
           _CardInfoRow(
             label: '電話',
-            value: animal.shelterPhone.isNotEmpty ? animal.shelterPhone : '未提供',
+            value: animal.shelterPhone.or('未提供'),
           ),
           const _CardInfoRow(
             label: '開放時間',
@@ -460,7 +459,7 @@ class _DataMetaCard extends StatelessWidget {
           _CardInfoRow(label: '照片來源', value: '農業部動物保護資訊網 / 政府開放資料'),
           _CardInfoRow(
             label: '更新時間',
-            value: animal.updateDate.isNotEmpty ? animal.updateDate : '未提供',
+            value: animal.updateDate.or('未提供'),
             showDivider: false,
           ),
         ],

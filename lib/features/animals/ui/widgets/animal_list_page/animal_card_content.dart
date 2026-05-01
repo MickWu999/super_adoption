@@ -12,7 +12,7 @@ class AnimalCardContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final createdDateLabel = animal.createdDate.hasValue
+    final createdDateLabel = animal.createdDate.isNotBlank
         ? '${animal.createdDate} 上架'
         : '近期上架';
 
@@ -64,7 +64,7 @@ class AnimalCardContent extends StatelessWidget {
             const Gap(4),
             Expanded(
               child: Text(
-                animal.location.or('地點未提供'),
+                animal.areaName.or('地點未提供'),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.bodyMedium?.copyWith(
