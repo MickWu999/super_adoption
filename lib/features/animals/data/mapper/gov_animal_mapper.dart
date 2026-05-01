@@ -22,6 +22,8 @@ extension GovAnimalMapper on GovAnimalDto {
       sterilization: _mapSterilization(sterilization),
       bacterin: _mapBacterin(bacterin),
       openDate: openDate ?? '',
+      status: _mapStatus(status),
+      updateDate: updateDate ?? '',
       remark: _buildRemark(),
       isFavorite: false,
     );
@@ -74,5 +76,20 @@ extension GovAnimalMapper on GovAnimalDto {
     if ((variety ?? '').isNotEmpty) return variety!;
     if ((caption ?? '').isNotEmpty) return caption!;
     return '目前尚未提供更多說明，歡迎直接與收容單位聯繫了解毛孩狀況。';
+  }
+
+  String _mapStatus(String? v) {
+    switch (v) {
+      case 'OPEN':
+        return '開放認養中';
+      case 'ADOPTED':
+        return '已被認養';
+      case 'NONE':
+      case 'CLOSE':
+      case 'CLOSED':
+        return '暫停開放';
+      default:
+        return (v ?? '').isNotEmpty ? v! : '狀態未更新';
+    }
   }
 }

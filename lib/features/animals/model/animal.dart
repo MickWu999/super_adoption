@@ -21,6 +21,8 @@ abstract class Animal with _$Animal {
     @Default('') String sterilization,
     @Default('') String bacterin,
     @Default('') String openDate,
+    @Default('') String status,
+    @Default('') String updateDate,
     @Default('') String remark,
     required bool isFavorite,
   }) = _Animal;

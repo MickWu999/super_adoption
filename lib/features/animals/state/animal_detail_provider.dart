@@ -20,6 +20,32 @@ Animal? animalDetail(Ref ref, String animalId) {
   ], animalId);
 }
 
+@riverpod
+List<Animal> relatedAnimals(Ref ref, String animalId) {
+  final current = ref.watch(animalDetailProvider(animalId));
+  if (current == null) return const [];
+
+  final animalState = ref.watch(animalProvider);
+  final homeState = ref.watch(homeProvider);
+
+  final merged = [
+    ...animalState.items,
+    ...homeState.newAnimals,
+    ...homeState.popularAnimals,
+    ...homeState.favoriteAnimals,
+  ];
+
+  final related = <String, Animal>{};
+
+  for (final animal in merged) {
+    if (animal.id == animalId) continue;
+    if (animal.type != current.type) continue;
+    related[animal.id] = animal;
+  }
+
+  return related.values.take(6).toList();
+}
+
 Animal? _findById(List<Animal> animals, String animalId) {
   for (final animal in animals) {
     if (animal.id == animalId) return animal;
