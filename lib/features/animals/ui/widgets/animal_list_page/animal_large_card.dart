@@ -38,7 +38,7 @@ class AnimalLargeCard extends StatelessWidget {
           children: [
             Stack(
               children: [
-                AnimalNetworkImage(imageUrl: animal.imageUrl, height: 230.0),
+                AnimalNetworkImage(imageUrl: animal.imageUrl),
                 Positioned(
                   right: 12,
                   top: 12,

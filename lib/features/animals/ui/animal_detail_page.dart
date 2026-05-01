@@ -57,7 +57,7 @@ class AnimalDetailScreen extends ConsumerWidget {
             CustomScrollView(
               slivers: [
                 SliverToBoxAdapter(
-                  child: _DetailHeaderImage(
+                  child: AnimalNetworkImage(
                     imageUrl: animal.imageUrl,
                     height: _imageHeight,
                   ),
@@ -113,10 +113,7 @@ class _DetailBody extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: Text(
-                animal.name,
-                style: theme.textTheme.headlineSmall,
-              ),
+              child: Text(animal.name, style: theme.textTheme.headlineSmall),
             ),
             const Gap(12),
             _StatusTag(status: animal.status),
@@ -140,16 +137,11 @@ class _DetailBody extends StatelessWidget {
         const Gap(18),
         const _AdoptionReminderCard(),
         const Gap(24),
-        Text(
-          '詳細介紹',
-          style: theme.textTheme.titleMedium
-        ),
+        Text('詳細介紹', style: theme.textTheme.titleMedium),
         const Gap(10),
         Text(
           animal.remark,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            height: 1.6,
-          ),
+          style: theme.textTheme.bodyMedium?.copyWith(height: 1.6),
         ),
         const Gap(24),
         _AnimalInfoList(
@@ -195,18 +187,6 @@ class _DetailBody extends StatelessWidget {
         ],
       ],
     );
-  }
-}
-
-class _DetailHeaderImage extends StatelessWidget {
-  const _DetailHeaderImage({required this.imageUrl, required this.height});
-
-  final String imageUrl;
-  final double height;
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimalNetworkImage(imageUrl: imageUrl, height: height);
   }
 }
 
@@ -334,9 +314,7 @@ class _ShelterInfoCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   '收容所資訊卡',
-                  style: theme.textTheme.titleMedium?.copyWith(
-
-                  ),
+                  style: theme.textTheme.titleMedium?.copyWith(),
                 ),
               ),
               TextButton.icon(
@@ -347,14 +325,8 @@ class _ShelterInfoCard extends StatelessWidget {
             ],
           ),
           const Gap(12),
-          _CardInfoRow(
-            label: '地址',
-            value: animal.shelterAddress.or('未提供'),
-          ),
-          _CardInfoRow(
-            label: '電話',
-            value: animal.shelterPhone.or('未提供'),
-          ),
+          _CardInfoRow(label: '地址', value: animal.shelterAddress.or('未提供')),
+          _CardInfoRow(label: '電話', value: animal.shelterPhone.or('未提供')),
           const _CardInfoRow(
             label: '開放時間',
             value: '請依各收容所現場公告與官方頁面為準',
@@ -402,10 +374,7 @@ class _AdoptionReminderCard extends StatelessWidget {
                 size: 22,
               ),
               const Gap(10),
-              Text(
-                '認養提醒',
-                style: theme.textTheme.titleMedium
-              ),
+              Text('認養提醒', style: theme.textTheme.titleMedium),
             ],
           ),
           const Gap(12),
@@ -438,10 +407,7 @@ class _DataMetaCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            '資料來源與更新',
-            style: theme.textTheme.titleSmall,
-          ),
+          Text('資料來源與更新', style: theme.textTheme.titleSmall),
           const Gap(10),
           _CardInfoRow(label: '照片來源', value: '農業部動物保護資訊網 / 政府開放資料'),
           _CardInfoRow(
@@ -480,9 +446,7 @@ class _StatusTag extends StatelessWidget {
       ),
       child: Text(
         status,
-        style: theme.textTheme.bodySmall?.copyWith(
-          color: color,
-        ),
+        style: theme.textTheme.bodySmall?.copyWith(color: color),
       ),
     );
   }
@@ -509,12 +473,7 @@ class _ReminderLine extends StatelessWidget {
             color: colorScheme.primary,
           ),
           const Gap(8),
-          Expanded(
-            child: Text(
-              text,
-              style: theme.textTheme.bodyMedium,
-            ),
-          ),
+          Expanded(child: Text(text, style: theme.textTheme.bodyMedium)),
         ],
       ),
     );
@@ -549,17 +508,9 @@ class _CardInfoRow extends StatelessWidget {
         children: [
           SizedBox(
             width: 72,
-            child: Text(
-              label,
-              style: theme.textTheme.bodyMedium,
-            ),
+            child: Text(label, style: theme.textTheme.bodyMedium),
           ),
-          Expanded(
-            child: Text(
-              value,
-              style: theme.textTheme.bodyMedium,
-            ),
-          ),
+          Expanded(child: Text(value, style: theme.textTheme.bodyMedium)),
         ],
       ),
     );
@@ -621,10 +572,7 @@ class _InfoTag extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: theme.textTheme.bodySmall?.copyWith(
-          color: colorScheme.primary,
-
-        ),
+        style: theme.textTheme.bodySmall?.copyWith(color: colorScheme.primary),
       ),
     );
   }
@@ -693,21 +641,16 @@ class _InfoRow extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-            Icon(icon, size: 18, color: theme.colorScheme.onSurfaceVariant),
+          Icon(icon, size: 18, color: theme.colorScheme.onSurfaceVariant),
           const Gap(10),
           SizedBox(
             width: 72,
-            child: Text(
-              label,
-              style: theme.textTheme.bodyMedium,
-            ),
+            child: Text(label, style: theme.textTheme.bodyMedium),
           ),
           Expanded(
             child: Text(
               value,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                height: 1.45,
-              ),
+              style: theme.textTheme.bodyMedium?.copyWith(height: 1.45),
             ),
           ),
         ],
@@ -734,10 +677,7 @@ Future<void> _showAdoptionConfirmSheet(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              '聯絡前確認',
-              style: theme.textTheme.titleLarge,
-            ),
+            Text('聯絡前確認', style: theme.textTheme.titleLarge),
             const Gap(10),
             Text(
               '建議先確認自身照護能力、可投入時間與費用，再與收容單位聯繫安排後續認養流程。',
