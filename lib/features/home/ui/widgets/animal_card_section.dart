@@ -9,14 +9,14 @@ class _AnimalCardTokens {
   const _AnimalCardTokens._();
 
   // Section layout sizes
-  static const horizontalHeight = 260.0; // 橫向列表高度
+  static const horizontalHeight = 300.0; // 橫向列表高度
   static const itemSpacing = 12.0; // 卡片之間間距
   static const headerSpacing = 14.0; // 標題與內容距離
 
   // Card sizes
   static const defaultWidth = 180.0; // 預設卡片寬度
   static const radius = 14.0; // 卡片圓角
-  static const imageHeight = 136.0; // 卡片圖片高度
+  static const imageHeight = 200.0; // 卡片圖片高度
 }
 
 class AnimalCardSection extends StatelessWidget {
@@ -166,6 +166,25 @@ class _AnimalCard extends StatelessWidget {
   final Animal animal;
   final VoidCallback? onTap;
 
+  String _displayLocation(Animal animal) {
+    final location = animal.location.trim();
+
+    if (location.isEmpty) return '位置未提供';
+
+    if (location.contains('台北')) return '台北市';
+    if (location.contains('新北')) return '新北市';
+    if (location.contains('桃園')) return '桃園市';
+    if (location.contains('台中')) return '台中市';
+    if (location.contains('臺中')) return '台中市';
+    if (location.contains('台南')) return '台南市';
+    if (location.contains('高雄')) return '高雄市';
+    if (location.contains('基隆')) return '基隆市';
+    if (location.contains('新竹')) return '新竹市';
+    if (location.contains('嘉義')) return '嘉義市';
+
+    return location.length > 8 ? location.substring(0, 8) : location;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -200,6 +219,7 @@ class _AnimalCard extends StatelessWidget {
                   AnimalNetworkImage(
                     imageUrl: animal.imageUrl,
                     height: _AnimalCardTokens.imageHeight,
+                    fit: BoxFit.cover,
                   ),
                   Positioned(
                     right: 8,
@@ -242,18 +262,20 @@ class _AnimalCard extends StatelessWidget {
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        Icon(
-                          Icons.location_on_outlined,
+                        const Icon(
+                          Icons.location_on_rounded,
                           size: 15,
-                          color: theme.textTheme.bodySmall?.color,
+                          color: Colors.red,
                         ),
-                        const SizedBox(width: 3),
+                        const SizedBox(width: 4),
                         Expanded(
                           child: Text(
-                            animal.location,
+                            _displayLocation(animal),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: theme.textTheme.bodySmall,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ],

@@ -214,8 +214,6 @@ class _DetailHeaderImage extends StatelessWidget {
     return AnimalNetworkImage(
       imageUrl: imageUrl,
       height: height,
-      fit: BoxFit.cover,
-      alignment: Alignment.topCenter,
     );
   }
 }
