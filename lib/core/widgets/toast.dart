@@ -22,7 +22,7 @@ class ToastUtil {
           ),
           title: const Text(
             "Successful",
-            style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+            style: TextStyle(color: Colors.green,),
           ),
         ).show(context);
         break;
@@ -38,7 +38,7 @@ class ToastUtil {
           description: Text(message, style: const TextStyle(color: Colors.red)),
           title: const Text(
             "Fail",
-            style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+            style: TextStyle(color: Colors.red),
           ),
         ).show(context);
         break;

@@ -45,9 +45,7 @@ class AnimalDetailScreen extends ConsumerWidget {
                         Text(
                           '目前找不到這隻毛孩的詳細資料，請從列表重新進入。',
                           textAlign: TextAlign.center,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: theme.textTheme.bodyMedium,
                         ),
                       ],
                     ),
@@ -117,9 +115,7 @@ class _DetailBody extends StatelessWidget {
             Expanded(
               child: Text(
                 animal.name,
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w900,
-                ),
+                style: theme.textTheme.headlineSmall,
               ),
             ),
             const Gap(12),
@@ -146,16 +142,13 @@ class _DetailBody extends StatelessWidget {
         const Gap(24),
         Text(
           '詳細介紹',
-          style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w900,
-          ),
+          style: theme.textTheme.titleMedium
         ),
         const Gap(10),
         Text(
           animal.remark,
           style: theme.textTheme.bodyMedium?.copyWith(
             height: 1.6,
-            fontWeight: FontWeight.w500,
           ),
         ),
         const Gap(24),
@@ -297,9 +290,7 @@ class _BottomActionBar extends StatelessWidget {
                   backgroundColor: colorScheme.primary,
                   foregroundColor: colorScheme.onPrimary,
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  textStyle: theme.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w900,
-                  ),
+                  textStyle: theme.textTheme.titleSmall,
                 ),
                 child: const Text('我要認養'),
               ),
@@ -344,7 +335,7 @@ class _ShelterInfoCard extends StatelessWidget {
                 child: Text(
                   '收容所資訊卡',
                   style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w900,
+
                   ),
                 ),
               ),
@@ -413,9 +404,7 @@ class _AdoptionReminderCard extends StatelessWidget {
               const Gap(10),
               Text(
                 '認養提醒',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w900,
-                ),
+                style: theme.textTheme.titleMedium
               ),
             ],
           ),
@@ -451,9 +440,7 @@ class _DataMetaCard extends StatelessWidget {
         children: [
           Text(
             '資料來源與更新',
-            style: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w900,
-            ),
+            style: theme.textTheme.titleSmall,
           ),
           const Gap(10),
           _CardInfoRow(label: '照片來源', value: '農業部動物保護資訊網 / 政府開放資料'),
@@ -495,7 +482,6 @@ class _StatusTag extends StatelessWidget {
         status,
         style: theme.textTheme.bodySmall?.copyWith(
           color: color,
-          fontWeight: FontWeight.w900,
         ),
       ),
     );
@@ -526,10 +512,7 @@ class _ReminderLine extends StatelessWidget {
           Expanded(
             child: Text(
               text,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                height: 1.45,
-                fontWeight: FontWeight.w600,
-              ),
+              style: theme.textTheme.bodyMedium,
             ),
           ),
         ],
@@ -568,19 +551,13 @@ class _CardInfoRow extends StatelessWidget {
             width: 72,
             child: Text(
               label,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.textTheme.bodySmall?.color,
-                fontWeight: FontWeight.w700,
-              ),
+              style: theme.textTheme.bodyMedium,
             ),
           ),
           Expanded(
             child: Text(
               value,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-                height: 1.45,
-              ),
+              style: theme.textTheme.bodyMedium,
             ),
           ),
         ],
@@ -646,7 +623,7 @@ class _InfoTag extends StatelessWidget {
         label,
         style: theme.textTheme.bodySmall?.copyWith(
           color: colorScheme.primary,
-          fontWeight: FontWeight.w800,
+
         ),
       ),
     );
@@ -716,23 +693,19 @@ class _InfoRow extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 18, color: theme.textTheme.bodySmall?.color),
+            Icon(icon, size: 18, color: theme.colorScheme.onSurfaceVariant),
           const Gap(10),
           SizedBox(
             width: 72,
             child: Text(
               label,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.textTheme.bodySmall?.color,
-                fontWeight: FontWeight.w700,
-              ),
+              style: theme.textTheme.bodyMedium,
             ),
           ),
           Expanded(
             child: Text(
               value,
               style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w600,
                 height: 1.45,
               ),
             ),
@@ -763,9 +736,7 @@ Future<void> _showAdoptionConfirmSheet(
           children: [
             Text(
               '聯絡前確認',
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w900,
-              ),
+              style: theme.textTheme.titleLarge,
             ),
             const Gap(10),
             Text(

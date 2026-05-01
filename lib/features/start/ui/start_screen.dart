@@ -53,18 +53,14 @@ class StartScreen extends StatelessWidget {
                     Text(
                       '找到命中注定的毛孩',
                       textAlign: TextAlign.center,
-                      style: theme.textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
+                      style: theme.textTheme.headlineMedium?.copyWith(letterSpacing: 1.5)
                     ),
                     const Gap(12),
                     Text(
                       '尋找牠的幸福歸宿，從這裡開始',
                       textAlign: TextAlign.center,
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        fontSize: 15,
-                        height: 1.6,
-                        color: theme.textTheme.bodySmall?.color,
+                         color: theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
                     const Gap(14),
@@ -93,9 +89,7 @@ class StartScreen extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 12),
                           child: Text(
                             '或使用其他方式登入',
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.textTheme.bodySmall?.color,
-                            ),
+                            style: theme.textTheme.bodySmall,
                           ),
                         ),
                         const Expanded(child: Divider(thickness: 1)),
@@ -118,7 +112,6 @@ class StartScreen extends StatelessWidget {
                       '登入即表示同意服務條款與隱私政策',
                       textAlign: TextAlign.center,
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.textTheme.bodySmall?.color,
                         fontSize: 12,
                       ),
                     ),

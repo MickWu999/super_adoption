@@ -21,7 +21,6 @@ class HomeHeader extends StatelessWidget {
               Text(
                 '超級認養',
                 style: theme.textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.w900,
                   letterSpacing: 1,
                 ),
               ),
@@ -36,10 +35,7 @@ class HomeHeader extends StatelessWidget {
                   const Gap(6),
                   Text(
                     '給牠一個家，牠會用一生愛你',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.textTheme.bodyLarge?.color,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: theme.textTheme.bodyMedium
                   ),
                 ],
               ),

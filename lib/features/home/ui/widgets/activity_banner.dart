@@ -200,7 +200,6 @@ class _BannerInfoSheet extends StatelessWidget {
                           Text(
                             banner.title ?? '最新活動',
                             style: theme.textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.w900,
                               height: 1.2,
                             ),
                           ),
@@ -208,8 +207,7 @@ class _BannerInfoSheet extends StatelessWidget {
                           Text(
                             '活動資訊',
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.textTheme.bodySmall?.color,
-                              fontWeight: FontWeight.w700,
+                              color: colorScheme.onSurfaceVariant,
                             ),
                           ),
                         ],
@@ -228,16 +226,14 @@ class _BannerInfoSheet extends StatelessWidget {
                 const Gap(18),
                 Text(
                   '活動說明',
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w900,
-                  ),
+                  style: theme.textTheme.titleSmall,
                 ),
                 const Gap(8),
                 Text(
                   banner.description ?? '查看更多活動資訊與認養消息。',
                   style: theme.textTheme.bodyLarge?.copyWith(
                     height: 1.55,
-                    color: colorScheme.onSurface.withValues(alpha: 0.82),
+                    color: colorScheme.onSurfaceVariant,
                   ),
                 ),
                 const Gap(24),
@@ -303,16 +299,13 @@ class _BannerInfoTile extends StatelessWidget {
               Text(
                 title,
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.textTheme.bodySmall?.color,
-                  fontWeight: FontWeight.w700,
+                  color: colorScheme.onSurfaceVariant,
                 ),
               ),
               const Gap(3),
               Text(
                 value,
-                style: theme.textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w900,
-                ),
+                style: theme.textTheme.titleSmall,
               ),
             ],
           ),

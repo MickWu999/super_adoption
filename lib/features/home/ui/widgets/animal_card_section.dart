@@ -91,15 +91,13 @@ class _SectionHeader extends StatelessWidget {
       children: [
         Text(
           title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.w900,
-          ),
+          style: theme.textTheme.titleLarge
         ),
         const Spacer(),
         TextButton(
           onPressed: onMoreTap,
           style: TextButton.styleFrom(
-            foregroundColor: theme.textTheme.bodyMedium?.color,
+            foregroundColor: theme.colorScheme.onSurfaceVariant,
             padding: EdgeInsets.zero,
             minimumSize: const Size(0, 32),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -280,10 +278,7 @@ class AnimalCardContent extends StatelessWidget {
                 animal.name,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  height: 1.1,
-                ),
+                style: theme.textTheme.titleMedium
               ),
             ),
             const Gap(8),
@@ -293,9 +288,6 @@ class AnimalCardContent extends StatelessWidget {
                 icon: animal.isFemale
                     ? Icons.female_rounded
                     : Icons.male_rounded,
-                iconSize: 15,
-                fontSize: 11,
-                gap: 3,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10,
                   vertical: 4,
@@ -311,8 +303,7 @@ class AnimalCardContent extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.textTheme.bodyLarge?.color,
-              fontWeight: FontWeight.w500,
+              color: theme.colorScheme.onSurface,
             ),
           ),
         ],
@@ -327,8 +318,7 @@ class AnimalCardContent extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.textTheme.bodyMedium?.color,
-                  fontWeight: FontWeight.w500,
+                  color: theme.colorScheme.onSurfaceVariant,
                 ),
               ),
             ),

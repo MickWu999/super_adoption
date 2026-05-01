@@ -188,10 +188,7 @@ class _AnimalListScreenState extends ConsumerState<AnimalListScreen> {
               child: Center(
                 child: Text(
                   '載入更多中...',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.textTheme.bodySmall?.color,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: theme.textTheme.bodyMedium
                 ),
               ),
             ),

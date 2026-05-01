@@ -99,7 +99,6 @@ class FilterChipButton extends StatelessWidget {
             label,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: selected ? colorScheme.primary : colorScheme.onSurface,
-              fontWeight: FontWeight.w800,
             ),
           ),
         ),

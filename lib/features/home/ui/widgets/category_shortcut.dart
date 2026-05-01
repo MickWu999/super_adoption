@@ -38,9 +38,7 @@ class CategoryShortcut extends StatelessWidget {
           const Gap(8),
           Text(
             label,
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w800,
-            ),
+            style: theme.textTheme.titleMedium
           ),
         ],
       ),

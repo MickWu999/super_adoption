@@ -9,25 +9,12 @@ class AnimalInfoTag extends StatelessWidget {
     required this.color,
     this.icon,
     this.padding,
-    this.iconSize = 16,
-    this.iconWeight = 700,
-    this.fontSize,
-    this.fontWeight = FontWeight.w900,
-    this.backgroundOpacity = 0.12,
-    this.gap = 4,
   });
 
   final String? label;
   final Color color;
   final IconData? icon;
   final EdgeInsetsGeometry? padding;
-
-  final double iconSize;
-  final double iconWeight;
-  final double? fontSize;
-  final FontWeight fontWeight;
-  final double backgroundOpacity;
-  final double gap;
 
   @override
   Widget build(BuildContext context) {
@@ -36,29 +23,22 @@ class AnimalInfoTag extends StatelessWidget {
     final text = label.safe;
     final hasText = text.isNotBlank;
     final hasIcon = icon != null;
-
-
     return Container(
-      padding:
-          padding ?? const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: padding ?? const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: backgroundOpacity),
+        color: color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(999),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           if (hasIcon)
-            Icon(icon, size: iconSize, color: color, weight: iconWeight),
-          if (hasIcon && hasText) Gap(gap),
+            Icon(icon, size: 16, color: color, weight: 700),
+          if (hasIcon && hasText) const Gap(4),
           if (hasText)
             Text(
               text,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: color,
-                fontSize: fontSize,
-                fontWeight: fontWeight,
-              ),
+              style: theme.textTheme.labelMedium?.copyWith(color: color),
             ),
         ],
       ),

@@ -164,8 +164,7 @@ class _NavItem extends StatelessWidget {
     final theme = Theme.of(context);
     final primaryColor = theme.colorScheme.primary;
     final selectedBackground = primaryColor.withValues(alpha: 0.10);
-    final inactiveColor =
-        theme.textTheme.bodySmall?.color ?? theme.disabledColor;
+    final inactiveColor = theme.colorScheme.onSurfaceVariant;
     return Expanded(
       child: InkWell(
         onTap: onTap,

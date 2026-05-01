@@ -26,10 +26,7 @@ class AnimalCardContent extends StatelessWidget {
                 animal.name.or('待認養毛孩'),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  height: 1.1,
-                ),
+                style: theme.textTheme.titleLarge
               ),
             ),
             const Gap(8),
@@ -67,10 +64,7 @@ class AnimalCardContent extends StatelessWidget {
                 animal.areaName.or('地點未提供'),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  height: 1.2,
-                ),
+                style: theme.textTheme.bodyMedium
               ),
             ),
             const Gap(8),
@@ -82,10 +76,7 @@ class AnimalCardContent extends StatelessWidget {
             const Gap(4),
             Text(
               createdDateLabel,
-              style: theme.textTheme.bodySmall?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: theme.colorScheme.outline,
-              ),
+              style: theme.textTheme.bodySmall
             ),
           ],
         ),

@@ -5,6 +5,20 @@ import 'package:flutter/material.dart';
 // UI 不直接使用 AppColors。
 // UI 不直接寫色碼，例如 Color(0xFF...)。
 // 顏色優先使用 colorScheme。
+// surface：主要背景 / 卡片背景。
+// surfaceContainerHighest：次層背景，例如搜尋框、Chip、柔和容器。
+// onSurface：主要文字 / 主要 icon。
+// onSurfaceVariant：次要文字 / 輔助 icon / hint 類文字。
+// primary：品牌主色，例如 CTA、選中狀態。
+// onPrimary：放在 primary 上的文字 / icon。
+// primaryContainer：品牌主色的淡背景，例如選中 Chip 背景。
+// onPrimaryContainer：放在 primaryContainer 上的文字 / icon。
+// secondary：輔助強調色，例如收藏。
+// onSecondary：放在 secondary 上的文字 / icon。
+// tertiary：第三輔助色，例如插圖或特殊裝飾。
+// error：錯誤 / 危險狀態。
+// onError：放在 error 上的文字 / icon。
+// outlineVariant：邊框 / 分隔線。
 // 文字樣式優先使用 textTheme。
 // 按鈕、輸入框、卡片樣式優先沿用 ThemeData 裡已定義的 theme。
 // 只有版面常數可以留在頁面內，例如局部圓角、單一區塊高度、padding。
@@ -18,12 +32,12 @@ class AppColors {
   static const background = Colors.white;
   static const surface = Color(0xFFF8F8F8);
 
-  static const textPrimary = Color(0xFF2B2B2B);
-  static const textSecondary = Color(0xFF4B5563);
-  static const textMute = Color(0xFF7C8495);
-  static const textHint = Color(0xFF9CA3AF);
+  static const textPrimary = Color(0xFF3A342F);
+  static const textSecondary = Color(0xFF6B6258);
+  static const textMute = Color(0xFF8A8075);
+  static const textHint = Color(0xFFA79D92);
 
-  static const border = Color(0xFFEAEAEA);
+  static const border = Color(0xFFEFE7DD);
   static const favorite = Color(0xFFFF5A5F);
   static const illustrationTint = Color(0xFF8D7A67);
   static const danger = Color(0xFFE53935);
@@ -31,15 +45,28 @@ class AppColors {
   static const darkBackground = Color(0xFF121212);
   static const darkSurface = Color(0xFF1E1E1E);
   static const darkSurfaceSoft = Color(0xFF2A2A2A);
-  static const darkTextPrimary = Color(0xFFF9FAFB);
-  static const darkTextSecondary = Color(0xFFD1D5DB);
-  static const darkTextMute = Color(0xFF9CA3AF);
-  static const darkTextHint = Color(0xFF6B7280);
-  static const darkBorder = Color(0xFF2F2F2F);
+  static const darkTextPrimary = Color(0xFFFFF8F1);
+  static const darkTextSecondary = Color(0xFFE4D8CA);
+  static const darkTextMute = Color(0xFFC2B5A6);
+  static const darkTextHint = Color(0xFF9D8F80);
+  static const darkBorder = Color(0xFF3A332D);
   static const darkIllustrationTint = Color(0xFFD3B898);
 }
 
 class AppTheme {
+  // 排版定義集中在此，顏色交由 colorScheme 決定，dark/light 共用。
+  static const _textTheme = TextTheme(
+    headlineMedium: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, height: 1.25),
+    headlineSmall: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, height: 1.3),
+    titleLarge: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
+    titleMedium: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+    titleSmall: TextStyle(fontSize: 13, fontWeight: FontWeight.w900),
+    bodyLarge: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, height: 1.5),
+    bodyMedium: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, height: 1.45),
+    bodySmall: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, height: 1.4),
+    labelLarge: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+  );
+
   static ThemeData get dark {
     return ThemeData(
       useMaterial3: true,
@@ -50,12 +77,21 @@ class AppTheme {
         brightness: Brightness.dark,
         seedColor: AppColors.primary,
         primary: AppColors.primary,
+        onPrimary: Colors.white,
+        primaryContainer: AppColors.primaryDark,
+        onPrimaryContainer: Colors.white,
         secondary: AppColors.favorite,
+        onSecondary: Colors.white,
         tertiary: AppColors.darkIllustrationTint,
+        onTertiary: AppColors.darkBackground,
         surface: AppColors.darkSurface,
+        onSurface: AppColors.darkTextPrimary,
         surfaceContainerHighest: AppColors.darkSurfaceSoft,
+        onSurfaceVariant: AppColors.darkTextSecondary,
+        outline: AppColors.darkTextHint,
         outlineVariant: AppColors.darkBorder,
         error: AppColors.danger,
+        onError: Colors.white,
       ),
       dividerTheme: const DividerThemeData(
         color: AppColors.darkBorder,
@@ -74,53 +110,7 @@ class AppTheme {
           fontWeight: FontWeight.w700,
         ),
       ),
-      textTheme: const TextTheme(
-        headlineLarge: TextStyle(
-          color: AppColors.darkTextPrimary,
-          fontSize: 32,
-          fontWeight: FontWeight.w800,
-          height: 1.2,
-        ),
-        headlineMedium: TextStyle(
-          color: AppColors.darkTextPrimary,
-          fontSize: 24,
-          fontWeight: FontWeight.w800,
-          height: 1.25,
-        ),
-        titleLarge: TextStyle(
-          color: AppColors.darkTextPrimary,
-          fontSize: 20,
-          fontWeight: FontWeight.w700,
-        ),
-        titleMedium: TextStyle(
-          color: AppColors.darkTextPrimary,
-          fontSize: 16,
-          fontWeight: FontWeight.w700,
-        ),
-        bodyLarge: TextStyle(
-          color: AppColors.darkTextPrimary,
-          fontSize: 16,
-          fontWeight: FontWeight.w400,
-          height: 1.5,
-        ),
-        bodyMedium: TextStyle(
-          color: AppColors.darkTextSecondary,
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
-          height: 1.45,
-        ),
-        bodySmall: TextStyle(
-          color: AppColors.darkTextMute,
-          fontSize: 12,
-          fontWeight: FontWeight.w400,
-          height: 1.4,
-        ),
-        labelLarge: TextStyle(
-          color: Colors.white,
-          fontSize: 16,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
+      textTheme: _textTheme,
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
@@ -186,12 +176,21 @@ class AppTheme {
         brightness: Brightness.light,
         seedColor: AppColors.primary,
         primary: AppColors.primary,
+        onPrimary: Colors.white,
+        primaryContainer: AppColors.primaryLight,
+        onPrimaryContainer: AppColors.primaryDark,
         secondary: AppColors.favorite,
+        onSecondary: Colors.white,
         tertiary: AppColors.illustrationTint,
+        onTertiary: AppColors.background,
         surface: AppColors.background,
+        onSurface: AppColors.textPrimary,
         surfaceContainerHighest: AppColors.primaryLight,
+        onSurfaceVariant: AppColors.textSecondary,
+        outline: AppColors.textHint,
         outlineVariant: AppColors.border,
         error: AppColors.danger,
+        onError: Colors.white,
       ),
       dividerTheme: const DividerThemeData(
         color: AppColors.border,
@@ -210,53 +209,7 @@ class AppTheme {
           fontWeight: FontWeight.w700,
         ),
       ),
-      textTheme: const TextTheme(
-        headlineLarge: TextStyle(
-          color: AppColors.textPrimary,
-          fontSize: 32,
-          fontWeight: FontWeight.w800,
-          height: 1.2,
-        ),
-        headlineMedium: TextStyle(
-          color: AppColors.textPrimary,
-          fontSize: 24,
-          fontWeight: FontWeight.w800,
-          height: 1.25,
-        ),
-        titleLarge: TextStyle(
-          color: AppColors.textPrimary,
-          fontSize: 20,
-          fontWeight: FontWeight.w700,
-        ),
-        titleMedium: TextStyle(
-          color: AppColors.textPrimary,
-          fontSize: 16,
-          fontWeight: FontWeight.w700,
-        ),
-        bodyLarge: TextStyle(
-          color: AppColors.textPrimary,
-          fontSize: 16,
-          fontWeight: FontWeight.w400,
-          height: 1.5,
-        ),
-        bodyMedium: TextStyle(
-          color: AppColors.textSecondary,
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
-          height: 1.45,
-        ),
-        bodySmall: TextStyle(
-          color: AppColors.textMute,
-          fontSize: 12,
-          fontWeight: FontWeight.w400,
-          height: 1.4,
-        ),
-        labelLarge: TextStyle(
-          color: Colors.white,
-          fontSize: 16,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
+      textTheme: _textTheme,
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,

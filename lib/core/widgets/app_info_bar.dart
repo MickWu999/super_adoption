@@ -43,7 +43,6 @@ class AppInfoBar extends StatelessWidget {
               message,
               style: theme.textTheme.bodySmall?.copyWith(
                 color: style.foregroundColor,
-                fontWeight: FontWeight.w600,
               ),
             ),
           ),

@@ -44,7 +44,6 @@ class AnimalImagePlaceholder extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: colorScheme.primary.withValues(alpha: 0.9),
-                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),

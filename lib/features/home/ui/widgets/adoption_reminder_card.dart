@@ -39,9 +39,7 @@ class AdoptionReminderCard extends StatelessWidget {
               children: [
                 RichText(
                   text: TextSpan(
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w900,
-                    ),
+                    style: theme.textTheme.titleMedium,
                     children: [
                       const TextSpan(text: '認養前'),
                       TextSpan(
@@ -54,11 +52,7 @@ class AdoptionReminderCard extends StatelessWidget {
                 const Gap(8),
                 Text(
                   '認養是一輩子的承諾，\n請先了解認養流程與注意事項喔！',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.textTheme.bodyLarge?.color,
-                    fontWeight: FontWeight.w500,
-                    height: 1.45,
-                  ),
+                  style: theme.textTheme.bodyMedium
                 ),
               ],
             ),

@@ -97,9 +97,7 @@ class _SortFilterBar extends StatelessWidget {
       children: [
         Text(
           '最新上架',
-          style: theme.textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.w900,
-          ),
+          style: theme.textTheme.titleSmall
         ),
         const Gap(4),
         Icon(
@@ -138,9 +136,7 @@ class _SortFilterBar extends StatelessWidget {
           ),
           label: Text(
             filterCount > 0 ? '篩選條件 $filterCount' : '篩選條件',
-            style: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w800,
-            ),
+            style: theme.textTheme.titleSmall
           ),
         ),
       ],

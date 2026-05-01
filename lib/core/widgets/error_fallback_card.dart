@@ -15,19 +15,6 @@ class ErrorFallbackCard extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           Image.asset('assets/images/error_fallback.png', fit: BoxFit.cover),
-          // Positioned(
-          //   left: 16,
-          //   right: 16,
-          //   bottom: 16,
-          //   child: Text(
-          //     message ?? '暫時找不到毛孩資料',
-          //     textAlign: TextAlign.center,
-          //     style: theme.textTheme.titleSmall?.copyWith(
-          //       color: Colors.black,
-          //       // fontWeight: FontWeight.w800,
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );

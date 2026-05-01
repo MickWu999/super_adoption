@@ -14,7 +14,6 @@ class AnimalListHeader extends StatelessWidget {
           child: Text(
             '毛孩列表',
             style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w900,
               letterSpacing: 1,
             ),
           ),

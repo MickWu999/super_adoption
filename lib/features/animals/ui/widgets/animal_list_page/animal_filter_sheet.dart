@@ -53,9 +53,7 @@ class _AnimalFilterSheetState extends State<AnimalFilterSheet> {
               children: [
                 Text(
                   '篩選條件',
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w900,
-                  ),
+                  style: theme.textTheme.titleLarge
                 ),
                 const Spacer(),
                 IconButton(
@@ -159,9 +157,7 @@ class _SheetSection extends StatelessWidget {
         children: [
           Text(
             title,
-            style: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w800,
-            ),
+            style: theme.textTheme.titleSmall
           ),
           const Gap(12),
           child,
