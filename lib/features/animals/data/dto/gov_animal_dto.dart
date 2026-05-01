@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'gov_animal_dto.freezed.dart';
 part 'gov_animal_dto.g.dart';
+
 // Gov API JSON
 // -> GovAnimalDto
 // -> GovAnimalMapper

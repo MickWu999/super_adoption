@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:super_adoption/features/animals/data/query/animal_filter.dart';
 import 'package:super_adoption/features/animals/ui/widgets/animal_list_page/quick_filter_chips.dart';
 
@@ -26,7 +27,7 @@ class StickyFilterHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             QuickFilterChips(filter: filter, onChanged: onChanged),
-            const SizedBox(height: 14),
+            const Gap(14),
             _SortFilterBar(
               filterCount: filter.filterCount,
               onFilterTap: onFilterTap,
@@ -100,7 +101,7 @@ class _SortFilterBar extends StatelessWidget {
             fontWeight: FontWeight.w900,
           ),
         ),
-        const SizedBox(width: 4),
+        const Gap(4),
         Icon(
           Icons.keyboard_arrow_down_rounded,
           size: 20,

@@ -1,3 +1,5 @@
+import 'package:super_adoption/core/extension/ext.dart';
+
 import '../../model/animal.dart';
 import '../dto/gov_animal_dto.dart';
 
@@ -9,87 +11,157 @@ extension GovAnimalMapper on GovAnimalDto {
           '', // API 回傳的 ID 是 int，但我們 domain model 定義為 String。
       name: _buildName(),
       type: _mapType(kind),
+      variety: _mapVariety(variety),
       gender: _mapGender(sex),
       age: _mapAge(age),
       bodyType: _mapBody(bodyType),
-      color: color ?? '',
-      shelterName: shelterName ?? '',
-      location: place ?? '',
-      imageUrl: imageUrl ?? '',
-      shelterPhone: shelterTel ?? '',
-      shelterAddress: shelterAddress ?? '',
-      foundPlace: foundPlace ?? '',
+      color: color.safe,
+      shelterName: shelterName.safe,
+      location: place.safe,
+      areaName: _mapAreaName(areaId),
+      imageUrl: imageUrl.safe,
+      shelterPhone: shelterTel.safe,
+      shelterAddress: shelterAddress.safe,
+      foundPlace: foundPlace.safe,
       sterilization: _mapSterilization(sterilization),
       bacterin: _mapBacterin(bacterin),
-      openDate: openDate ?? '',
+      openDate: openDate.safe,
+      createdDate: _mapCreatedDate(createDate),
       status: _mapStatus(status),
-      updateDate: updateDate ?? '',
-      remark: _buildRemark(),
+      updateDate: updateDate.safe,
+      remark: remark.safe,
       isFavorite: false,
     );
   }
 
+  String _mapCreatedDate(String? value) {
+    return value.safe;
+  }
+
   String _buildName() {
-    if ((title ?? '').isNotEmpty) return title!;
-    return '${color ?? ''}${kind ?? ''}';
+    final normalizedTitle = title.safe;
+    if (normalizedTitle.hasValue) return normalizedTitle;
+
+    final typeName = _mapType(kind);
+    final colorName = color.safe;
+    final colorWithType = '$colorName$typeName'.trim();
+    if (colorName.hasValue && typeName.hasValue) return colorWithType;
+
+    final varietyName = _mapVariety(variety);
+    final varietyWithType = '$varietyName$typeName'.trim();
+    if (varietyName.hasValue && typeName.hasValue) return varietyWithType;
+
+    if (varietyName.hasValue) return varietyName;
+    if (typeName.hasValue) return typeName;
+    if (colorName.hasValue) return colorName;
+
+    return '';
   }
 
   String _mapGender(String? v) {
-    if (v == 'M') return '公';
-    if (v == 'F') return '母';
-    return '未知';
+    final value = v.safe.toUpperCase();
+
+    if (value == 'M') return '男生';
+    if (value == 'F') return '女生';
+    if (value == 'N') return '未輸入';
+    return '';
   }
 
   String _mapAge(String? v) {
-    if (v == 'CHILD') return '幼年';
-    if (v == 'ADULT') return '成年';
-    return '未知';
+    final value = v.safe.toUpperCase();
+
+    if (value == 'CHILD') return '幼年';
+    if (value == 'ADULT') return '成年';
+    return '';
   }
 
   String _mapBody(String? v) {
-    if (v == 'SMALL') return '小型';
-    if (v == 'MEDIUM') return '中型';
-    if (v == 'BIG') return '大型';
-    return '未知';
+    final value = v.safe.toUpperCase();
+
+    if (value == 'SMALL') return '小型';
+    if (value == 'MEDIUM') return '中型';
+    if (value == 'BIG') return '大型';
+    return '';
   }
 
   String _mapType(String? v) {
-    if (v == '狗') return '狗';
-    if (v == '貓') return '貓';
-    return '其他';
+    final value = v.safe;
+
+    if (value == '狗') return '狗';
+    if (value == '貓') return '貓';
+    return value.safe;
+  }
+
+  String _mapVariety(String? v) {
+    return v.safe.replaceAll(RegExp(r'\s+'), '');
   }
 
   String _mapSterilization(String? v) {
-    if (v == 'T') return '已絕育';
-    if (v == 'F') return '未絕育';
-    return '未知';
+    final value = v.safe.toUpperCase();
+
+    if (value == 'T') return '已絕育';
+    if (value == 'F') return '未絕育';
+    if (value == 'N') return '未輸入';
+    return '';
   }
 
   String _mapBacterin(String? v) {
-    if (v == 'T') return '已施打';
-    if (v == 'F') return '未施打';
-    return '未知';
-  }
+    final value = v.safe.toUpperCase();
 
-  String _buildRemark() {
-    if ((remark ?? '').isNotEmpty) return remark!;
-    if ((variety ?? '').isNotEmpty) return variety!;
-    if ((caption ?? '').isNotEmpty) return caption!;
-    return '目前尚未提供更多說明，歡迎直接與收容單位聯繫了解毛孩狀況。';
+    if (value == 'T') return '已施打';
+    if (value == 'F') return '未施打';
+    if (value == 'N') return '未輸入';
+    return '';
   }
 
   String _mapStatus(String? v) {
-    switch (v) {
+    final value = v.safe.toUpperCase();
+
+    switch (value) {
       case 'OPEN':
         return '開放認養中';
       case 'ADOPTED':
         return '已被認養';
       case 'NONE':
+        return '未公告';
+      case 'OTHER':
+        return '其他';
+      case 'DEAD':
+        return '死亡';
       case 'CLOSE':
       case 'CLOSED':
         return '暫停開放';
       default:
-        return (v ?? '').isNotEmpty ? v! : '狀態未更新';
+        return value.safe;
     }
+  }
+
+  String _mapAreaName(int? areaId) {
+    const areaCodeMap = {
+      2: '台北市',
+      3: '新北市',
+      4: '基隆市',
+      5: '宜蘭縣',
+      6: '桃園縣',
+      7: '新竹縣',
+      8: '新竹市',
+      9: '苗栗縣',
+      10: '台中市',
+      11: '彰化縣',
+      12: '南投縣',
+      13: '雲林縣',
+      14: '嘉義縣',
+      15: '嘉義市',
+      16: '台南市',
+      17: '高雄市',
+      18: '屏東縣',
+      19: '花蓮縣',
+      20: '台東縣',
+      21: '澎湖縣',
+      22: '金門縣',
+      23: '連江縣',
+    };
+
+    return areaCodeMap[areaId] ?? '';
   }
 }

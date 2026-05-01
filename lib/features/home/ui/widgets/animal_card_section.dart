@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:super_adoption/core/enum/load_status.dart';
 import 'package:super_adoption/core/widgets/error_fallback_card.dart';
 import 'package:super_adoption/core/widgets/animal_network_image.dart';
 import 'package:super_adoption/core/widgets/skeleton_box.dart';
 import 'package:super_adoption/features/animals/model/animal.dart';
+import 'package:super_adoption/features/animals/ui/widgets/animal_list_page/animal_info_tag.dart';
 
 class _AnimalCardTokens {
   const _AnimalCardTokens._();
@@ -47,7 +49,7 @@ class AnimalCardSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _SectionHeader(title: title, onMoreTap: onMoreTap),
-        const SizedBox(height: _AnimalCardTokens.headerSpacing),
+        const Gap(_AnimalCardTokens.headerSpacing),
         if (_isLoading)
           const _LoadingBody()
         else
@@ -58,7 +60,7 @@ class AnimalCardSection extends StatelessWidget {
               clipBehavior: Clip.none,
               itemCount: animals.length,
               separatorBuilder: (_, _) =>
-                  const SizedBox(width: _AnimalCardTokens.itemSpacing),
+                  const Gap(_AnimalCardTokens.itemSpacing),
               itemBuilder: (context, index) {
                 return _AnimalCard(
                   animal: animals[index],
@@ -104,7 +106,7 @@ class _SectionHeader extends StatelessWidget {
           child: const Row(
             children: [
               Text('更多'),
-              SizedBox(width: 2),
+              Gap(2),
               Icon(Icons.chevron_right_rounded, size: 20),
             ],
           ),
@@ -125,8 +127,7 @@ class _LoadingBody extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         clipBehavior: Clip.none,
         itemCount: 2,
-        separatorBuilder: (_, _) =>
-            const SizedBox(width: _AnimalCardTokens.itemSpacing),
+        separatorBuilder: (_, _) => const Gap(_AnimalCardTokens.itemSpacing),
         itemBuilder: (context, index) {
           return const _AnimalCardSkeleton();
         },
@@ -147,11 +148,11 @@ class _AnimalCardSkeleton extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SkeletonBox(height: 136, radius: 14),
-            SizedBox(height: 10),
+            Gap(10),
             SkeletonBox(width: 96, height: 16, radius: 8),
-            SizedBox(height: 8),
+            Gap(8),
             SkeletonBox(width: 128, height: 14, radius: 8),
-            SizedBox(height: 8),
+            Gap(8),
             SkeletonBox(width: 110, height: 12, radius: 8),
           ],
         ),
@@ -165,25 +166,6 @@ class _AnimalCard extends StatelessWidget {
 
   final Animal animal;
   final VoidCallback? onTap;
-
-  String _displayLocation(Animal animal) {
-    final location = animal.location.trim();
-
-    if (location.isEmpty) return '位置未提供';
-
-    if (location.contains('台北')) return '台北市';
-    if (location.contains('新北')) return '新北市';
-    if (location.contains('桃園')) return '桃園市';
-    if (location.contains('台中')) return '台中市';
-    if (location.contains('臺中')) return '台中市';
-    if (location.contains('台南')) return '台南市';
-    if (location.contains('高雄')) return '高雄市';
-    if (location.contains('基隆')) return '基隆市';
-    if (location.contains('新竹')) return '新竹市';
-    if (location.contains('嘉義')) return '嘉義市';
-
-    return location.length > 8 ? location.substring(0, 8) : location;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -238,55 +220,99 @@ class _AnimalCard extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      animal.name,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      '${animal.gender}・${animal.bodyType}・${animal.age}',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.textTheme.bodyLarge?.color,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.location_on_rounded,
-                          size: 15,
-                          color: Colors.red,
-                        ),
-                        const SizedBox(width: 4),
-                        Expanded(
-                          child: Text(
-                            _displayLocation(animal),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                child: AnimalCardContent(animal: animal, theme: theme),
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class AnimalCardContent extends StatelessWidget {
+  const AnimalCardContent({
+    super.key,
+    required this.animal,
+    required this.theme,
+  });
+
+  final Animal animal;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    final detailText = [
+      animal.bodyType,
+      animal.age,
+    ].where((e) => e.trim().isNotEmpty).join(' ・ ');
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: Text(
+                animal.name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w900,
+                  height: 1.1,
+                ),
+              ),
+            ),
+            const Gap(8),
+            Center(
+              child: AnimalInfoTag(
+                color: animal.isFemale ? Colors.pink : Colors.blue,
+                icon: animal.isFemale
+                    ? Icons.female_rounded
+                    : Icons.male_rounded,
+                iconSize: 15,
+                fontSize: 11,
+                gap: 3,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
+              ),
+            ),
+          ],
+        ),
+        if (detailText.isNotEmpty) ...[
+          const Gap(6),
+          Text(
+            detailText,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.textTheme.bodyLarge?.color,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+        const Gap(8),
+        Row(
+          children: [
+            const Icon(Icons.location_on_rounded, size: 15, color: Colors.red),
+            const Gap(4),
+            Expanded(
+              child: Text(
+                '${animal.areaName} ・ 3.2 km',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.textTheme.bodyMedium?.color,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

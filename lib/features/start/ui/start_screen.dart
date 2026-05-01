@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:super_adoption/core/router/app_router.dart';
 
@@ -20,7 +21,7 @@ class StartScreen extends StatelessWidget {
           ),
           Column(
             children: [
-              SizedBox(height: deviceTopPadding + 24),
+              Gap(deviceTopPadding + 24),
               Center(
                 child: Image.asset(
                   'assets/images/start-dog-2.png',
@@ -56,7 +57,7 @@ class StartScreen extends StatelessWidget {
                         fontWeight: FontWeight.w800,
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const Gap(12),
                     Text(
                       '尋找牠的幸福歸宿，從這裡開始',
                       textAlign: TextAlign.center,
@@ -66,7 +67,7 @@ class StartScreen extends StatelessWidget {
                         color: theme.textTheme.bodySmall?.color,
                       ),
                     ),
-                    const SizedBox(height: 14),
+                    const Gap(14),
                     ElevatedButton(
                       onPressed: () {
                         context.go(AppRoutes.home);
@@ -79,12 +80,12 @@ class StartScreen extends StatelessWidget {
                             size: 20,
                             color: Colors.white,
                           ),
-                          SizedBox(width: 8),
+                          Gap(8),
                           Text('開始探索'),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 14),
+                    const Gap(14),
                     Row(
                       children: [
                         const Expanded(child: Divider(thickness: 1)),
@@ -100,19 +101,19 @@ class StartScreen extends StatelessWidget {
                         const Expanded(child: Divider(thickness: 1)),
                       ],
                     ),
-                    const SizedBox(height: 14),
+                    const Gap(14),
                     OutlinedButton.icon(
                       onPressed: () {},
                       icon: const Icon(Icons.g_mobiledata_rounded, size: 28),
                       label: const Text('使用 Google 登入'),
                     ),
-                    const SizedBox(height: 12),
+                    const Gap(12),
                     OutlinedButton.icon(
                       onPressed: () {},
                       icon: const Icon(Icons.apple, size: 20),
                       label: const Text('使用 Apple 登入'),
                     ),
-                    const SizedBox(height: 20),
+                    const Gap(20),
                     Text(
                       '登入即表示同意服務條款與隱私政策',
                       textAlign: TextAlign.center,

@@ -4,6 +4,8 @@ part 'animal.freezed.dart';
 
 @freezed
 abstract class Animal with _$Animal {
+  const Animal._();
+
   const factory Animal({
     required String id,
     required String name,
@@ -15,6 +17,7 @@ abstract class Animal with _$Animal {
     required String color,
     required String shelterName,
     required String location,
+    @Default('') String areaName,
     required String imageUrl,
     required String shelterPhone,
     required String shelterAddress,
@@ -28,4 +31,6 @@ abstract class Animal with _$Animal {
     @Default('') String remark,
     required bool isFavorite,
   }) = _Animal;
+
+  bool get isFemale => gender == '母';
 }

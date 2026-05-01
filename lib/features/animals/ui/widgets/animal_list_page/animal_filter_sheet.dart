@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:super_adoption/features/animals/data/query/animal_filter.dart';
 import 'package:super_adoption/features/animals/ui/widgets/animal_list_page/quick_filter_chips.dart';
 
@@ -63,7 +64,7 @@ class _AnimalFilterSheetState extends State<AnimalFilterSheet> {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const Gap(12),
             _SheetSection(
               title: '種類',
               child: Wrap(
@@ -112,7 +113,7 @@ class _AnimalFilterSheetState extends State<AnimalFilterSheet> {
                 ],
               ),
             ),
-            const SizedBox(height: 18),
+            const Gap(18),
             Row(
               children: [
                 Expanded(
@@ -121,7 +122,7 @@ class _AnimalFilterSheetState extends State<AnimalFilterSheet> {
                     child: const Text('重設'),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const Gap(12),
                 Expanded(
                   flex: 2,
                   child: FilledButton(
@@ -162,7 +163,7 @@ class _SheetSection extends StatelessWidget {
               fontWeight: FontWeight.w800,
             ),
           ),
-          const SizedBox(height: 12),
+          const Gap(12),
           child,
         ],
       ),

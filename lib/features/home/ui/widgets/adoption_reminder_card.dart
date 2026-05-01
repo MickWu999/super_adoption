@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
 class AdoptionReminderCard extends StatelessWidget {
   const AdoptionReminderCard({super.key});
@@ -31,7 +32,7 @@ class AdoptionReminderCard extends StatelessWidget {
               size: 40,
             ),
           ),
-          const SizedBox(width: 18),
+          const Gap(18),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,7 +51,7 @@ class AdoptionReminderCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 8),
+                const Gap(8),
                 Text(
                   '認養是一輩子的承諾，\n請先了解認養流程與注意事項喔！',
                   style: theme.textTheme.bodyMedium?.copyWith(

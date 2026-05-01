@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 /// Bottom Navigation 外殼。
@@ -63,7 +64,7 @@ class MainShell extends StatelessWidget {
                   selected: navigationShell.currentIndex == 2,
                   onTap: () => _go(2),
                 ),
-                const SizedBox(width: 76),
+                const Gap(76),
                 _NavItem(
                   icon: Icons.favorite_border_rounded,
                   activeIcon: Icons.favorite_rounded,
@@ -191,7 +192,7 @@ class _NavItem extends StatelessWidget {
                   color: selected ? primaryColor : inactiveColor,
                 ),
               ),
-              const SizedBox(height: 4),
+              const Gap(4),
               AnimatedDefaultTextStyle(
                 duration: const Duration(milliseconds: 180),
                 curve: Curves.easeOut,

@@ -1,5 +1,5 @@
-  
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
 enum InfoBarType { info, success, warning, error }
 
@@ -36,12 +36,8 @@ class AppInfoBar extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(
-            icon ?? style.icon,
-            color: style.foregroundColor,
-            size: 20,
-          ),
-          const SizedBox(width: 10),
+          Icon(icon ?? style.icon, color: style.foregroundColor, size: 20),
+          const Gap(10),
           Expanded(
             child: Text(
               message,

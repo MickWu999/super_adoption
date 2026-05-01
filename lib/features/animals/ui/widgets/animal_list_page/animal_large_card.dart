@@ -71,10 +71,7 @@ class AnimalLargeCard extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
-              child: AnimalCardContent(
-                animal: animal,
-                colorScheme: colorScheme,
-              ),
+              child: AnimalCardContent(animal: animal),
             ),
           ],
         ),
@@ -82,4 +79,3 @@ class AnimalLargeCard extends StatelessWidget {
     );
   }
 }
-

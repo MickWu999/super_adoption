@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
 class AnimalImagePlaceholder extends StatelessWidget {
   const AnimalImagePlaceholder({
@@ -35,7 +36,7 @@ class AnimalImagePlaceholder extends StatelessWidget {
               size: 34,
               color: colorScheme.primary.withValues(alpha: 0.85),
             ),
-            const SizedBox(height: 8),
+            const Gap(8),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(

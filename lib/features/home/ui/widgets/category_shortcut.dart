@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CategoryShortcut extends StatelessWidget {
@@ -34,7 +35,7 @@ class CategoryShortcut extends StatelessWidget {
             ),
             child: SvgPicture.asset(assetPath),
           ),
-          const SizedBox(height: 8),
+          const Gap(8),
           Text(
             label,
             style: theme.textTheme.titleMedium?.copyWith(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:super_adoption/core/router/app_router.dart';
@@ -49,7 +50,7 @@ class HomeScreen extends ConsumerWidget {
                   },
                 ),
 
-              const SizedBox(height: 20),
+              const Gap(20),
               ActivityBanner(
                 banners: banners,
                 status: homeState.status,
@@ -57,7 +58,7 @@ class HomeScreen extends ConsumerWidget {
                   // TODO: Open banner.websiteUrl when web deep-link behavior is ready.
                 },
               ),
-              const SizedBox(height: 20),
+              const Gap(20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -95,7 +96,7 @@ class HomeScreen extends ConsumerWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              const Gap(20),
               AnimalCardSection(
                 title: '本週新毛孩',
                 animals: newAnimals,
@@ -105,7 +106,7 @@ class HomeScreen extends ConsumerWidget {
                   context.push(AppRoutes.animals);
                 },
               ),
-              const SizedBox(height: 14),
+              const Gap(14),
               AnimalCardSection(
                 title: '熱門毛孩',
                 animals: popularAnimals,
@@ -115,7 +116,7 @@ class HomeScreen extends ConsumerWidget {
                   context.push(AppRoutes.animals);
                 },
               ),
-              const SizedBox(height: 28),
+              const Gap(28),
               const AdoptionReminderCard(),
             ],
           ),

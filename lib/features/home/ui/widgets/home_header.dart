@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:super_adoption/core/router/app_router.dart';
 
@@ -24,7 +25,7 @@ class HomeHeader extends StatelessWidget {
                   letterSpacing: 1,
                 ),
               ),
-              const SizedBox(height: 8),
+              const Gap(8),
               Row(
                 children: [
                   Icon(
@@ -32,7 +33,7 @@ class HomeHeader extends StatelessWidget {
                     color: colorScheme.primary,
                     size: 18,
                   ),
-                  const SizedBox(width: 6),
+                  const Gap(6),
                   Text(
                     '給牠一個家，牠會用一生愛你',
                     style: theme.textTheme.bodyMedium?.copyWith(

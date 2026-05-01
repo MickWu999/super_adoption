@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:super_adoption/core/extension/ext.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:super_adoption/core/enum/load_status.dart';
@@ -25,7 +26,7 @@ class ActivityBanner extends StatefulWidget {
 
 class _ActivityBannerState extends State<ActivityBanner> {
   static const _radius = 18.0;
-  static const _height= 160.0;
+  static const _height = 160.0;
   final _pageController = PageController();
   int _currentIndex = 0;
 
@@ -48,7 +49,7 @@ class _ActivityBannerState extends State<ActivityBanner> {
   @override
   Widget build(BuildContext context) {
     final banners = widget.banners;
-    
+
     if (widget._isLoading) {
       return const SkeletonShimmer(
         child: SkeletonBox(height: _height, radius: _radius),
@@ -105,7 +106,7 @@ class _ActivityBannerState extends State<ActivityBanner> {
           ),
         ),
         if (banners.length > 1) ...[
-          const SizedBox(height: 10),
+          const Gap(10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
@@ -129,7 +130,6 @@ class _ActivityBannerState extends State<ActivityBanner> {
     );
   }
 }
-
 
 class _BannerInfoSheet extends StatelessWidget {
   const _BannerInfoSheet({required this.banner});
@@ -173,10 +173,9 @@ class _BannerInfoSheet extends StatelessWidget {
                         fit: BoxFit.cover,
                       ),
                     ),
-
                   ],
                 ),
-                const SizedBox(height: 20),
+                const Gap(20),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -193,7 +192,7 @@ class _BannerInfoSheet extends StatelessWidget {
                         size: 26,
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const Gap(12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -205,7 +204,7 @@ class _BannerInfoSheet extends StatelessWidget {
                               height: 1.2,
                             ),
                           ),
-                          const SizedBox(height: 6),
+                          const Gap(6),
                           Text(
                             '活動資訊',
                             style: theme.textTheme.bodySmall?.copyWith(
@@ -219,21 +218,21 @@ class _BannerInfoSheet extends StatelessWidget {
                   ],
                 ),
                 if (hasDate) ...[
-                  const SizedBox(height: 18),
+                  const Gap(18),
                   _BannerInfoTile(
                     icon: Icons.event_available_rounded,
                     title: '活動期間',
                     value: banner.displayDate!,
                   ),
                 ],
-                const SizedBox(height: 18),
+                const Gap(18),
                 Text(
                   '活動說明',
                   style: theme.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w900,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const Gap(8),
                 Text(
                   banner.description ?? '查看更多活動資訊與認養消息。',
                   style: theme.textTheme.bodyLarge?.copyWith(
@@ -241,16 +240,13 @@ class _BannerInfoSheet extends StatelessWidget {
                     color: colorScheme.onSurface.withValues(alpha: 0.82),
                   ),
                 ),
-                const SizedBox(height: 24),
+                const Gap(24),
                 if (hasLink)
                   SizedBox(
                     width: double.infinity,
                     child: FilledButton.icon(
                       onPressed: () async {
-                        await launchUrl(
-                          linkUri,
-                          mode: LaunchMode.inAppWebView,
-                        );
+                        await launchUrl(linkUri, mode: LaunchMode.inAppWebView);
                       },
                       icon: const Icon(Icons.open_in_new_rounded),
                       label: const Text('查看活動'),
@@ -298,13 +294,9 @@ class _BannerInfoTile extends StatelessWidget {
               color: colorScheme.primary.withValues(alpha: 0.12),
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              icon,
-              color: colorScheme.primary,
-              size: 20,
-            ),
+            child: Icon(icon, color: colorScheme.primary, size: 20),
           ),
-          const SizedBox(width: 12),
+          const Gap(12),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -315,7 +307,7 @@ class _BannerInfoTile extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(height: 3),
+              const Gap(3),
               Text(
                 value,
                 style: theme.textTheme.titleSmall?.copyWith(

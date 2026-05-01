@@ -132,7 +132,7 @@ class AnimalNotifier extends _$AnimalNotifier {
         hasMore: fetchedItems.length == nextFilter.top,
         error: null,
       );
-          debugPrint(mergedItems.toString());
+      debugPrint(mergedItems.toString());
       AppLogger.instance.i(
         'AnimalNotifier loadMore success raw=${fetchedItems.length} added=$uniqueAddedCount total=${mergedItems.length}',
       );

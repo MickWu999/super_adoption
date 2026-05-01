@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:super_adoption/core/router/app_router.dart';
@@ -178,7 +179,7 @@ class _AnimalListScreenState extends ConsumerState<AnimalListScreen> {
               onTap: () => _openAnimalDetail(state.items[index]),
             );
           },
-          separatorBuilder: (context, index) => const SizedBox(height: 18),
+          separatorBuilder: (context, index) => const Gap(18),
         ),
         if (state.isLoadingMore)
           SliverToBoxAdapter(

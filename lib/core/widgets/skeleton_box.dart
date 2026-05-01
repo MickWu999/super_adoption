@@ -17,7 +17,7 @@ import 'package:shimmer/shimmer.dart';
 ///   child: Column(
 ///     children: const [
 ///       SkeletonBox(height: 120, radius: 16),
-///       SizedBox(height: 12),
+///       Gap(12),
 ///       SkeletonBox(width: 80, height: 14, radius: 8),
 ///     ],
 ///   ),
