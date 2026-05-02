@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:super_adoption/core/enum/load_status.dart';
+import 'package:super_adoption/core/extension/color_scheme_extension.dart';
+import 'package:super_adoption/core/extension/responsive_extension.dart';
 import 'package:super_adoption/core/widgets/circle_icon_button.dart';
 import 'package:super_adoption/core/widgets/error_fallback_card.dart';
 import 'package:super_adoption/core/widgets/animal_network_image.dart';
@@ -52,18 +54,18 @@ class AnimalCardSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _SectionHeader(title: title, onMoreTap: onMoreTap),
-        const Gap(_AnimalCardTokens.headerSpacing),
+        Gap(_AnimalCardTokens.headerSpacing.t),
         if (_isLoading)
           const _LoadingBody()
         else
           SizedBox(
-            height: _AnimalCardTokens.horizontalHeight,
+            height: _AnimalCardTokens.horizontalHeight.t,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               clipBehavior: Clip.none,
               itemCount: animals.length,
               separatorBuilder: (_, _) =>
-                  const Gap(_AnimalCardTokens.itemSpacing),
+                  Gap(_AnimalCardTokens.itemSpacing.t),
               itemBuilder: (context, index) {
                 final animal = animals[index];
 
@@ -103,11 +105,11 @@ class _SectionHeader extends StatelessWidget {
             minimumSize: const Size(0, 32),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
-          child: const Row(
+          child: Row(
             children: [
               Text('更多'),
-              Gap(2),
-              Icon(Icons.chevron_right_rounded, size: 20),
+              Gap(2.t),
+              Icon(Icons.chevron_right_rounded, size: 20.t),
             ],
           ),
         ),
@@ -122,12 +124,12 @@ class _LoadingBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: _AnimalCardTokens.horizontalHeight,
+      height: _AnimalCardTokens.horizontalHeight.t,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         clipBehavior: Clip.none,
         itemCount: 2,
-        separatorBuilder: (_, _) => const Gap(_AnimalCardTokens.itemSpacing),
+        separatorBuilder: (_, _) => Gap(_AnimalCardTokens.itemSpacing.t),
         itemBuilder: (context, index) {
           return const _AnimalCardSkeleton();
         },
@@ -147,18 +149,18 @@ class _AnimalCard extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     return Container(
-      width: _AnimalCardTokens.defaultWidth,
+      width: _AnimalCardTokens.defaultWidth.t,
       decoration: BoxDecoration(
         color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(_AnimalCardTokens.radius),
+        borderRadius: BorderRadius.circular(_AnimalCardTokens.radius.tr),
         border: Border.all(color: colorScheme.outlineVariant),
         boxShadow: [
           BoxShadow(
             color: theme.shadowColor.withValues(
               alpha: theme.brightness == Brightness.dark ? 0.18 : 0.06,
             ),
-            blurRadius: 12,
-            offset: const Offset(0, 6),
+            blurRadius: 12.t,
+            offset: Offset(0, 6.t),
           ),
         ],
       ),
@@ -225,8 +227,8 @@ class AnimalCardContent extends ConsumerWidget {
               iconColor: isFavorite
                   ? colorScheme.secondary
                   : colorScheme.onSurfaceVariant,
-              iconSize: 16,
-              size: 32,
+              iconSize: 16.t,
+              size: 32.t,
               onTap: () => ref
                   .read(favoritesProvider.notifier)
                   .toggle(animal.animalSubId),
@@ -257,11 +259,11 @@ class AnimalCardContent extends ConsumerWidget {
           ],
         ),
 
-        const Gap(8),
+        Gap(8.t),
         Row(
           children: [
-            const Icon(Icons.location_on_rounded, size: 15, color: Colors.red),
-            const Gap(4),
+            Icon(Icons.location_on_rounded, size: 15.t, color: colorScheme.locationIconColor),
+            Gap(4.t),
             Expanded(
               child: Text(
                 '${animal.displayAreaName}・3.2 km',
@@ -286,39 +288,39 @@ class _AnimalCardSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SkeletonShimmer(
       child: SizedBox(
-        width: _AnimalCardTokens.defaultWidth,
+        width: _AnimalCardTokens.defaultWidth.t,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // 對應 AnimalNetworkImage(height: imageHeight)
-            const SkeletonBox(
-              height: _AnimalCardTokens.imageHeight,
-              radius: _AnimalCardTokens.radius,
+            SkeletonBox(
+              height: _AnimalCardTokens.imageHeight.t,
+              radius: _AnimalCardTokens.radius.tr,
             ),
             // 對應 Padding(EdgeInsets.fromLTRB(12, 10, 12, 10))
             Padding(
-              padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+              padding: EdgeInsets.fromLTRB(12.t, 10.t, 12.t, 10.t),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // 對應 Row([Text(name), Gap(8), AnimalInfoTag])
                   // tag 高度 = icon(15) + padding(v:4×2) = 23px，決定 Row 高度
                   Row(
-                    children: const [
+                    children: [
                       Expanded(
                         flex: 3,
-                        child: SkeletonBox(height: 18, radius: 8),
+                        child: SkeletonBox(height: 18.t, radius: 8.tr),
                       ),
-                      Gap(8),
-                      SkeletonBox(width: 35, height: 23, radius: 999),
+                      Gap(8.t),
+                      SkeletonBox(width: 35.t, height: 23.t, radius: 999.tr),
                     ],
                   ),
                   // 對應 Gap(6) + Text(detailText, bodyMedium≈14px)
-                  const Gap(6),
-                  const SkeletonBox(width: 128, height: 14, radius: 8),
+                  Gap(6.t),
+                  SkeletonBox(width: 128.t, height: 14.t, radius: 8.tr),
                   // 對應 Gap(8) + Row(location, icon size 15)
-                  const Gap(8),
-                  const SkeletonBox(height: 15, radius: 8),
+                  Gap(8.t),
+                  SkeletonBox(height: 15.t, radius: 8.tr),
                 ],
               ),
             ),

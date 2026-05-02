@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:super_adoption/core/constants/ui_dimensions.dart';
+import 'package:super_adoption/core/extension/color_scheme_extension.dart';
 import 'package:super_adoption/core/extension/ext.dart';
+import 'package:super_adoption/core/extension/responsive_extension.dart';
 import 'package:super_adoption/core/router/app_router.dart';
 import 'package:super_adoption/core/widgets/animal_network_image.dart';
 import 'package:super_adoption/core/widgets/circle_icon_button.dart';
@@ -10,6 +13,7 @@ import 'package:super_adoption/core/widgets/error_fallback_card.dart';
 import 'package:super_adoption/features/animals/model/animal.dart';
 import 'package:super_adoption/features/animals/state/animal_detail_provider.dart';
 import 'package:super_adoption/features/favorites/state/favorites_provider.dart';
+import 'package:super_adoption/features/home/ui/widgets/adoption_reminder_card.dart';
 import 'package:super_adoption/features/home/ui/widgets/animal_card_section.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -17,10 +21,6 @@ class AnimalDetailScreen extends ConsumerWidget {
   const AnimalDetailScreen({super.key, required this.animalId});
 
   final String animalId;
-
-  static const _imageHeight = 360.0;
-  static const _pagePadding = 20.0;
-  static const _cardRadius = 26.0;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -38,12 +38,17 @@ class AnimalDetailScreen extends ConsumerWidget {
               slivers: [
                 const SliverToBoxAdapter(child: Gap(120)),
                 SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 140),
+                  padding: EdgeInsets.fromLTRB(
+                    UIDimensions.pagePadding.t,
+                    0,
+                    UIDimensions.pagePadding.t,
+                    140.t,
+                  ),
                   sliver: SliverToBoxAdapter(
                     child: Column(
                       children: [
                         const ErrorFallbackCard(),
-                        const Gap(16),
+                        const Gap(UIDimensions.gapLarge),
                         Text(
                           '目前找不到這隻毛孩的詳細資料，請從列表重新進入。',
                           textAlign: TextAlign.center,
@@ -61,24 +66,24 @@ class AnimalDetailScreen extends ConsumerWidget {
                 SliverToBoxAdapter(
                   child: AnimalNetworkImage(
                     imageUrl: animal.imageUrl,
-                    height: _imageHeight,
+                    height: UIDimensions.detailImageHeight,
                   ),
                 ),
                 SliverToBoxAdapter(
                   child: Transform.translate(
-                    offset: const Offset(0, -28),
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.fromLTRB(
-                        _pagePadding,
-                        24,
-                        _pagePadding,
-                        120,
+                    offset: Offset(0, -UIDimensions.sheetRadius.t),
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.fromLTRB(
+                          UIDimensions.pagePadding.t,
+                          24.t,
+                          UIDimensions.pagePadding.t,
+                          UIDimensions.listBottomPadding.t,
                       ),
                       decoration: BoxDecoration(
                         color: colorScheme.surface,
                         borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(_cardRadius),
+                          top: Radius.circular(UIDimensions.sheetRadius),
                         ),
                       ),
                       child: _DetailBody(
@@ -127,14 +132,14 @@ class _DetailBody extends StatelessWidget {
                 style: theme.textTheme.headlineSmall,
               ),
             ),
-            const Gap(12),
+            const Gap(UIDimensions.gapMedium),
             _StatusTag(status: animal.displayStatus),
           ],
         ),
-        const Gap(12),
+        const Gap(UIDimensions.gapMedium),
         Wrap(
-          spacing: 8,
-          runSpacing: 8,
+          spacing: UIDimensions.gapSmall,
+          runSpacing: UIDimensions.gapSmall,
           children: [
             _InfoTag(label: animal.displayGender),
             _InfoTag(label: animal.displayAge),
@@ -142,18 +147,18 @@ class _DetailBody extends StatelessWidget {
             _InfoTag(label: animal.kind),
           ],
         ),
-        const Gap(18),
+        const Gap(UIDimensions.listItemSpacing),
         _ShelterInfoCard(animal: animal),
-        const Gap(18),
-        const _AdoptionReminderCard(),
-        const Gap(24),
+        const Gap(UIDimensions.listItemSpacing),
+        const AdoptionReminderCard(),
+        const Gap(UIDimensions.gapXLarge),
         Text('詳細介紹', style: theme.textTheme.titleMedium),
-        const Gap(10),
+        Gap(10.t),
         Text(
           animal.remark,
           style: theme.textTheme.bodyMedium?.copyWith(height: 1.6),
         ),
-        const Gap(24),
+        const Gap(UIDimensions.gapXLarge),
         _AnimalInfoList(
           rows: [
             _InfoRowData(
@@ -184,8 +189,10 @@ class _DetailBody extends StatelessWidget {
             ),
           ],
         ),
+        const Gap(UIDimensions.gapLarge),
+        _DataMetaCard(animal: animal),
         if (relatedAnimals.isNotEmpty) ...[
-          const Gap(28),
+          const Gap(UIDimensions.sheetRadius),
           AnimalCardSection(
             title: '你可能也喜歡',
             animals: relatedAnimals,
@@ -215,7 +222,10 @@ class _TopActionBar extends ConsumerWidget {
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        padding: EdgeInsets.symmetric(
+          horizontal: UIDimensions.gapMedium.t,
+          vertical: 6.t,
+        ),
         child: Row(
           children: [
             CircleIconButton(
@@ -233,7 +243,7 @@ class _TopActionBar extends ConsumerWidget {
                       errorMessage: '目前無法開啟官方詳細資訊頁。',
                     ),
             ),
-            const Gap(10),
+            Gap(10.t),
             CircleIconButton(
               icon: isFavorite
                   ? Icons.favorite_rounded
@@ -243,7 +253,7 @@ class _TopActionBar extends ConsumerWidget {
                   : colorScheme.onSurfaceVariant,
               onTap: onFavoriteTap,
             ),
-            const Gap(10),
+            Gap(10.t),
             CircleIconButton(icon: Icons.ios_share_rounded, onTap: () {}),
           ],
         ),
@@ -266,7 +276,12 @@ class _BottomActionBar extends StatelessWidget {
     return Align(
       alignment: Alignment.bottomCenter,
       child: SafeArea(
-        minimum: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+        minimum: EdgeInsets.fromLTRB(
+          UIDimensions.pagePadding.t,
+          0,
+          UIDimensions.pagePadding.t,
+          UIDimensions.gapLarge.t,
+        ),
         child: Row(
           children: [
             Expanded(
@@ -287,7 +302,9 @@ class _BottomActionBar extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: colorScheme.primary,
                   foregroundColor: colorScheme.onPrimary,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  padding: EdgeInsets.symmetric(
+                    vertical: UIDimensions.gapLarge.t,
+                  ),
                   textStyle: theme.textTheme.titleSmall,
                 ),
                 child: const Text('我要認養'),
@@ -312,10 +329,10 @@ class _ShelterInfoCard extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(18),
+      padding: EdgeInsets.all(18.t),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerLowest,
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: BorderRadius.circular(UIDimensions.cardRadius.tr),
         border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: Column(
@@ -326,9 +343,9 @@ class _ShelterInfoCard extends StatelessWidget {
               Icon(
                 Icons.home_work_rounded,
                 color: colorScheme.primary,
-                size: 22,
+                size: UIDimensions.iconSizeLarge,
               ),
-              const Gap(10),
+              Gap(10.t),
               Expanded(
                 child: Text(
                   '收容所資訊卡',
@@ -337,12 +354,15 @@ class _ShelterInfoCard extends StatelessWidget {
               ),
               TextButton.icon(
                 onPressed: () => _openMap(context, animal.shelterAddress),
-                icon: const Icon(Icons.map_outlined, size: 18),
+                icon: const Icon(
+                  Icons.map_outlined,
+                  size: UIDimensions.iconSizeSmall,
+                ),
                 label: const Text('查看地圖'),
               ),
             ],
           ),
-          const Gap(12),
+          Gap(10.t),
           _CardInfoRow(label: '地址', value: animal.shelterAddress.or('未提供')),
           _CardInfoRow(label: '電話', value: animal.shelterTel.or('未提供')),
           const _CardInfoRow(
@@ -350,7 +370,7 @@ class _ShelterInfoCard extends StatelessWidget {
             value: '請依各收容所現場公告與官方頁面為準',
             showDivider: false,
           ),
-          const Gap(14),
+          Gap(14.t),
           FilledButton.tonalIcon(
             onPressed: () => _launchUri(
               context,
@@ -360,45 +380,6 @@ class _ShelterInfoCard extends StatelessWidget {
             icon: const Icon(Icons.open_in_new_rounded),
             label: const Text('查看更多收容所資訊'),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class _AdoptionReminderCard extends StatelessWidget {
-  const _AdoptionReminderCard();
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: colorScheme.primary.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(22),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(
-                Icons.lightbulb_rounded,
-                color: colorScheme.primary,
-                size: 22,
-              ),
-              const Gap(10),
-              Text('認養提醒', style: theme.textTheme.titleMedium),
-            ],
-          ),
-          const Gap(12),
-          _ReminderLine(text: '請攜帶身分證件，現場通常會進行基本資料核對。'),
-          _ReminderLine(text: '收容單位可能安排現場評估，包含環境與照護認知。'),
-          _ReminderLine(text: '認養前請再次確認時間、醫療、活動與終養能力。'),
         ],
       ),
     );
@@ -417,16 +398,16 @@ class _DataMetaCard extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16.t),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(UIDimensions.imageRadius.tr),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('資料來源與更新', style: theme.textTheme.titleSmall),
-          const Gap(10),
+          Gap(10.t),
           _CardInfoRow(label: '照片來源', value: '農業部動物保護資訊網 / 政府開放資料'),
           _CardInfoRow(
             label: '更新時間',
@@ -451,16 +432,16 @@ class _StatusTag extends StatelessWidget {
     final isOpen = status.contains('開放');
     final isAdopted = status.contains('已被認養');
     final Color color = isOpen
-        ? Colors.green
+        ? colorScheme.success
         : isAdopted
         ? colorScheme.secondary
         : colorScheme.tertiary;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: 12.t, vertical: 8.t),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(999),
+        borderRadius: BorderRadius.circular(UIDimensions.buttonRadius.tr),
       ),
       child: Text(
         status,
@@ -481,16 +462,16 @@ class _ReminderLine extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: EdgeInsets.only(bottom: 8.t),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(
             Icons.check_circle_rounded,
-            size: 18,
+            size: UIDimensions.iconSizeSmall,
             color: colorScheme.primary,
           ),
-          const Gap(8),
+          const Gap(UIDimensions.gapSmall),
           Expanded(child: Text(text, style: theme.textTheme.bodyMedium)),
         ],
       ),
@@ -515,7 +496,7 @@ class _CardInfoRow extends StatelessWidget {
     final dividerColor = Theme.of(context).colorScheme.outlineVariant;
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: EdgeInsets.symmetric(vertical: 10.t),
       decoration: BoxDecoration(
         border: showDivider
             ? Border(bottom: BorderSide(color: dividerColor))
@@ -525,7 +506,7 @@ class _CardInfoRow extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 72,
+            width: 72.t,
             child: Text(label, style: theme.textTheme.bodyMedium),
           ),
           Expanded(child: Text(value, style: theme.textTheme.bodyMedium)),
@@ -546,10 +527,10 @@ class _InfoTag extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: EdgeInsets.symmetric(horizontal: 12.t, vertical: 6.t),
       decoration: BoxDecoration(
         color: colorScheme.primary.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(999),
+        borderRadius: BorderRadius.circular(UIDimensions.buttonRadius.tr),
       ),
       child: Text(
         label,
@@ -613,7 +594,7 @@ class _InfoRow extends StatelessWidget {
     final dividerColor = Theme.of(context).colorScheme.outlineVariant;
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding: EdgeInsets.symmetric(vertical: 12.t),
       decoration: BoxDecoration(
         border: showDivider
             ? Border(bottom: BorderSide(color: dividerColor))
@@ -622,10 +603,14 @@ class _InfoRow extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 18, color: theme.colorScheme.onSurfaceVariant),
-          const Gap(10),
+          Icon(
+            icon,
+            size: UIDimensions.iconSizeSmall,
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+          Gap(10.t),
           SizedBox(
-            width: 72,
+            width: 72.t,
             child: Text(label, style: theme.textTheme.bodyMedium),
           ),
           Expanded(
@@ -653,13 +638,18 @@ Future<void> _showAdoptionConfirmSheet(
     showDragHandle: true,
     builder: (context) {
       return Padding(
-        padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
+        padding: EdgeInsets.fromLTRB(
+          UIDimensions.pagePadding.t,
+          UIDimensions.gapSmall.t,
+          UIDimensions.pagePadding.t,
+          UIDimensions.sheetRadius.t,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('聯絡前確認', style: theme.textTheme.titleLarge),
-            const Gap(10),
+            Gap(10.t),
             Text(
               '建議先確認自身照護能力、可投入時間與費用，再與收容單位聯繫安排後續認養流程。',
               style: theme.textTheme.bodyMedium?.copyWith(
@@ -667,11 +657,11 @@ Future<void> _showAdoptionConfirmSheet(
                 color: colorScheme.onSurface.withValues(alpha: 0.78),
               ),
             ),
-            const Gap(16),
+            Gap(16.t),
             const _ReminderLine(text: '請準備可核對身份的證件。'),
             const _ReminderLine(text: '現場通常需要進行認養評估與說明。'),
             const _ReminderLine(text: '若家中已有寵物，請先評估相處與隔離安排。'),
-            const Gap(18),
+            Gap(18.t),
             Row(
               children: [
                 Expanded(
@@ -687,7 +677,7 @@ Future<void> _showAdoptionConfirmSheet(
                     child: const Text('官方資訊'),
                   ),
                 ),
-                const Gap(12),
+                Gap(12.t),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:super_adoption/core/constants/animal_filter_options.dart';
+import 'package:super_adoption/core/constants/ui_dimensions.dart';
+import 'package:super_adoption/core/extension/responsive_extension.dart';
 import 'package:super_adoption/features/animals/data/query/animal_filter.dart';
 import 'package:super_adoption/features/animals/ui/widgets/animal_list_page/quick_filter_chips.dart';
 
@@ -20,38 +23,9 @@ class AnimalFilterSheet extends StatefulWidget {
 }
 
 class _AnimalFilterSheetState extends State<AnimalFilterSheet> {
-  static const Map<int, String> _areaOptions = {
-    2: '台北市',
-    3: '新北市',
-    4: '基隆市',
-    5: '宜蘭縣',
-    6: '桃園縣',
-    7: '新竹縣',
-    8: '新竹市',
-    9: '苗栗縣',
-    10: '台中市',
-    11: '彰化縣',
-    12: '南投縣',
-    13: '雲林縣',
-    14: '嘉義縣',
-    15: '嘉義市',
-    16: '台南市',
-    17: '高雄市',
-    18: '屏東縣',
-    19: '花蓮縣',
-    20: '台東縣',
-    21: '澎湖縣',
-    22: '金門縣',
-    23: '連江縣',
-  };
-
   late AnimalFilter draft;
   bool showAreaOptions = false;
-  String get _selectedAreaName {
-    final areaId = draft.areaId;
-    if (areaId == null) return '全部地區';
-    return _areaOptions[areaId] ?? '全部地區';
-  }
+  String get _selectedAreaName => AnimalFilterOptions.getAreaName(draft.areaId);
 
   @override
   void initState() {
@@ -70,11 +44,18 @@ class _AnimalFilterSheetState extends State<AnimalFilterSheet> {
 
     return SafeArea(
       child: Container(
-        margin: const EdgeInsets.only(top: 80),
-        padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
+        margin: EdgeInsets.only(top: 80.t),
+        padding: EdgeInsets.fromLTRB(
+          UIDimensions.pagePadding.t,
+          UIDimensions.pagePadding.t,
+          UIDimensions.pagePadding.t,
+          24.t,
+        ),
         decoration: BoxDecoration(
           color: colorScheme.surface,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(UIDimensions.sheetRadius.tr),
+          ),
         ),
         child: SingleChildScrollView(
           child: Column(
@@ -90,22 +71,23 @@ class _AnimalFilterSheetState extends State<AnimalFilterSheet> {
                     icon: const Icon(Icons.close_rounded),
                   ),
                 ],
-              ),              _AreaSelectorSection(
+              ),
+              _AreaSelectorSection(
                 selectedAreaName: _selectedAreaName,
                 isExpanded: showAreaOptions,
                 onToggle: () {
                   setState(() => showAreaOptions = !showAreaOptions);
                 },
                 child: Wrap(
-                  spacing: 10,
-                  runSpacing: 10,
+                  spacing: 10.t,
+                  runSpacing: 10.t,
                   children: [
                     _sheetChip(
                       '全部地區',
                       draft.areaId == null,
                       () => updateDraft(draft.copyWith(areaId: null)),
                     ),
-                    ..._areaOptions.entries.map(
+                    ...AnimalFilterOptions.areaNamesByCode.entries.map(
                       (entry) => _sheetChip(
                         entry.value,
                         draft.areaId == entry.key,
@@ -115,12 +97,12 @@ class _AnimalFilterSheetState extends State<AnimalFilterSheet> {
                   ],
                 ),
               ),
-              const Gap(12),
+              Gap(12.t),
               _SheetSection(
                 title: '其他偏好',
                 child: Wrap(
-                  spacing: 10,
-                  runSpacing: 10,
+                  spacing: 10.t,
+                  runSpacing: 10.t,
                   children: [
                     _sheetChip(
                       '有照片',
@@ -135,8 +117,8 @@ class _AnimalFilterSheetState extends State<AnimalFilterSheet> {
               _SheetSection(
                 title: '種類',
                 child: Wrap(
-                  spacing: 10,
-                  runSpacing: 10,
+                  spacing: 10.t,
+                  runSpacing: 10.t,
                   children: [
                     _sheetChip(
                       '全部',
@@ -145,13 +127,17 @@ class _AnimalFilterSheetState extends State<AnimalFilterSheet> {
                     ),
                     _sheetChip(
                       '狗狗',
-                      draft.kind == '狗',
-                      () => updateDraft(draft.copyWith(kind: '狗')),
+                      draft.kind == AnimalFilterOptions.kindDog,
+                      () => updateDraft(
+                        draft.copyWith(kind: AnimalFilterOptions.kindDog),
+                      ),
                     ),
                     _sheetChip(
                       '貓貓',
-                      draft.kind == '貓',
-                      () => updateDraft(draft.copyWith(kind: '貓')),
+                      draft.kind == AnimalFilterOptions.kindCat,
+                      () => updateDraft(
+                        draft.copyWith(kind: AnimalFilterOptions.kindCat),
+                      ),
                     ),
                   ],
                 ),
@@ -159,8 +145,8 @@ class _AnimalFilterSheetState extends State<AnimalFilterSheet> {
               _SheetSection(
                 title: '性別',
                 child: Wrap(
-                  spacing: 10,
-                  runSpacing: 10,
+                  spacing: 10.t,
+                  runSpacing: 10.t,
                   children: [
                     _sheetChip(
                       '全部',
@@ -169,18 +155,24 @@ class _AnimalFilterSheetState extends State<AnimalFilterSheet> {
                     ),
                     _sheetChip(
                       '男生',
-                      draft.sex == 'M',
-                      () => updateDraft(draft.copyWith(sex: 'M')),
+                      draft.sex == AnimalFilterOptions.sexMale,
+                      () => updateDraft(
+                        draft.copyWith(sex: AnimalFilterOptions.sexMale),
+                      ),
                     ),
                     _sheetChip(
                       '女生',
-                      draft.sex == 'F',
-                      () => updateDraft(draft.copyWith(sex: 'F')),
+                      draft.sex == AnimalFilterOptions.sexFemale,
+                      () => updateDraft(
+                        draft.copyWith(sex: AnimalFilterOptions.sexFemale),
+                      ),
                     ),
                     _sheetChip(
                       '未輸入',
-                      draft.sex == 'N',
-                      () => updateDraft(draft.copyWith(sex: 'N')),
+                      draft.sex == AnimalFilterOptions.sexUnknown,
+                      () => updateDraft(
+                        draft.copyWith(sex: AnimalFilterOptions.sexUnknown),
+                      ),
                     ),
                   ],
                 ),
@@ -188,8 +180,8 @@ class _AnimalFilterSheetState extends State<AnimalFilterSheet> {
               _SheetSection(
                 title: '年齡',
                 child: Wrap(
-                  spacing: 10,
-                  runSpacing: 10,
+                  spacing: 10.t,
+                  runSpacing: 10.t,
                   children: [
                     _sheetChip(
                       '全部',
@@ -198,13 +190,17 @@ class _AnimalFilterSheetState extends State<AnimalFilterSheet> {
                     ),
                     _sheetChip(
                       '幼年',
-                      draft.age == 'CHILD',
-                      () => updateDraft(draft.copyWith(age: 'CHILD')),
+                      draft.age == AnimalFilterOptions.ageChild,
+                      () => updateDraft(
+                        draft.copyWith(age: AnimalFilterOptions.ageChild),
+                      ),
                     ),
                     _sheetChip(
                       '成年',
-                      draft.age == 'ADULT',
-                      () => updateDraft(draft.copyWith(age: 'ADULT')),
+                      draft.age == AnimalFilterOptions.ageAdult,
+                      () => updateDraft(
+                        draft.copyWith(age: AnimalFilterOptions.ageAdult),
+                      ),
                     ),
                   ],
                 ),
@@ -212,8 +208,8 @@ class _AnimalFilterSheetState extends State<AnimalFilterSheet> {
               _SheetSection(
                 title: '體型',
                 child: Wrap(
-                  spacing: 10,
-                  runSpacing: 10,
+                  spacing: 10.t,
+                  runSpacing: 10.t,
                   children: [
                     _sheetChip(
                       '全部',
@@ -222,18 +218,26 @@ class _AnimalFilterSheetState extends State<AnimalFilterSheet> {
                     ),
                     _sheetChip(
                       '小型',
-                      draft.bodyType == 'SMALL',
-                      () => updateDraft(draft.copyWith(bodyType: 'SMALL')),
+                      draft.bodyType == AnimalFilterOptions.bodySmall,
+                      () => updateDraft(
+                        draft.copyWith(bodyType: AnimalFilterOptions.bodySmall),
+                      ),
                     ),
                     _sheetChip(
                       '中型',
-                      draft.bodyType == 'MEDIUM',
-                      () => updateDraft(draft.copyWith(bodyType: 'MEDIUM')),
+                      draft.bodyType == AnimalFilterOptions.bodyMedium,
+                      () => updateDraft(
+                        draft.copyWith(
+                          bodyType: AnimalFilterOptions.bodyMedium,
+                        ),
+                      ),
                     ),
                     _sheetChip(
                       '大型',
-                      draft.bodyType == 'BIG',
-                      () => updateDraft(draft.copyWith(bodyType: 'BIG')),
+                      draft.bodyType == AnimalFilterOptions.bodyBig,
+                      () => updateDraft(
+                        draft.copyWith(bodyType: AnimalFilterOptions.bodyBig),
+                      ),
                     ),
                   ],
                 ),
@@ -246,7 +250,7 @@ class _AnimalFilterSheetState extends State<AnimalFilterSheet> {
                       child: const Text('重設'),
                     ),
                   ),
-                  const Gap(12),
+                  Gap(12.t),
                   Expanded(
                     flex: 2,
                     child: FilledButton(
@@ -278,12 +282,12 @@ class _SheetSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.only(bottom: 18),
+      padding: EdgeInsets.only(bottom: 18.t),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(title, style: theme.textTheme.titleSmall),
-          const Gap(12),
+          Gap(12.t),
           child,
         ],
       ),
@@ -310,22 +314,22 @@ class _AreaSelectorSection extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 18),
+      padding: EdgeInsets.only(bottom: 18.t),
       child: Column(
         children: [
           InkWell(
             onTap: onToggle,
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(14.tr),
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12),
+              padding: EdgeInsets.symmetric(vertical: 12.t),
               child: Row(
                 children: [
                   Icon(
                     Icons.location_on_outlined,
-                    size: 22,
+                    size: 22.t,
                     color: colorScheme.onSurface,
                   ),
-                  const Gap(10),
+                  Gap(10.t),
                   Text('地區', style: theme.textTheme.titleSmall),
                   const Spacer(),
                   Text(
@@ -334,7 +338,7 @@ class _AreaSelectorSection extends StatelessWidget {
                       color: colorScheme.onSurfaceVariant,
                     ),
                   ),
-                  const Gap(8),
+                  Gap(8.t),
                   Icon(
                     isExpanded
                         ? Icons.keyboard_arrow_down_rounded
@@ -347,11 +351,8 @@ class _AreaSelectorSection extends StatelessWidget {
           ),
           Divider(height: 1, color: colorScheme.outlineVariant),
           if (isExpanded) ...[
-            const Gap(14),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: child,
-            ),
+            Gap(14.t),
+            Align(alignment: Alignment.centerLeft, child: child),
           ],
         ],
       ),

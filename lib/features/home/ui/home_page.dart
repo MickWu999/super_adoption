@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:super_adoption/core/extension/responsive_extension.dart';
 import 'package:super_adoption/core/router/app_router.dart';
 import 'package:super_adoption/core/widgets/app_info_bar.dart';
 import 'package:super_adoption/features/animals/data/query/animal_filter.dart';
@@ -35,7 +36,7 @@ class HomeScreen extends ConsumerWidget {
       backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 120),
+          padding: EdgeInsets.fromLTRB(20.t, 20.t, 20.t, 120.t),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -50,7 +51,7 @@ class HomeScreen extends ConsumerWidget {
                   },
                 ),
 
-              const Gap(20),
+              Gap(20.t),
               ActivityBanner(
                 banners: banners,
                 status: homeState.status,
@@ -58,7 +59,7 @@ class HomeScreen extends ConsumerWidget {
                   // TODO: Open banner.websiteUrl when web deep-link behavior is ready.
                 },
               ),
-              const Gap(20),
+              Gap(20.t),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -96,7 +97,7 @@ class HomeScreen extends ConsumerWidget {
                   ),
                 ],
               ),
-              const Gap(20),
+              Gap(20.t),
               AnimalCardSection(
                 title: '本週新毛孩',
                 animals: newAnimals,
@@ -107,7 +108,7 @@ class HomeScreen extends ConsumerWidget {
                   context.push(AppRoutes.animals);
                 },
               ),
-              const Gap(14),
+              Gap(14.t),
               AnimalCardSection(
                 title: '熱門毛孩',
                 animals: popularAnimals,

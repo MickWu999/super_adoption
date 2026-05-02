@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:super_adoption/core/constants/ui_dimensions.dart';
+import 'package:super_adoption/core/extension/responsive_extension.dart';
 import 'package:super_adoption/core/widgets/animal_network_image.dart';
 import 'package:super_adoption/core/widgets/circle_icon_button.dart';
 import 'package:super_adoption/features/animals/model/animal.dart';
@@ -16,23 +18,25 @@ class AnimalLargeCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final isFavorite = ref.watch(favoritesProvider).contains(animal.animalSubId);
+    final isFavorite = ref
+        .watch(favoritesProvider)
+        .contains(animal.animalSubId);
 
     return InkWell(
-      borderRadius: BorderRadius.circular(22),
+      borderRadius: BorderRadius.circular(UIDimensions.cardRadius.tr),
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
           color: colorScheme.surface,
-          borderRadius: BorderRadius.circular(22),
+          borderRadius: BorderRadius.circular(UIDimensions.cardRadius.tr),
           border: Border.all(color: colorScheme.outlineVariant),
           boxShadow: [
             BoxShadow(
               color: theme.shadowColor.withValues(
                 alpha: theme.brightness == Brightness.dark ? 0.18 : 0.07,
               ),
-              blurRadius: 18,
-              offset: const Offset(0, 8),
+              blurRadius: UIDimensions.cardShadowBlur.t,
+              offset: Offset(0, UIDimensions.cardShadowOffsetY.t),
             ),
           ],
         ),
@@ -44,8 +48,8 @@ class AnimalLargeCard extends ConsumerWidget {
               children: [
                 AnimalNetworkImage(imageUrl: animal.imageUrl),
                 Positioned(
-                  right: 12,
-                  top: 12,
+                  right: 12.t,
+                  top: 12.t,
                   child: CircleIconButton(
                     icon: isFavorite
                         ? Icons.favorite_rounded
@@ -53,16 +57,22 @@ class AnimalLargeCard extends ConsumerWidget {
                     iconColor: isFavorite
                         ? colorScheme.secondary
                         : colorScheme.onSurface,
-                    iconSize: 20,
-                    size: 40,
-                    onTap: () =>
-                        ref.read(favoritesProvider.notifier).toggle(animal.animalSubId),
+                    iconSize: UIDimensions.iconSizeMedium.t,
+                    size: 40.t,
+                    onTap: () => ref
+                        .read(favoritesProvider.notifier)
+                        .toggle(animal.animalSubId),
                   ),
                 ),
               ],
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
+              padding: EdgeInsets.fromLTRB(
+                UIDimensions.cardPaddingH.t,
+                UIDimensions.cardPaddingV.t,
+                UIDimensions.cardPaddingH.t,
+                UIDimensions.cardPaddingH.t,
+              ),
               child: AnimalCardContent(animal: animal),
             ),
           ],

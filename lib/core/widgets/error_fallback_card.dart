@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:super_adoption/core/extension/responsive_extension.dart';
 
 class ErrorFallbackCard extends StatelessWidget {
   const ErrorFallbackCard({super.key, this.message});
@@ -9,8 +10,8 @@ class ErrorFallbackCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 220,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(18)),
+      height: 220.t,
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(18.tr)),
       child: Stack(
         fit: StackFit.expand,
         children: [

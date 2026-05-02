@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:super_adoption/core/extension/responsive_extension.dart';
 
 enum InfoBarType { info, success, warning, error }
 
@@ -28,16 +29,16 @@ class AppInfoBar extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(14, 12, 10, 12),
+      padding: EdgeInsets.fromLTRB(14.t, 12.t, 10.t, 12.t),
       decoration: BoxDecoration(
         color: style.backgroundColor,
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(14.tr),
         border: Border.all(color: style.borderColor),
       ),
       child: Row(
         children: [
-          Icon(icon ?? style.icon, color: style.foregroundColor, size: 20),
-          const Gap(10),
+          Icon(icon ?? style.icon, color: style.foregroundColor, size: 20.t),
+          Gap(10.t),
           Expanded(
             child: Text(
               message,
@@ -51,7 +52,7 @@ class AppInfoBar extends StatelessWidget {
               onPressed: onActionTap,
               style: TextButton.styleFrom(
                 foregroundColor: style.foregroundColor,
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+                padding: EdgeInsets.symmetric(horizontal: 10.t),
                 minimumSize: const Size(0, 32),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),

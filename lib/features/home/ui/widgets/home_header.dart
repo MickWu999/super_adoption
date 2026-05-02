@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:super_adoption/core/extension/responsive_extension.dart';
 import 'package:super_adoption/core/router/app_router.dart';
 
 class HomeHeader extends StatelessWidget {
@@ -24,15 +25,15 @@ class HomeHeader extends StatelessWidget {
                   letterSpacing: 1,
                 ),
               ),
-              const Gap(8),
+              Gap(8.t),
               Row(
                 children: [
                   Icon(
                     Icons.pets_rounded,
                     color: colorScheme.primary,
-                    size: 18,
+                    size: 18.t,
                   ),
-                  const Gap(6),
+                  Gap(6.t),
                   Text(
                     '給牠一個家，牠會用一生愛你',
                     style: theme.textTheme.bodyMedium
@@ -50,14 +51,14 @@ class HomeHeader extends StatelessWidget {
                 context.push(AppRoutes.notifications);
               },
               icon: const Icon(Icons.notifications_none_rounded),
-              iconSize: 30,
+              iconSize: 30.t,
             ),
             Positioned(
-              right: 9,
-              top: 10,
+              right: 9.t,
+              top: 10.t,
               child: Container(
-                width: 9,
-                height: 9,
+                width: 9.t,
+                height: 9.t,
                 decoration: BoxDecoration(
                   color: colorScheme.primary,
                   shape: BoxShape.circle,

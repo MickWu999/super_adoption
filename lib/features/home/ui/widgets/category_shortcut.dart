@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:super_adoption/core/extension/responsive_extension.dart';
 
 class CategoryShortcut extends StatelessWidget {
   const CategoryShortcut({
@@ -21,21 +22,21 @@ class CategoryShortcut extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     return InkWell(
-      borderRadius: BorderRadius.circular(_radius),
+      borderRadius: BorderRadius.circular(_radius.tr),
       onTap: onTap,
       child: Column(
         children: [
           Container(
-            width: 62,
-            height: 62,
-            padding: const EdgeInsets.all(13),
+            width: 62.t,
+            height: 62.t,
+            padding: EdgeInsets.all(13.t),
             decoration: BoxDecoration(
               color: colorScheme.surfaceContainerHighest,
               shape: BoxShape.circle,
             ),
             child: SvgPicture.asset(assetPath),
           ),
-          const Gap(8),
+          Gap(8.t),
           Text(
             label,
             style: theme.textTheme.titleMedium

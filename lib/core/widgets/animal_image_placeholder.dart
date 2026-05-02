@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:super_adoption/core/extension/responsive_extension.dart';
 
 class AnimalImagePlaceholder extends StatelessWidget {
   const AnimalImagePlaceholder({
@@ -33,12 +34,12 @@ class AnimalImagePlaceholder extends StatelessWidget {
           children: [
             Icon(
               Icons.pets_rounded,
-              size: 34,
+              size: 34.t,
               color: colorScheme.primary.withValues(alpha: 0.85),
             ),
             const Gap(8),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: 16.t),
               child: Text(
                 message,
                 textAlign: TextAlign.center,

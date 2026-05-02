@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:super_adoption/core/constants/animal_filter_options.dart';
+import 'package:super_adoption/core/constants/ui_dimensions.dart';
+import 'package:super_adoption/core/extension/responsive_extension.dart';
 import 'package:super_adoption/features/animals/data/query/animal_filter.dart';
 
 class QuickFilterChips extends StatelessWidget {
@@ -24,25 +27,39 @@ class QuickFilterChips extends StatelessWidget {
           ),
           FilterChipButton(
             label: '狗狗',
-            selected: filter.kind == '狗',
-            onTap: () => onChanged(AnimalFilter.initial().copyWith(kind: '狗')),
+            selected: filter.kind == AnimalFilterOptions.kindDog,
+            onTap: () => onChanged(
+              AnimalFilter.initial().copyWith(
+                kind: AnimalFilterOptions.kindDog,
+              ),
+            ),
           ),
           FilterChipButton(
             label: '貓貓',
-            selected: filter.kind == '貓',
-            onTap: () => onChanged(AnimalFilter.initial().copyWith(kind: '貓')),
+            selected: filter.kind == AnimalFilterOptions.kindCat,
+            onTap: () => onChanged(
+              AnimalFilter.initial().copyWith(
+                kind: AnimalFilterOptions.kindCat,
+              ),
+            ),
           ),
           FilterChipButton(
             label: '幼年',
-            selected: filter.age == 'CHILD',
-            onTap: () =>
-                onChanged(AnimalFilter.initial().copyWith(age: 'CHILD')),
+            selected: filter.age == AnimalFilterOptions.ageChild,
+            onTap: () => onChanged(
+              AnimalFilter.initial().copyWith(
+                age: AnimalFilterOptions.ageChild,
+              ),
+            ),
           ),
           FilterChipButton(
             label: '成年',
-            selected: filter.age == 'ADULT',
-            onTap: () =>
-                onChanged(AnimalFilter.initial().copyWith(age: 'ADULT')),
+            selected: filter.age == AnimalFilterOptions.ageAdult,
+            onTap: () => onChanged(
+              AnimalFilter.initial().copyWith(
+                age: AnimalFilterOptions.ageAdult,
+              ),
+            ),
           ),
         ],
       ),
@@ -68,18 +85,18 @@ class FilterChipButton extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.only(right: 10),
+      padding: EdgeInsets.only(right: 10.t),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(999),
+        borderRadius: BorderRadius.circular(UIDimensions.buttonRadius.tr),
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 160),
-          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+          duration: UIDimensions.animationFast,
+          padding: EdgeInsets.symmetric(horizontal: 18.t, vertical: 10.t),
           decoration: BoxDecoration(
             color: selected
                 ? colorScheme.primary.withValues(alpha: 0.14)
                 : colorScheme.surface,
-            borderRadius: BorderRadius.circular(999),
+            borderRadius: BorderRadius.circular(UIDimensions.buttonRadius.tr),
             border: Border.all(
               color: selected
                   ? colorScheme.primary.withValues(alpha: 0.32)
@@ -89,8 +106,8 @@ class FilterChipButton extends StatelessWidget {
                 ? [
                     BoxShadow(
                       color: colorScheme.primary.withValues(alpha: 0.18),
-                      blurRadius: 12,
-                      offset: const Offset(0, 6),
+                      blurRadius: UIDimensions.shadowBlur.t,
+                      offset: Offset(0, UIDimensions.shadowOffsetY.t),
                     ),
                   ]
                 : null,

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:super_adoption/core/constants/ui_dimensions.dart';
+import 'package:super_adoption/core/extension/responsive_extension.dart';
 import 'package:super_adoption/core/router/app_router.dart';
 import 'package:super_adoption/features/animals/data/query/animal_filter.dart';
 import 'package:super_adoption/features/animals/data/query/animal_sort_order.dart';
@@ -57,7 +59,7 @@ class _AnimalListScreenState extends ConsumerState<AnimalListScreen> {
     if (!_scrollController.hasClients) return;
     final position = _scrollController.position;
 
-    if (position.pixels >= position.maxScrollExtent - 320) {
+    if (position.pixels >= position.maxScrollExtent - 320.t) {
       ref.read(animalProvider.notifier).loadMore();
     }
   }
@@ -135,14 +137,19 @@ class _AnimalListScreenState extends ConsumerState<AnimalListScreen> {
             key: const PageStorageKey('animal-list-scroll-position'),
             physics: const AlwaysScrollableScrollPhysics(),
             slivers: [
-              const SliverPadding(
-                padding: EdgeInsets.fromLTRB(20, 16, 20, 0),
-                sliver: SliverToBoxAdapter(child: AnimalListHeader()),
+              SliverPadding(
+                padding: EdgeInsets.fromLTRB(
+                  UIDimensions.pagePadding.t,
+                  UIDimensions.gapLarge.t,
+                  UIDimensions.pagePadding.t,
+                  0,
+                ),
+                sliver: const SliverToBoxAdapter(child: AnimalListHeader()),
               ),
               SliverPersistentHeader(
                 pinned: true,
                 delegate: StickyHeaderDelegate(
-                  height: 116,
+                  height: 116.t,
                   child: StickyFilterHeader(
                     filter: filter,
                     onChanged: _applyQuickFilter,
@@ -153,7 +160,12 @@ class _AnimalListScreenState extends ConsumerState<AnimalListScreen> {
                 ),
               ),
               SliverPadding(
-                padding: const EdgeInsets.fromLTRB(20, 14, 20, 120),
+                padding: EdgeInsets.fromLTRB(
+                  UIDimensions.pagePadding.t,
+                  UIDimensions.filterHeaderPaddingBottom.t,
+                  UIDimensions.pagePadding.t,
+                  UIDimensions.listBottomPadding.t,
+                ),
                 sliver: _buildBodySliver(theme, state),
               ),
             ],
@@ -190,17 +202,15 @@ class _AnimalListScreenState extends ConsumerState<AnimalListScreen> {
               onTap: () => _openAnimalDetail(state.items[index]),
             );
           },
-          separatorBuilder: (context, index) => const Gap(18),
+          separatorBuilder: (context, index) =>
+              Gap(UIDimensions.listItemSpacing.t),
         ),
         if (state.isLoadingMore)
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.only(top: 18),
+              padding: EdgeInsets.only(top: 18.t),
               child: Center(
-                child: Text(
-                  '載入更多中...',
-                  style: theme.textTheme.bodyMedium
-                ),
+                child: Text('載入更多中...', style: theme.textTheme.bodyMedium),
               ),
             ),
           ),

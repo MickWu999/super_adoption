@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:super_adoption/core/constants/ui_dimensions.dart';
+import 'package:super_adoption/core/extension/color_scheme_extension.dart';
 import 'package:super_adoption/core/extension/ext.dart';
+import 'package:super_adoption/core/extension/responsive_extension.dart';
 import 'package:super_adoption/features/animals/model/animal.dart';
 import 'package:super_adoption/features/animals/ui/widgets/animal_list_page/anima_gender_tag.dart';
 import 'package:super_adoption/features/animals/ui/widgets/animal_list_page/animal_info_tag.dart';
@@ -27,17 +30,17 @@ class AnimalCardContent extends StatelessWidget {
                 animal.displayName.or('待認養毛孩'),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.titleLarge
+                style: theme.textTheme.titleLarge,
               ),
             ),
-            const Gap(8),
+            Gap(UIDimensions.gapSmall.t),
             AnimalGenderTag(animal: animal),
           ],
         ),
-        const Gap(8),
+        Gap(UIDimensions.gapSmall.t),
         Wrap(
-          spacing: 8,
-          runSpacing: 8,
+          spacing: UIDimensions.gapSmall.t,
+          runSpacing: UIDimensions.gapSmall.t,
           children: [
             AnimalInfoTag(
               label: animal.variety,
@@ -50,29 +53,29 @@ class AnimalCardContent extends StatelessWidget {
             AnimalInfoTag(label: animal.displayAge, color: theme.colorScheme.tertiary),
           ],
         ),
-        const Gap(8),
+        Gap(UIDimensions.gapSmall.t),
         Row(
           children: [
-            const Icon(Icons.location_on_rounded, size: 15, color: Colors.red),
-            const Gap(4),
+            Icon(Icons.location_on_rounded, size: UIDimensions.iconSizeXSmall.t, color: Theme.of(context).colorScheme.locationIconColor,),
+            Gap(UIDimensions.gapXSmall.t),
             Expanded(
               child: Text(
                 animal.displayAreaName.or('地點未提供'),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.bodyMedium
+                style: theme.textTheme.bodyMedium,
               ),
             ),
-            const Gap(8),
+            Gap(UIDimensions.gapSmall.t),
             Icon(
               Icons.schedule_rounded,
-              size: 14,
+              size: UIDimensions.iconSizeMini.t,
               color: theme.colorScheme.outline,
             ),
-            const Gap(4),
+            Gap(UIDimensions.gapXSmall.t),
             Text(
               createdDateLabel,
-              style: theme.textTheme.bodySmall
+              style: theme.textTheme.bodySmall,
             ),
           ],
         ),

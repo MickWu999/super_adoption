@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:super_adoption/core/constants/ui_dimensions.dart';
+import 'package:super_adoption/core/extension/responsive_extension.dart';
 import 'package:super_adoption/features/animals/data/query/animal_filter.dart';
 import 'package:super_adoption/features/animals/data/query/animal_sort.dart';
 import 'package:super_adoption/features/animals/data/query/animal_sort_order.dart';
@@ -28,12 +30,17 @@ class StickyFilterHeader extends StatelessWidget {
     return ColoredBox(
       color: colorScheme.surface,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 12, 20, 14),
+        padding: EdgeInsets.fromLTRB(
+          UIDimensions.pagePadding.t,
+          UIDimensions.filterHeaderPaddingTop.t,
+          UIDimensions.pagePadding.t,
+          UIDimensions.filterHeaderPaddingBottom.t,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             QuickFilterChips(filter: filter, onChanged: onChanged),
-            const Gap(14),
+            Gap(14.t),
             _SortFilterBar(
               filterCount: filter.filterCount,
               sort: filter.sort,
@@ -75,8 +82,8 @@ class StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
             ? [
                 BoxShadow(
                   color: Theme.of(context).shadowColor.withValues(alpha: 0.05),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
+                  blurRadius: 10.t,
+                  offset: Offset(0, 4.t),
                 ),
               ]
             : null,
@@ -116,10 +123,12 @@ class _SortFilterBar extends StatelessWidget {
         // 排序欄位選單
         PopupMenuButton<AnimalSortOrder>(
           onSelected: onSortOrderChanged,
-          offset: const Offset(0, 32),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          offset: Offset(0, 32.t),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.tr),
+          ),
           color: colorScheme.surface,
-          elevation: 4,
+          elevation: 4.t,
           itemBuilder: (_) => AnimalSortOrder.values
               .map(
                 (order) => PopupMenuItem(
@@ -128,8 +137,12 @@ class _SortFilterBar extends StatelessWidget {
                     children: [
                       Text(order.label, style: theme.textTheme.bodyMedium),
                       if (order == sort.order) ...[
-                        const Gap(8),
-                        Icon(Icons.check_rounded, size: 16, color: colorScheme.primary),
+                        Gap(8.t),
+                        Icon(
+                          Icons.check_rounded,
+                          size: 16.t,
+                          color: colorScheme.primary,
+                        ),
                       ],
                     ],
                   ),
@@ -140,21 +153,21 @@ class _SortFilterBar extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(sort.order.label, style: theme.textTheme.titleSmall),
-              const Gap(2),
+              Gap(2.t),
               Icon(
                 Icons.arrow_drop_down_rounded,
-                size: 20,
+                size: 20.t,
                 color: colorScheme.onSurface,
               ),
             ],
           ),
         ),
-        const Gap(4),
+        Gap(4.t),
         // 排序方向切換
         GestureDetector(
           onTap: onSortDirectionToggle,
           child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 200),
+            duration: UIDimensions.animationNormal,
             transitionBuilder: (child, animation) =>
                 ScaleTransition(scale: animation, child: child),
             child: Icon(
@@ -162,7 +175,7 @@ class _SortFilterBar extends StatelessWidget {
                   ? Icons.arrow_upward_rounded
                   : Icons.arrow_downward_rounded,
               key: ValueKey(sort.ascending),
-              size: 18,
+              size: 18.t,
               color: colorScheme.onSurface,
             ),
           ),
@@ -173,21 +186,21 @@ class _SortFilterBar extends StatelessWidget {
           style: TextButton.styleFrom(
             foregroundColor: colorScheme.onSurface,
             padding: EdgeInsets.zero,
-            minimumSize: const Size(0, 32),
+            minimumSize: Size(0, 32.t),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
           iconAlignment: IconAlignment.end,
           icon: Stack(
             clipBehavior: Clip.none,
             children: [
-              const Icon(Icons.tune_rounded, size: 18),
+              Icon(Icons.tune_rounded, size: 18.t),
               if (filterCount > 0)
                 Positioned(
-                  right: -4,
-                  top: -4,
+                  right: -4.t,
+                  top: -4.t,
                   child: Container(
-                    width: 8,
-                    height: 8,
+                    width: 8.t,
+                    height: 8.t,
                     decoration: BoxDecoration(
                       color: colorScheme.primary,
                       shape: BoxShape.circle,

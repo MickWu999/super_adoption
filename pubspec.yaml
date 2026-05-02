@@ -49,6 +49,7 @@ dependencies:
   # firebase_core: ^4.7.0
   # firebase_messaging: ^16.2.0
   supabase_flutter: ^2.12.4
+  flutter_screenutil: ^5.9.3
   # introduction_screen: ^4.0.0
 
 dev_dependencies:

@@ -1,38 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:super_adoption/core/constants/ui_dimensions.dart';
+import 'package:super_adoption/core/extension/responsive_extension.dart';
 
 class AdoptionReminderCard extends StatelessWidget {
   const AdoptionReminderCard({super.key});
-
-  static const _radius = 18.0;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(22, 20, 18, 20),
+      padding: EdgeInsets.symmetric(horizontal: 20.t, vertical: 20.t),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(_radius),
+        borderRadius: BorderRadius.circular(18.tr),
       ),
       child: Row(
         children: [
           Container(
-            width: 72,
-            height: 72,
+            width: 72.t,
+            height: 72.t,
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.65),
-              borderRadius: BorderRadius.circular(_radius),
+              color: colorScheme.surface.withValues(alpha: 0.65),
+              borderRadius: BorderRadius.circular(18.tr),
             ),
             child: Icon(
               Icons.assignment_turned_in_outlined,
               color: colorScheme.tertiary,
-              size: 40,
+              size: 40.t,
             ),
           ),
-          const Gap(18),
+          Gap(18.t),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,10 +50,12 @@ class AdoptionReminderCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                const Gap(8),
+                const Gap(UIDimensions.gapSmall),
                 Text(
-                  '認養是一輩子的承諾，\n請先了解認養流程與注意事項喔！',
-                  style: theme.textTheme.bodyMedium
+                  '認養是一輩子的承諾，請先了解認養流程與注意事項喔！',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.bodyMedium,
                 ),
               ],
             ),
@@ -60,7 +63,7 @@ class AdoptionReminderCard extends StatelessWidget {
           Icon(
             Icons.chevron_right_rounded,
             color: theme.colorScheme.primary,
-            size: 28,
+            size: UIDimensions.sheetRadius.t,
           ),
         ],
       ),

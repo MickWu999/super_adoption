@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:super_adoption/core/extension/ext.dart';
+import 'package:super_adoption/core/extension/responsive_extension.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:super_adoption/core/enum/load_status.dart';
 import 'package:super_adoption/core/widgets/error_fallback_card.dart';
@@ -70,9 +71,9 @@ class _ActivityBannerState extends State<ActivityBanner> {
     return Column(
       children: [
         SizedBox(
-          height: _height,
+          height: _height.t,
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(_radius),
+            borderRadius: BorderRadius.circular(_radius.tr),
             child: PageView.builder(
               controller: _pageController,
               itemCount: banners.length,
@@ -106,21 +107,21 @@ class _ActivityBannerState extends State<ActivityBanner> {
           ),
         ),
         if (banners.length > 1) ...[
-          const Gap(10),
+          Gap(10.t),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
               banners.length,
               (index) => AnimatedContainer(
                 duration: const Duration(milliseconds: 180),
-                width: index == _currentIndex ? 18 : 6,
-                height: 6,
-                margin: const EdgeInsets.symmetric(horizontal: 3),
+                width: index == _currentIndex ? 18.t : 6.t,
+                height: 6.t,
+                margin: EdgeInsets.symmetric(horizontal: 3.t),
                 decoration: BoxDecoration(
                   color: index == _currentIndex
                       ? colorScheme.primary
                       : colorScheme.outlineVariant,
-                  borderRadius: BorderRadius.circular(99),
+                  borderRadius: BorderRadius.circular(99.tr),
                 ),
               ),
             ),
@@ -154,11 +155,11 @@ class _BannerInfoSheet extends StatelessWidget {
         return DecoratedBox(
           decoration: BoxDecoration(
             color: colorScheme.surface,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(28.tr)),
           ),
           child: SingleChildScrollView(
             controller: scrollController,
-            padding: const EdgeInsets.fromLTRB(20, 6, 20, 24),
+            padding: EdgeInsets.fromLTRB(20.t, 6.t, 20.t, 24.t),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -175,24 +176,24 @@ class _BannerInfoSheet extends StatelessWidget {
                     ),
                   ],
                 ),
-                const Gap(20),
+                Gap(20.t),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      width: 46,
-                      height: 46,
+                      width: 46.t,
+                      height: 46.t,
                       decoration: BoxDecoration(
                         color: colorScheme.primary.withValues(alpha: 0.12),
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(16.tr),
                       ),
                       child: Icon(
                         Icons.campaign_rounded,
                         color: colorScheme.primary,
-                        size: 26,
+                        size: 26.t,
                       ),
                     ),
-                    const Gap(12),
+                    Gap(12.t),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -203,7 +204,7 @@ class _BannerInfoSheet extends StatelessWidget {
                               height: 1.2,
                             ),
                           ),
-                          const Gap(6),
+                          Gap(6.t),
                           Text(
                             '活動資訊',
                             style: theme.textTheme.bodySmall?.copyWith(
@@ -216,19 +217,19 @@ class _BannerInfoSheet extends StatelessWidget {
                   ],
                 ),
                 if (hasDate) ...[
-                  const Gap(18),
+                  Gap(18.t),
                   _BannerInfoTile(
                     icon: Icons.event_available_rounded,
                     title: '活動期間',
                     value: banner.displayDate!,
                   ),
                 ],
-                const Gap(18),
+                Gap(18.t),
                 Text(
                   '活動說明',
                   style: theme.textTheme.titleSmall,
                 ),
-                const Gap(8),
+                Gap(8.t),
                 Text(
                   banner.description ?? '查看更多活動資訊與認養消息。',
                   style: theme.textTheme.bodyLarge?.copyWith(
@@ -236,7 +237,7 @@ class _BannerInfoSheet extends StatelessWidget {
                     color: colorScheme.onSurfaceVariant,
                   ),
                 ),
-                const Gap(24),
+                Gap(24.t),
                 if (hasLink)
                   SizedBox(
                     width: double.infinity,
@@ -275,24 +276,24 @@ class _BannerInfoTile extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(14),
+      padding: EdgeInsets.all(14.t),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.tr),
         // border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: Row(
         children: [
           Container(
-            width: 38,
-            height: 38,
+            width: 38.t,
+            height: 38.t,
             decoration: BoxDecoration(
               color: colorScheme.primary.withValues(alpha: 0.12),
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, color: colorScheme.primary, size: 20),
+            child: Icon(icon, color: colorScheme.primary, size: 20.t),
           ),
-          const Gap(12),
+          Gap(12.t),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -302,7 +303,7 @@ class _BannerInfoTile extends StatelessWidget {
                   color: colorScheme.onSurfaceVariant,
                 ),
               ),
-              const Gap(3),
+              Gap(3.t),
               Text(
                 value,
                 style: theme.textTheme.titleSmall,
