@@ -26,14 +26,18 @@ class AnimalDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final animal = ref.watch(animalDetailProvider(animalId));
-    final relatedAnimals = ref.watch(relatedAnimalsProvider(animalId));
+    final animalAsync = ref.watch(animalDetailProvider(animalId));
+    final animal = animalAsync.asData?.value;
+    final relatedAnimals =
+        ref.watch(relatedAnimalsProvider(animalId)).asData?.value ?? const [];
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
       body: Stack(
         children: [
-          if (animal == null)
+          if (animalAsync.isLoading)
+            const _DetailLoadingView()
+          else if (animal == null)
             CustomScrollView(
               slivers: [
                 const SliverToBoxAdapter(child: Gap(120)),
@@ -743,3 +747,20 @@ final _officialAdoptionUri = Uri.parse(
 final _officialShelterUri = Uri.parse(
   'https://animal.moa.gov.tw/Frontend/PublicShelter',
 );
+
+class _DetailLoadingView extends StatelessWidget {
+  const _DetailLoadingView();
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return ColoredBox(
+      color: colorScheme.surface,
+      child: Center(
+        child: CircularProgressIndicator.adaptive(
+          valueColor: AlwaysStoppedAnimation(colorScheme.primary),
+        ),
+      ),
+    );
+  }
+}

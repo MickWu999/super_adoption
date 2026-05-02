@@ -51,6 +51,21 @@ class SupabaseAnimalRepository implements AnimalRepository {
     return rows.map(_rowToAnimal).toList();
   }
 
+  @override
+  Future<Animal?> fetchAnimalById(String animalId) async {
+    final id = int.tryParse(animalId);
+    if (id == null) return null;
+
+    final row = await _client
+        .from('animals')
+        .select()
+        .eq(AnimalTableColumns.id, id)
+        .maybeSingle();
+
+    if (row == null) return null;
+    return _rowToAnimal(row);
+  }
+
   Animal _rowToAnimal(Map<String, dynamic> row) {
     String s(String key) => (row[key] as String?) ?? '';
     int? i(String key) => row[key] as int?;

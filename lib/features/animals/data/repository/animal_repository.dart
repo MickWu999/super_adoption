@@ -9,6 +9,7 @@ part 'animal_repository.g.dart';
 /// 動物資料來源介面。
 abstract interface class AnimalRepository {
   Future<List<Animal>> fetchAnimals(AnimalFilter filter);
+  Future<Animal?> fetchAnimalById(String animalId);
 }
 
 @riverpod
