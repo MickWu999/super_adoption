@@ -14,7 +14,7 @@ class _AnimalCardTokens {
   const _AnimalCardTokens._();
 
   // Section layout sizes
-  static const horizontalHeight = 300.0; // 橫向列表高度
+  static const horizontalHeight = 310.0; // 橫向列表高度
   static const itemSpacing = 12.0; // 卡片之間間距
   static const headerSpacing = 14.0; // 標題與內容距離
 
