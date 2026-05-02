@@ -1,5 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:super_adoption/features/animals/data/query/animal_filter.dart';
+import 'package:super_adoption/features/animals/data/query/animal_sort_order.dart';
 import 'package:super_adoption/features/animals/model/animal.dart';
 import 'package:super_adoption/features/animals/data/repository/animal_repository.dart';
 
@@ -33,9 +34,17 @@ class SupabaseAnimalRepository implements AnimalRepository {
     if (filter.areaId != null) {
       query = query.eq('animal_area_pkid', filter.areaId!);
     }
+    if (filter.hasImage) {
+      query = query.neq('image_url', '');
+    }
+
+    final sortColumn = switch (filter.sortOrder) {
+      AnimalSortOrder.createTime => 'animal_create_time',
+      // AnimalSortOrder.popularity => 'popularity',
+    };
 
     final rows = await query
-        .order('animal_create_time', ascending: false)
+        .order(sortColumn, ascending: filter.sortAscending)
         .range(filter.skip, filter.skip + filter.top - 1);
 
     return rows.map(_rowToAnimal).toList();

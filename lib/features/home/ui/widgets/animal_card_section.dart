@@ -7,7 +7,7 @@ import 'package:super_adoption/core/widgets/error_fallback_card.dart';
 import 'package:super_adoption/core/widgets/animal_network_image.dart';
 import 'package:super_adoption/core/widgets/skeleton_box.dart';
 import 'package:super_adoption/features/animals/model/animal.dart';
-import 'package:super_adoption/features/animals/ui/widgets/animal_list_page/animal_info_tag.dart';
+import 'package:super_adoption/features/animals/ui/widgets/animal_list_page/anima_gender_tag.dart';
 import 'package:super_adoption/features/favorites/state/favorites_provider.dart';
 
 class _AnimalCardTokens {
@@ -201,8 +201,10 @@ class AnimalCardContent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
-    final detailText = '${animal.bodyType}・${animal.age}';
-    final isFavorite = ref.watch(favoritesProvider).contains(animal.animalSubId);
+    final detailText = '${animal.displayBodyType}・${animal.displayAge}';
+    final isFavorite = ref
+        .watch(favoritesProvider)
+        .contains(animal.animalSubId);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -225,19 +227,22 @@ class AnimalCardContent extends ConsumerWidget {
                   : colorScheme.onSurfaceVariant,
               iconSize: 16,
               size: 32,
-              onTap: () =>
-                  ref.read(favoritesProvider.notifier).toggle(animal.animalSubId),
+              onTap: () => ref
+                  .read(favoritesProvider.notifier)
+                  .toggle(animal.animalSubId),
             ),
           ],
         ),
         const Gap(4),
         Row(
           children: [
-            AnimalInfoTag(
-              color: animal.isFemale ? Colors.pink : Colors.blue,
-              icon: animal.isFemale ? Icons.female_rounded : Icons.male_rounded,
-              padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+            AnimalGenderTag(
+              animal: animal,
+              showLabel: false,
+              horizontalPadding: 3,
+              verticalPadding: 3,
             ),
+
             const Gap(6),
             Expanded(
               child: Text(

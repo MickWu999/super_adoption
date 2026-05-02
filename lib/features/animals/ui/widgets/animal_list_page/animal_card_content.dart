@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:super_adoption/core/extension/ext.dart';
 import 'package:super_adoption/features/animals/model/animal.dart';
+import 'package:super_adoption/features/animals/ui/widgets/animal_list_page/anima_gender_tag.dart';
 import 'package:super_adoption/features/animals/ui/widgets/animal_list_page/animal_info_tag.dart';
 
 class AnimalCardContent extends StatelessWidget {
@@ -30,12 +31,7 @@ class AnimalCardContent extends StatelessWidget {
               ),
             ),
             const Gap(8),
-            AnimalInfoTag(
-              label: animal.displayGender,
-              color: animal.isFemale ? Colors.pink : Colors.blue,
-              icon: animal.isFemale ? Icons.female_rounded : Icons.male_rounded,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            ),
+            AnimalGenderTag(animal: animal),
           ],
         ),
         const Gap(8),
@@ -48,10 +44,10 @@ class AnimalCardContent extends StatelessWidget {
               color: theme.colorScheme.primary,
             ),
             AnimalInfoTag(
-              label: animal.bodyType,
+              label: animal.displayBodyType,
               color: theme.colorScheme.secondary,
             ),
-            AnimalInfoTag(label: animal.age, color: theme.colorScheme.tertiary),
+            AnimalInfoTag(label: animal.displayAge, color: theme.colorScheme.tertiary),
           ],
         ),
         const Gap(8),

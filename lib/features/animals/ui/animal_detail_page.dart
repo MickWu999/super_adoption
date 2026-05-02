@@ -137,8 +137,8 @@ class _DetailBody extends StatelessWidget {
           runSpacing: 8,
           children: [
             _InfoTag(label: animal.displayGender),
-            _InfoTag(label: animal.age),
-            _InfoTag(label: animal.bodyType),
+            _InfoTag(label: animal.displayAge),
+            _InfoTag(label: animal.displayBodyType),
             _InfoTag(label: animal.kind),
           ],
         ),
@@ -169,12 +169,12 @@ class _DetailBody extends StatelessWidget {
             _InfoRowData(
               icon: Icons.medical_information_outlined,
               label: '絕育狀態',
-              value: animal.sterilization,
+              value: animal.displaySterilization,
             ),
             _InfoRowData(
               icon: Icons.vaccines_outlined,
               label: '狂犬疫苗',
-              value: animal.bacterin,
+              value: animal.displayBacterin,
             ),
             _InfoRowData(
               icon: Icons.event_available_outlined,

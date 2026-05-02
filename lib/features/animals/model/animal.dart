@@ -41,8 +41,14 @@ abstract class Animal with _$Animal {
   String get displayGender => _mapGender(sex);
   String get displayAreaName => _mapAreaName(areaId);
   String get displayStatus => _mapStatus(status);
+  String get displayAge => _mapAge(age);
+  String get displayBodyType => _mapBodyType(bodyType);
+  String get displaySterilization => _mapSterilization(sterilization);
+  String get displayBacterin => _mapBacterin(bacterin);
 
-  bool get isFemale => sex.trim().toUpperCase() == 'F';
+  bool get isFemale => sex == 'F';
+  bool get isMale => sex == 'M';
+
 
   String _buildName() {
     final normalizedTitle = title.trim();
@@ -119,5 +125,36 @@ abstract class Animal with _$Animal {
     };
 
     return areaCodeMap[rawAreaId] ?? '';
+  }
+
+  String _mapAge(String v) {
+    final value = v.trim().toUpperCase();
+    if (value == 'CHILD') return '幼年';
+    if (value == 'ADULT') return '成年';
+    return v.trim();
+  }
+
+  String _mapBodyType(String v) {
+    final value = v.trim().toUpperCase();
+    if (value == 'SMALL') return '小型';
+    if (value == 'MEDIUM') return '中型';
+    if (value == 'BIG') return '大型';
+    return v.trim();
+  }
+
+  String _mapSterilization(String v) {
+    final value = v.trim().toUpperCase();
+    if (value == 'T') return '已絕育';
+    if (value == 'F') return '未絕育';
+    if (value == 'N') return '未輸入';
+    return v.trim();
+  }
+
+  String _mapBacterin(String v) {
+    final value = v.trim().toUpperCase();
+    if (value == 'T') return '已施打';
+    if (value == 'F') return '未施打';
+    if (value == 'N') return '未輸入';
+    return v.trim();
   }
 }

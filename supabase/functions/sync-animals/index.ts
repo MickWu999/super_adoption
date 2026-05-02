@@ -50,7 +50,7 @@ function mapAnimalRow(row: Json, syncAtIso: string, syncRunId: string) {
     animal_shelter_pkid: toInt(row["animal_shelter_pkid"]),
     name: toText(row["animal_name"]),
     kind: toText(row["animal_kind"]),
-    variety: toText(row["animal_Variety"]),
+    variety: toText(row["animal_Variety"]).replace(/\s+/g, ''),
     sex: toText(row["animal_sex"]),
     body_type: toText(row["animal_bodytype"]),
     age: toText(row["animal_age"]),

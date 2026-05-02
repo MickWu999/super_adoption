@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:super_adoption/core/extension/ext.dart';
+import 'package:super_adoption/features/animals/data/query/animal_sort_order.dart';
 
 part 'animal_filter.freezed.dart';
 
@@ -31,6 +32,16 @@ abstract class AnimalFilter with _$AnimalFilter {
 
     /// 動物所屬縣市代碼。
     int? areaId,
+
+    /// 是否只顯示有照片的動物。
+    /// DB 層以 image_url 非空來判斷，非 API 原生查詢參數。
+    @Default(true) bool hasImage,
+
+    /// 排序方式。
+    @Default(AnimalSortOrder.createTime) AnimalSortOrder sortOrder,
+
+    /// 排序方向：false = 由新到舊（預設），true = 由舊到新。
+    @Default(false) bool sortAscending,
 
     // 以下是官方 API 支援，但目前 App 暫不開放給使用者篩選的欄位。
     // 先保留註解，未來若要做進階搜尋可以再打開。
@@ -80,6 +91,7 @@ abstract class AnimalFilter with _$AnimalFilter {
       age: null,
       bodyType: null,
       areaId: null,
+      hasImage: true,
     );
   }
 

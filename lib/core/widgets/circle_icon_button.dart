@@ -19,22 +19,18 @@ class CircleIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Material(
-      color: colorScheme.surface.withValues(alpha: 0.88),
-      shape: const CircleBorder(),
-      child: InkWell(
-        customBorder: const CircleBorder(),
-        onTap: onTap,
-        child: SizedBox(
-          width: size,
-          height: size,
-          child: Icon(
-            icon,
-            size: iconSize,
-            color: onTap == null
-                ? colorScheme.onSurface.withValues(alpha: 0.35)
-                : (iconColor ?? colorScheme.onSurface),
-          ),
+    return InkWell(
+      customBorder: const CircleBorder(),
+      onTap: onTap,
+      child: SizedBox(
+        width: size,
+        height: size,
+        child: Icon(
+          icon,
+          size: iconSize,
+          color: onTap == null
+              ? colorScheme.onSurface.withValues(alpha: 0.35)
+              : (iconColor ?? colorScheme.onSurface),
         ),
       ),
     );

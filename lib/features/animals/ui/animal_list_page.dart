@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:super_adoption/core/router/app_router.dart';
 import 'package:super_adoption/features/animals/data/query/animal_filter.dart';
+import 'package:super_adoption/features/animals/data/query/animal_sort_order.dart';
 import 'package:super_adoption/features/animals/model/animal.dart';
 import 'package:super_adoption/features/animals/state/animal_list_state.dart';
 import 'package:super_adoption/features/animals/state/animal_list_provider.dart';
@@ -105,6 +106,20 @@ class _AnimalListScreenState extends ConsumerState<AnimalListScreen> {
     );
   }
 
+  void _onSortOrderChanged(AnimalSortOrder order) {
+    final filter = ref.read(animalProvider).filter;
+    ref
+        .read(animalProvider.notifier)
+        .applyFilter(filter.copyWith(sortOrder: order));
+  }
+
+  void _onSortDirectionToggle() {
+    final filter = ref.read(animalProvider).filter;
+    ref
+        .read(animalProvider.notifier)
+        .applyFilter(filter.copyWith(sortAscending: !filter.sortAscending));
+  }
+
   void _openAnimalDetail(Animal animal) {
     context.push(AppRoutes.animalDetail(animal.animalId));
   }
@@ -138,6 +153,8 @@ class _AnimalListScreenState extends ConsumerState<AnimalListScreen> {
                     filter: filter,
                     onChanged: _applyQuickFilter,
                     onFilterTap: _openFilterSheet,
+                    onSortOrderChanged: _onSortOrderChanged,
+                    onSortDirectionToggle: _onSortDirectionToggle,
                   ),
                 ),
               ),

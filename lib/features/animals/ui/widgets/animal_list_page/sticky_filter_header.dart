@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:super_adoption/features/animals/data/query/animal_filter.dart';
+import 'package:super_adoption/features/animals/data/query/animal_sort_order.dart';
 import 'package:super_adoption/features/animals/ui/widgets/animal_list_page/quick_filter_chips.dart';
 
 class StickyFilterHeader extends StatelessWidget {
@@ -9,11 +10,15 @@ class StickyFilterHeader extends StatelessWidget {
     required this.filter,
     required this.onChanged,
     required this.onFilterTap,
+    required this.onSortOrderChanged,
+    required this.onSortDirectionToggle,
   });
 
   final AnimalFilter filter;
   final ValueChanged<AnimalFilter> onChanged;
   final VoidCallback onFilterTap;
+  final ValueChanged<AnimalSortOrder> onSortOrderChanged;
+  final VoidCallback onSortDirectionToggle;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +35,11 @@ class StickyFilterHeader extends StatelessWidget {
             const Gap(14),
             _SortFilterBar(
               filterCount: filter.filterCount,
+              sortOrder: filter.sortOrder,
+              sortAscending: filter.sortAscending,
               onFilterTap: onFilterTap,
+              onSortOrderChanged: onSortOrderChanged,
+              onSortDirectionToggle: onSortDirectionToggle,
             ),
           ],
         ),
@@ -83,10 +92,21 @@ class StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
 }
 
 class _SortFilterBar extends StatelessWidget {
-  const _SortFilterBar({required this.filterCount, required this.onFilterTap});
+  const _SortFilterBar({
+    required this.filterCount,
+    required this.sortOrder,
+    required this.sortAscending,
+    required this.onFilterTap,
+    required this.onSortOrderChanged,
+    required this.onSortDirectionToggle,
+  });
 
   final int filterCount;
+  final AnimalSortOrder sortOrder;
+  final bool sortAscending;
   final VoidCallback onFilterTap;
+  final ValueChanged<AnimalSortOrder> onSortOrderChanged;
+  final VoidCallback onSortDirectionToggle;
 
   @override
   Widget build(BuildContext context) {
@@ -95,15 +115,59 @@ class _SortFilterBar extends StatelessWidget {
 
     return Row(
       children: [
-        Text(
-          '最新上架',
-          style: theme.textTheme.titleSmall
+        // 排序欄位選單
+        PopupMenuButton<AnimalSortOrder>(
+          onSelected: onSortOrderChanged,
+          offset: const Offset(0, 32),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          color: colorScheme.surface,
+          elevation: 4,
+          itemBuilder: (_) => AnimalSortOrder.values
+              .map(
+                (order) => PopupMenuItem(
+                  value: order,
+                  child: Row(
+                    children: [
+                      Text(order.label, style: theme.textTheme.bodyMedium),
+                      if (order == sortOrder) ...[
+                        const Gap(8),
+                        Icon(Icons.check_rounded, size: 16, color: colorScheme.primary),
+                      ],
+                    ],
+                  ),
+                ),
+              )
+              .toList(),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(sortOrder.label, style: theme.textTheme.titleSmall),
+              const Gap(2),
+              Icon(
+                Icons.arrow_drop_down_rounded,
+                size: 20,
+                color: colorScheme.onSurface,
+              ),
+            ],
+          ),
         ),
         const Gap(4),
-        Icon(
-          Icons.keyboard_arrow_down_rounded,
-          size: 20,
-          color: colorScheme.onSurface,
+        // 排序方向切換
+        GestureDetector(
+          onTap: onSortDirectionToggle,
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 200),
+            transitionBuilder: (child, animation) =>
+                ScaleTransition(scale: animation, child: child),
+            child: Icon(
+              sortAscending
+                  ? Icons.arrow_upward_rounded
+                  : Icons.arrow_downward_rounded,
+              key: ValueKey(sortAscending),
+              size: 18,
+              color: colorScheme.onSurface,
+            ),
+          ),
         ),
         const Spacer(),
         TextButton.icon(
@@ -136,7 +200,7 @@ class _SortFilterBar extends StatelessWidget {
           ),
           label: Text(
             filterCount > 0 ? '篩選條件 $filterCount' : '篩選條件',
-            style: theme.textTheme.titleSmall
+            style: theme.textTheme.titleSmall,
           ),
         ),
       ],
