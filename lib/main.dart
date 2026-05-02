@@ -8,10 +8,18 @@ import 'package:super_adoption/core/theme/app_theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Supabase.initialize(
-    url: Env.supabaseUrl,
-    anonKey: Env.supabaseAnonKey,
-  );
+  // Supabase DB schema 建議放在專案 db/migrations/*.sql 管理。
+  // 使用者帳號由 Supabase Auth 的 auth.users 管理，App 端資料放 public.profiles / public.animal_favorites。
+  try {
+    await Supabase.initialize(
+      url: Env.supabaseUrl,
+      anonKey: Env.supabaseAnonKey,
+    );
+  } catch (error, stackTrace) {
+    debugPrint('Supabase initialize failed: $error');
+    debugPrintStack(stackTrace: stackTrace);
+    rethrow;
+  }
 
   runApp(ProviderScope(child: const SuperAdoptionApp()));
 }

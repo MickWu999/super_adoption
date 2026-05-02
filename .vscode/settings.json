@@ -1,13 +1,35 @@
 {
-   "explorer.fileNesting.enabled": true,
-   "explorer.fileNesting.expand": false,
-   "explorer.fileNesting.patterns": {
+  "[typescript]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
+  },
+  "chat.tools.terminal.autoApprove": {
+    "/^dart pub deps --json 2\u003e/dev/null \\| python3 -c \"import sys,json; deps=json\\.load\\(sys\\.stdin\\); \\[print\\(p\\['name'\\],p\\['version'\\]\\) for p in deps\\.get\\('packages',\\[\\]\\) if 'envied' in p\\.get\\('name',''\\)\\]\" 2\u003e/dev/null \\|\\| flutter pub deps 2\u003e\u00261 \\| grep envied$/": {
+      "approve": true,
+      "matchCommandLine": true
+    }
+  },
+  "deno.enablePaths": [
+    "supabase/functions"
+  ],
+  "deno.lint": true,
+  "deno.unstable": [
+    "bare-node-builtins",
+    "byonm",
+    "sloppy-imports",
+    "unsafe-proto",
+    "webgpu",
+    "broadcast-channel",
+    "worker-options",
+    "cron",
+    "kv",
+    "ffi",
+    "fs",
+    "http",
+    "net"
+  ],
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
     "*.dart": "${capture}.freezed.dart, ${capture}.g.dart"
-   },
-   "chat.tools.terminal.autoApprove": {
-      "/^dart pub deps --json 2>/dev/null \\| python3 -c \"import sys,json; deps=json\\.load\\(sys\\.stdin\\); \\[print\\(p\\['name'\\],p\\['version'\\]\\) for p in deps\\.get\\('packages',\\[\\]\\) if 'envied' in p\\.get\\('name',''\\)\\]\" 2>/dev/null \\|\\| flutter pub deps 2>&1 \\| grep envied$/": {
-         "approve": true,
-         "matchCommandLine": true
-      }
-   }
+  }
 }
