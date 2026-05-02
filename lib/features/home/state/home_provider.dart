@@ -1,6 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:super_adoption/core/enum/load_status.dart';
-import 'package:super_adoption/features/animals/model/animal.dart';
 import 'package:super_adoption/features/home/data/repository/home_repository.dart';
 import 'package:super_adoption/features/home/state/home_state.dart';
 
