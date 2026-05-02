@@ -12,8 +12,8 @@ class AnimalCardContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final createdDateLabel = animal.createdDate.isNotBlank
-        ? '${animal.createdDate} 上架'
+    final createdDateLabel = animal.createDate.isNotBlank
+      ? '${animal.createDate} 上架'
         : '近期上架';
 
     return Column(
@@ -23,7 +23,7 @@ class AnimalCardContent extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                animal.name.or('待認養毛孩'),
+                animal.displayName.or('待認養毛孩'),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.titleLarge
@@ -31,7 +31,7 @@ class AnimalCardContent extends StatelessWidget {
             ),
             const Gap(8),
             AnimalInfoTag(
-              label: animal.gender,
+              label: animal.displayGender,
               color: animal.isFemale ? Colors.pink : Colors.blue,
               icon: animal.isFemale ? Icons.female_rounded : Icons.male_rounded,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -61,7 +61,7 @@ class AnimalCardContent extends StatelessWidget {
             const Gap(4),
             Expanded(
               child: Text(
-                animal.areaName.or('地點未提供'),
+                animal.displayAreaName.or('地點未提供'),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.bodyMedium

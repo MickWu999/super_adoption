@@ -101,7 +101,8 @@ class HomeScreen extends ConsumerWidget {
                 title: '本週新毛孩',
                 animals: newAnimals,
                 status: homeState.status,
-                onAnimalTap: (animal) => _openAnimalDetail(context, animal.id),
+                onAnimalTap: (animal) =>
+                    _openAnimalDetail(context, animal.animalId),
                 onMoreTap: () {
                   context.push(AppRoutes.animals);
                 },
@@ -111,7 +112,8 @@ class HomeScreen extends ConsumerWidget {
                 title: '熱門毛孩',
                 animals: popularAnimals,
                 status: homeState.status,
-                onAnimalTap: (animal) => _openAnimalDetail(context, animal.id),
+                onAnimalTap: (animal) =>
+                    _openAnimalDetail(context, animal.animalId),
                 onMoreTap: () {
                   context.push(AppRoutes.animals);
                 },

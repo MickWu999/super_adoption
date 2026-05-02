@@ -150,7 +150,7 @@ class AnimalNotifier extends _$AnimalNotifier {
     final uniqueById = <String, Animal>{};
 
     for (final animal in animals) {
-      uniqueById[animal.id] = animal;
+      uniqueById[animal.animalId] = animal;
     }
 
     return uniqueById.values.toList();

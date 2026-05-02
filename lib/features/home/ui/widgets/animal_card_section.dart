@@ -202,7 +202,7 @@ class AnimalCardContent extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
     final detailText = '${animal.bodyType}・${animal.age}';
-    final isFavorite = ref.watch(favoritesProvider).contains(animal.subId);
+    final isFavorite = ref.watch(favoritesProvider).contains(animal.animalSubId);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -210,7 +210,7 @@ class AnimalCardContent extends ConsumerWidget {
           children: [
             Expanded(
               child: Text(
-                animal.name,
+                animal.displayName,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.titleMedium,
@@ -225,7 +225,8 @@ class AnimalCardContent extends ConsumerWidget {
                   : colorScheme.onSurfaceVariant,
               iconSize: 16,
               size: 32,
-              onTap: () => ref.read(favoritesProvider.notifier).toggle(animal.subId),
+              onTap: () =>
+                  ref.read(favoritesProvider.notifier).toggle(animal.animalSubId),
             ),
           ],
         ),
@@ -258,7 +259,7 @@ class AnimalCardContent extends ConsumerWidget {
             const Gap(4),
             Expanded(
               child: Text(
-                '${animal.areaName}・3.2 km',
+                '${animal.displayAreaName}・3.2 km',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.bodySmall?.copyWith(

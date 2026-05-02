@@ -16,7 +16,7 @@ class AnimalLargeCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final isFavorite = ref.watch(favoritesProvider).contains(animal.subId);
+    final isFavorite = ref.watch(favoritesProvider).contains(animal.animalSubId);
 
     return InkWell(
       borderRadius: BorderRadius.circular(22),
@@ -55,7 +55,8 @@ class AnimalLargeCard extends ConsumerWidget {
                         : colorScheme.onSurface,
                     iconSize: 20,
                     size: 40,
-                    onTap: () => ref.read(favoritesProvider.notifier).toggle(animal.subId),
+                    onTap: () =>
+                        ref.read(favoritesProvider.notifier).toggle(animal.animalSubId),
                   ),
                 ),
               ],

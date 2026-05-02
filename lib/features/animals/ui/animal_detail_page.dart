@@ -94,7 +94,9 @@ class AnimalDetailScreen extends ConsumerWidget {
             animal: animal,
             onFavoriteTap: animal == null
                 ? null
-                : () => ref.read(favoritesProvider.notifier).toggle(animal.subId),
+                : () => ref
+                      .read(favoritesProvider.notifier)
+                      .toggle(animal.animalSubId),
           ),
           _BottomActionBar(animal: animal),
         ],
@@ -120,10 +122,13 @@ class _DetailBody extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: Text(animal.name, style: theme.textTheme.headlineSmall),
+              child: Text(
+                animal.displayName,
+                style: theme.textTheme.headlineSmall,
+              ),
             ),
             const Gap(12),
-            _StatusTag(status: animal.status),
+            _StatusTag(status: animal.displayStatus),
           ],
         ),
         const Gap(12),
@@ -131,14 +136,12 @@ class _DetailBody extends StatelessWidget {
           spacing: 8,
           runSpacing: 8,
           children: [
-            _InfoTag(label: animal.gender),
+            _InfoTag(label: animal.displayGender),
             _InfoTag(label: animal.age),
             _InfoTag(label: animal.bodyType),
-            _InfoTag(label: animal.type),
+            _InfoTag(label: animal.kind),
           ],
         ),
-        const Gap(18),
-        _DataMetaCard(animal: animal),
         const Gap(18),
         _ShelterInfoCard(animal: animal),
         const Gap(18),
@@ -188,7 +191,7 @@ class _DetailBody extends StatelessWidget {
             animals: relatedAnimals,
             onMoreTap: () => context.push(AppRoutes.animals),
             onAnimalTap: (animal) {
-              context.push(AppRoutes.animalDetail(animal.id));
+              context.push(AppRoutes.animalDetail(animal.animalId));
             },
           ),
         ],
@@ -207,7 +210,7 @@ class _TopActionBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
     final isFavorite = animal != null
-        ? ref.watch(favoritesProvider).contains(animal!.subId)
+        ? ref.watch(favoritesProvider).contains(animal!.animalSubId)
         : false;
 
     return SafeArea(
@@ -269,7 +272,7 @@ class _BottomActionBar extends StatelessWidget {
             Expanded(
               child: OutlinedButton.icon(
                 onPressed: isEnabled
-                    ? () => _callShelter(context, animal!.shelterPhone)
+                    ? () => _callShelter(context, animal!.shelterTel)
                     : null,
                 icon: const Icon(Icons.call_rounded),
                 label: const Text('聯絡電話'),
@@ -341,7 +344,7 @@ class _ShelterInfoCard extends StatelessWidget {
           ),
           const Gap(12),
           _CardInfoRow(label: '地址', value: animal.shelterAddress.or('未提供')),
-          _CardInfoRow(label: '電話', value: animal.shelterPhone.or('未提供')),
+          _CardInfoRow(label: '電話', value: animal.shelterTel.or('未提供')),
           const _CardInfoRow(
             label: '開放時間',
             value: '請依各收容所現場公告與官方頁面為準',
@@ -689,7 +692,7 @@ Future<void> _showAdoptionConfirmSheet(
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
-                      _callShelter(context, animal.shelterPhone);
+                      _callShelter(context, animal.shelterTel);
                     },
                     child: const Text('撥打電話'),
                   ),

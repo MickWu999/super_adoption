@@ -36,9 +36,9 @@ List<Animal> relatedAnimals(Ref ref, String animalId) {
   final related = <String, Animal>{};
 
   for (final animal in merged) {
-    if (animal.id == animalId) continue;
-    if (animal.type != current.type) continue;
-    related[animal.id] = animal;
+    if (animal.animalId == animalId) continue;
+    if (animal.kind != current.kind) continue;
+    related[animal.animalId] = animal;
   }
 
   return related.values.take(6).toList();
@@ -46,7 +46,7 @@ List<Animal> relatedAnimals(Ref ref, String animalId) {
 
 Animal? _findById(List<Animal> animals, String animalId) {
   for (final animal in animals) {
-    if (animal.id == animalId) return animal;
+    if (animal.animalId == animalId) return animal;
   }
   return null;
 }

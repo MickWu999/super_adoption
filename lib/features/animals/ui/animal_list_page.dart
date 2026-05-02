@@ -106,7 +106,7 @@ class _AnimalListScreenState extends ConsumerState<AnimalListScreen> {
   }
 
   void _openAnimalDetail(Animal animal) {
-    context.push(AppRoutes.animalDetail(animal.id));
+    context.push(AppRoutes.animalDetail(animal.animalId));
   }
 
   @override

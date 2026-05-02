@@ -12,10 +12,10 @@ part 'favorites_provider.g.dart';
 ///
 /// 讀取：
 ///   final ids = ref.watch(favoritesProvider);
-///   final isFav = ids.contains(animal.subId);
+///   final isFav = ids.contains(animal.animalSubId);
 ///
 /// 切換：
-///   ref.read(favoritesProvider.notifier).toggle(animal.subId);
+///   ref.read(favoritesProvider.notifier).toggle(animal.animalSubId);
 @Riverpod(keepAlive: true)
 class Favorites extends _$Favorites {
   late final FavoritesRepository _repo;
