@@ -9,6 +9,7 @@ extension GovAnimalMapper on GovAnimalDto {
       id:
           animalId?.toString() ??
           '', // API 回傳的 ID 是 int，但我們 domain model 定義為 String。
+      subId: animalSubId.safe,
       name: _buildName(),
       type: _mapType(kind),
       variety: _mapVariety(variety),

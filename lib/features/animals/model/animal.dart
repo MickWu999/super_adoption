@@ -8,6 +8,7 @@ abstract class Animal with _$Animal {
 
   const factory Animal({
   required String id,
+  @Default('') String subId,
 
   @Default('') String name,
   @Default('') String type,

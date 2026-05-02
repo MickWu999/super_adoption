@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:super_adoption/core/enum/load_status.dart';
-import 'package:super_adoption/core/extension/ext.dart';
+import 'package:super_adoption/core/widgets/circle_icon_button.dart';
 import 'package:super_adoption/core/widgets/error_fallback_card.dart';
 import 'package:super_adoption/core/widgets/animal_network_image.dart';
 import 'package:super_adoption/core/widgets/skeleton_box.dart';
 import 'package:super_adoption/features/animals/model/animal.dart';
 import 'package:super_adoption/features/animals/ui/widgets/animal_list_page/animal_info_tag.dart';
+import 'package:super_adoption/features/favorites/state/favorites_provider.dart';
 
 class _AnimalCardTokens {
   const _AnimalCardTokens._();
@@ -63,11 +65,13 @@ class AnimalCardSection extends StatelessWidget {
               separatorBuilder: (_, _) =>
                   const Gap(_AnimalCardTokens.itemSpacing),
               itemBuilder: (context, index) {
+                final animal = animals[index];
+
                 return _AnimalCard(
-                  animal: animals[index],
+                  animal: animal,
                   onTap: onAnimalTap == null
                       ? null
-                      : () => onAnimalTap!(animals[index]),
+                      : () => onAnimalTap!(animal),
                 );
               },
             ),
@@ -89,10 +93,7 @@ class _SectionHeader extends StatelessWidget {
 
     return Row(
       children: [
-        Text(
-          title,
-          style: theme.textTheme.titleLarge
-        ),
+        Text(title, style: theme.textTheme.titleLarge),
         const Spacer(),
         TextButton(
           onPressed: onMoreTap,
@@ -131,6 +132,143 @@ class _LoadingBody extends StatelessWidget {
           return const _AnimalCardSkeleton();
         },
       ),
+    );
+  }
+}
+
+class _AnimalCard extends StatelessWidget {
+  const _AnimalCard({required this.animal, this.onTap});
+
+  final Animal animal;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    return Container(
+      width: _AnimalCardTokens.defaultWidth,
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.circular(_AnimalCardTokens.radius),
+        border: Border.all(color: colorScheme.outlineVariant),
+        boxShadow: [
+          BoxShadow(
+            color: theme.shadowColor.withValues(
+              alpha: theme.brightness == Brightness.dark ? 0.18 : 0.06,
+            ),
+            blurRadius: 12,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Stack(
+            children: [
+              InkWell(
+                onTap: onTap,
+                child: AnimalNetworkImage(
+                  imageUrl: animal.imageUrl,
+                  height: _AnimalCardTokens.imageHeight,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+            child: AnimalCardContent(animal: animal, theme: theme),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class AnimalCardContent extends ConsumerWidget {
+  const AnimalCardContent({
+    super.key,
+    required this.animal,
+    required this.theme,
+  });
+
+  final Animal animal;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final detailText = '${animal.bodyType}・${animal.age}';
+    final isFavorite = ref.watch(favoritesProvider).contains(animal.subId);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                animal.name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.titleMedium,
+              ),
+            ),
+            CircleIconButton(
+              icon: isFavorite
+                  ? Icons.favorite_rounded
+                  : Icons.favorite_border_rounded,
+              iconColor: isFavorite
+                  ? colorScheme.secondary
+                  : colorScheme.onSurfaceVariant,
+              iconSize: 16,
+              size: 32,
+              onTap: () => ref.read(favoritesProvider.notifier).toggle(animal.subId),
+            ),
+          ],
+        ),
+        const Gap(4),
+        Row(
+          children: [
+            AnimalInfoTag(
+              color: animal.isFemale ? Colors.pink : Colors.blue,
+              icon: animal.isFemale ? Icons.female_rounded : Icons.male_rounded,
+              padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+            ),
+            const Gap(6),
+            Expanded(
+              child: Text(
+                detailText,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurface,
+                ),
+              ),
+            ),
+          ],
+        ),
+
+        const Gap(8),
+        Row(
+          children: [
+            const Icon(Icons.location_on_rounded, size: 15, color: Colors.red),
+            const Gap(4),
+            Expanded(
+              child: Text(
+                '${animal.areaName}・3.2 km',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -181,150 +319,6 @@ class _AnimalCardSkeleton extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _AnimalCard extends StatelessWidget {
-  const _AnimalCard({required this.animal, this.onTap});
-
-  final Animal animal;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    return InkWell(
-      borderRadius: BorderRadius.circular(_AnimalCardTokens.radius),
-      onTap: onTap,
-      child: Container(
-        width: _AnimalCardTokens.defaultWidth,
-        decoration: BoxDecoration(
-          color: colorScheme.surface,
-          borderRadius: BorderRadius.circular(_AnimalCardTokens.radius),
-          border: Border.all(color: colorScheme.outlineVariant),
-          boxShadow: [
-            BoxShadow(
-              color: theme.shadowColor.withValues(
-                alpha: theme.brightness == Brightness.dark ? 0.18 : 0.06,
-              ),
-              blurRadius: 12,
-              offset: const Offset(0, 6),
-            ),
-          ],
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              children: [
-                AnimalNetworkImage(
-                  imageUrl: animal.imageUrl,
-                  height: _AnimalCardTokens.imageHeight,
-                  fit: BoxFit.cover,
-                ),
-                Positioned(
-                  right: 8,
-                  top: 8,
-                  child: Icon(
-                    animal.isFavorite
-                        ? Icons.favorite_rounded
-                        : Icons.favorite_border_rounded,
-                    color: animal.isFavorite
-                        ? colorScheme.secondary
-                        : Colors.white,
-                    size: 28,
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-              child: AnimalCardContent(animal: animal, theme: theme),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class AnimalCardContent extends StatelessWidget {
-  const AnimalCardContent({
-    super.key,
-    required this.animal,
-    required this.theme,
-  });
-
-  final Animal animal;
-  final ThemeData theme;
-
-  @override
-  Widget build(BuildContext context) {
-    final detailText = [
-      animal.bodyType,
-      animal.age,
-    ].where((e) => e.isNotBlank).join(' ・ ');
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Expanded(
-              flex: 3,
-              child: Text(
-                animal.name,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.titleMedium
-              ),
-            ),
-            const Gap(8),
-            Center(
-              child: AnimalInfoTag(
-                color: animal.isFemale ? Colors.pink : Colors.blue,
-                icon: animal.isFemale
-                    ? Icons.female_rounded
-                    : Icons.male_rounded,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 4,
-                ),
-              ),
-            ),
-          ],
-        ),
-        if (detailText.isNotBlank) ...[
-          const Gap(6),
-          Text(
-            detailText,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onSurface,
-            ),
-          ),
-        ],
-        const Gap(8),
-        Row(
-          children: [
-            const Icon(Icons.location_on_rounded, size: 15, color: Colors.red),
-            const Gap(4),
-            Expanded(
-              child: Text(
-                '${animal.areaName} ・ 3.2 km',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
     );
   }
 }

@@ -5,9 +5,11 @@ import 'package:go_router/go_router.dart';
 import 'package:super_adoption/core/extension/ext.dart';
 import 'package:super_adoption/core/router/app_router.dart';
 import 'package:super_adoption/core/widgets/animal_network_image.dart';
+import 'package:super_adoption/core/widgets/circle_icon_button.dart';
 import 'package:super_adoption/core/widgets/error_fallback_card.dart';
 import 'package:super_adoption/features/animals/model/animal.dart';
 import 'package:super_adoption/features/animals/state/animal_detail_provider.dart';
+import 'package:super_adoption/features/favorites/state/favorites_provider.dart';
 import 'package:super_adoption/features/home/ui/widgets/animal_card_section.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -88,7 +90,12 @@ class AnimalDetailScreen extends ConsumerWidget {
                 ),
               ],
             ),
-          _TopActionBar(animal: animal),
+          _TopActionBar(
+            animal: animal,
+            onFavoriteTap: animal == null
+                ? null
+                : () => ref.read(favoritesProvider.notifier).toggle(animal.subId),
+          ),
           _BottomActionBar(animal: animal),
         ],
       ),
@@ -190,26 +197,30 @@ class _DetailBody extends StatelessWidget {
   }
 }
 
-class _TopActionBar extends StatelessWidget {
-  const _TopActionBar({required this.animal});
+class _TopActionBar extends ConsumerWidget {
+  const _TopActionBar({required this.animal, required this.onFavoriteTap});
 
   final Animal? animal;
+  final VoidCallback? onFavoriteTap;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
+    final isFavorite = animal != null
+        ? ref.watch(favoritesProvider).contains(animal!.subId)
+        : false;
 
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         child: Row(
           children: [
-            _CircleIconButton(
+            CircleIconButton(
               icon: Icons.arrow_back_ios_new_rounded,
               onTap: context.pop,
             ),
             const Spacer(),
-            _CircleIconButton(
+            CircleIconButton(
               icon: Icons.search_rounded,
               onTap: animal == null
                   ? null
@@ -220,13 +231,17 @@ class _TopActionBar extends StatelessWidget {
                     ),
             ),
             const Gap(10),
-            _CircleIconButton(
-              icon: Icons.favorite_rounded,
-              iconColor: colorScheme.secondary,
-              onTap: () {},
+            CircleIconButton(
+              icon: isFavorite
+                  ? Icons.favorite_rounded
+                  : Icons.favorite_border_rounded,
+              iconColor: isFavorite
+                  ? colorScheme.secondary
+                  : colorScheme.onSurfaceVariant,
+              onTap: onFavoriteTap,
             ),
             const Gap(10),
-            _CircleIconButton(icon: Icons.ios_share_rounded, onTap: () {}),
+            CircleIconButton(icon: Icons.ios_share_rounded, onTap: () {}),
           ],
         ),
       ),
@@ -512,43 +527,6 @@ class _CardInfoRow extends StatelessWidget {
           ),
           Expanded(child: Text(value, style: theme.textTheme.bodyMedium)),
         ],
-      ),
-    );
-  }
-}
-
-class _CircleIconButton extends StatelessWidget {
-  const _CircleIconButton({
-    required this.icon,
-    required this.onTap,
-    this.iconColor,
-  });
-
-  final IconData icon;
-  final VoidCallback? onTap;
-  final Color? iconColor;
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Material(
-      color: colorScheme.surface.withValues(alpha: 0.88),
-      shape: const CircleBorder(),
-      child: InkWell(
-        customBorder: const CircleBorder(),
-        onTap: onTap,
-        child: SizedBox(
-          width: 42,
-          height: 42,
-          child: Icon(
-            icon,
-            size: 21,
-            color: onTap == null
-                ? colorScheme.onSurface.withValues(alpha: 0.35)
-                : (iconColor ?? colorScheme.onSurface),
-          ),
-        ),
       ),
     );
   }

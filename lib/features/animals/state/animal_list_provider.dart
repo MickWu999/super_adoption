@@ -155,4 +155,14 @@ class AnimalNotifier extends _$AnimalNotifier {
 
     return uniqueById.values.toList();
   }
+
+  void toggleFavorite(String animalId) {
+    state = state.copyWith(
+      items: state.items
+          .map(
+            (a) => a.id == animalId ? a.copyWith(isFavorite: !a.isFavorite) : a,
+          )
+          .toList(),
+    );
+  }
 }
