@@ -1,6 +1,8 @@
 *.g.dart
 *.freezed.dart
 
+# Environment variables (never commit secrets)
+.env
 # Miscellaneous
 *.class
 *.log

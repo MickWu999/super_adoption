@@ -48,7 +48,7 @@ dependencies:
   # device_info_plus: ^10.1.2
   # firebase_core: ^4.7.0
   # firebase_messaging: ^16.2.0
-  # supabase_flutter: ^2.12.4
+  supabase_flutter: ^2.12.4
   # introduction_screen: ^4.0.0
 
 dev_dependencies:

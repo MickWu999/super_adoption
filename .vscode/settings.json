@@ -3,5 +3,11 @@
    "explorer.fileNesting.expand": false,
    "explorer.fileNesting.patterns": {
     "*.dart": "${capture}.freezed.dart, ${capture}.g.dart"
+   },
+   "chat.tools.terminal.autoApprove": {
+      "/^dart pub deps --json 2>/dev/null \\| python3 -c \"import sys,json; deps=json\\.load\\(sys\\.stdin\\); \\[print\\(p\\['name'\\],p\\['version'\\]\\) for p in deps\\.get\\('packages',\\[\\]\\) if 'envied' in p\\.get\\('name',''\\)\\]\" 2>/dev/null \\|\\| flutter pub deps 2>&1 \\| grep envied$/": {
+         "approve": true,
+         "matchCommandLine": true
+      }
    }
 }
