@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:super_adoption/core/enum/load_status.dart';
 import 'package:super_adoption/core/log/app_logger.dart';
+import 'package:super_adoption/features/animals/data/query/animal_sort_order.dart';
 import 'package:super_adoption/features/animals/model/animal.dart';
 
 import '../data/query/animal_filter.dart';
@@ -105,6 +106,20 @@ class AnimalNotifier extends _$AnimalNotifier {
 
   Future<void> clearFilters() async {
     await applyFilter(state.filter.clearFilters());
+  }
+
+  Future<void> setSortOrder(AnimalSortOrder order) async {
+    await applyFilter(
+      state.filter.copyWith(sort: state.filter.sort.copyWith(order: order)),
+    );
+  }
+
+  Future<void> toggleSortDirection() async {
+    await applyFilter(
+      state.filter.copyWith(
+        sort: state.filter.sort.copyWith(ascending: !state.filter.sort.ascending),
+      ),
+    );
   }
 
   Future<void> loadMore() async {

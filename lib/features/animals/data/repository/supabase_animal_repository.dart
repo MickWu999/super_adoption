@@ -1,6 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:super_adoption/features/animals/data/query/animal_filter.dart';
 import 'package:super_adoption/features/animals/data/query/animal_sort_order.dart';
+import 'package:super_adoption/features/animals/data/repository/animal_table_columns.dart';
 import 'package:super_adoption/features/animals/model/animal.dart';
 import 'package:super_adoption/features/animals/data/repository/animal_repository.dart';
 
@@ -14,37 +15,37 @@ class SupabaseAnimalRepository implements AnimalRepository {
     var query = _client
         .from('animals')
         .select()
-        .eq('is_in_shelter', true);
+        .eq(AnimalTableColumns.isInShelter, true);
 
     if (filter.status != null) {
-      query = query.eq('status', filter.status!);
+      query = query.eq(AnimalTableColumns.status, filter.status!);
     }
     if (filter.kind != null) {
-      query = query.eq('kind', filter.kind!);
+      query = query.eq(AnimalTableColumns.kind, filter.kind!);
     }
     if (filter.sex != null) {
-      query = query.eq('sex', filter.sex!);
+      query = query.eq(AnimalTableColumns.sex, filter.sex!);
     }
     if (filter.age != null) {
-      query = query.eq('age', filter.age!);
+      query = query.eq(AnimalTableColumns.age, filter.age!);
     }
     if (filter.bodyType != null) {
-      query = query.eq('body_type', filter.bodyType!);
+      query = query.eq(AnimalTableColumns.bodyType, filter.bodyType!);
     }
     if (filter.areaId != null) {
-      query = query.eq('animal_area_pkid', filter.areaId!);
+      query = query.eq(AnimalTableColumns.areaId, filter.areaId!);
     }
     if (filter.hasImage) {
-      query = query.neq('image_url', '');
+      query = query.neq(AnimalTableColumns.hasImage, '');
     }
 
-    final sortColumn = switch (filter.sortOrder) {
-      AnimalSortOrder.createTime => 'animal_create_time',
-      // AnimalSortOrder.popularity => 'popularity',
+    final sortColumn = switch (filter.sort.order) {
+      AnimalSortOrder.createTime => AnimalTableColumns.createTime,
+      // AnimalSortOrder.popularity => AnimalTableColumns.popularity,
     };
 
     final rows = await query
-        .order(sortColumn, ascending: filter.sortAscending)
+        .order(sortColumn, ascending: filter.sort.ascending)
         .range(filter.skip, filter.skip + filter.top - 1);
 
     return rows.map(_rowToAnimal).toList();
@@ -55,34 +56,34 @@ class SupabaseAnimalRepository implements AnimalRepository {
     int? i(String key) => row[key] as int?;
 
     return Animal(
-      animalId: (row['latest_animal_id'] as int?)?.toString() ?? '',
-      animalSubId: s('sub_id'),
-      areaId: i('animal_area_pkid'),
-      shelterId: i('animal_shelter_pkid'),
-      place: s('animal_place'),
-      kind: s('kind'),
-      variety: s('variety'),
-      sex: s('sex'),
-      bodyType: s('body_type'),
-      color: s('color'),
-      age: s('age'),
-      sterilization: s('sterilization'),
-      bacterin: s('bacterin'),
-      foundPlace: s('found_place'),
-      title: s('title'),
-      status: s('status'),
-      remark: s('remark'),
-      caption: s('caption'),
-      openDate: s('open_date'),
-      closeDate: s('closed_date'),
-      updateDate: s('animal_update'),
-      createDate: s('animal_create_time'),
-      shelterName: s('shelter_name'),
-      imageUrl: s('image_url'),
-      albumUpdate: s('album_update'),
-      cDate: s('cdate'),
-      shelterAddress: s('shelter_address'),
-      shelterTel: s('shelter_tel'),
+      animalId: (row[AnimalTableColumns.id] as int?)?.toString() ?? '',
+      animalSubId: s(AnimalTableColumns.subId),
+      areaId: i(AnimalTableColumns.areaId),
+      shelterId: i(AnimalTableColumns.shelterId),
+      place: s(AnimalTableColumns.place),
+      kind: s(AnimalTableColumns.kind),
+      variety: s(AnimalTableColumns.variety),
+      sex: s(AnimalTableColumns.sex),
+      bodyType: s(AnimalTableColumns.bodyType),
+      color: s(AnimalTableColumns.color),
+      age: s(AnimalTableColumns.age),
+      sterilization: s(AnimalTableColumns.sterilization),
+      bacterin: s(AnimalTableColumns.bacterin),
+      foundPlace: s(AnimalTableColumns.foundPlace),
+      title: s(AnimalTableColumns.title),
+      status: s(AnimalTableColumns.status),
+      remark: s(AnimalTableColumns.remark),
+      caption: s(AnimalTableColumns.caption),
+      openDate: s(AnimalTableColumns.openDate),
+      closeDate: s(AnimalTableColumns.closeDate),
+      updateDate: s(AnimalTableColumns.updateTime),
+      createDate: s(AnimalTableColumns.createTime),
+      shelterName: s(AnimalTableColumns.shelterName),
+      imageUrl: s(AnimalTableColumns.hasImage),
+      albumUpdate: s(AnimalTableColumns.albumUpdate),
+      cDate: s(AnimalTableColumns.cDate),
+      shelterAddress: s(AnimalTableColumns.shelterAddress),
+      shelterTel: s(AnimalTableColumns.shelterTel),
     );
   }
 }

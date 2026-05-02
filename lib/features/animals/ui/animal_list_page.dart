@@ -107,17 +107,11 @@ class _AnimalListScreenState extends ConsumerState<AnimalListScreen> {
   }
 
   void _onSortOrderChanged(AnimalSortOrder order) {
-    final filter = ref.read(animalProvider).filter;
-    ref
-        .read(animalProvider.notifier)
-        .applyFilter(filter.copyWith(sortOrder: order));
+    ref.read(animalProvider.notifier).setSortOrder(order);
   }
 
   void _onSortDirectionToggle() {
-    final filter = ref.read(animalProvider).filter;
-    ref
-        .read(animalProvider.notifier)
-        .applyFilter(filter.copyWith(sortAscending: !filter.sortAscending));
+    ref.read(animalProvider.notifier).toggleSortDirection();
   }
 
   void _openAnimalDetail(Animal animal) {
