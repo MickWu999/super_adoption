@@ -31,7 +31,6 @@ extension GovAnimalMapper on GovAnimalDto {
       status: _mapStatus(status),
       updateDate: updateDate.safe,
       remark: remark.safe,
-      isFavorite: false,
     );
   }
 

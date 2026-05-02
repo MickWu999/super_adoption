@@ -31,8 +31,6 @@ abstract class Animal with _$Animal {
   @Default('') String status,
   @Default('') String updateDate,
   @Default('') String remark,
-
-  @Default(false) bool isFavorite,
 }) = _Animal;
 
   bool get isFemale => gender == '女生';

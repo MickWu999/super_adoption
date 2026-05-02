@@ -16,7 +16,6 @@ Animal? animalDetail(Ref ref, String animalId) {
   return _findById([
     ...homeState.newAnimals,
     ...homeState.popularAnimals,
-    ...homeState.favoriteAnimals,
   ], animalId);
 }
 
@@ -32,7 +31,6 @@ List<Animal> relatedAnimals(Ref ref, String animalId) {
     ...animalState.items,
     ...homeState.newAnimals,
     ...homeState.popularAnimals,
-    ...homeState.favoriteAnimals,
   ];
 
   final related = <String, Animal>{};

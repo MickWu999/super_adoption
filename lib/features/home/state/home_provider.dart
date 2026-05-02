@@ -23,8 +23,7 @@ class HomeNotifier extends _$HomeNotifier {
       final hasContent =
           data.banners.isNotEmpty ||
           data.newAnimals.isNotEmpty ||
-          data.popularAnimals.isNotEmpty ||
-          data.favoriteAnimals.isNotEmpty;
+          data.popularAnimals.isNotEmpty;
 
       state = data.copyWith(
         status: hasContent ? LoadStatus.success : LoadStatus.empty,
@@ -37,31 +36,5 @@ class HomeNotifier extends _$HomeNotifier {
 
   Future<void> refresh() async {
     await load();
-  }
-
-  void toggleFavorite(String animalId) {
-    Animal update(Animal animal) => animal.id == animalId
-        ? animal.copyWith(isFavorite: !animal.isFavorite)
-        : animal;
-
-    final nextNewAnimals = state.newAnimals.map(update).toList();
-    final nextPopularAnimals = state.popularAnimals.map(update).toList();
-
-    final mergedFavorites = [
-      ...nextNewAnimals.where((animal) => animal.isFavorite),
-      ...nextPopularAnimals.where((animal) => animal.isFavorite),
-      ...state.favoriteAnimals.map(update).where((animal) => animal.isFavorite),
-    ];
-
-    final uniqueFavorites = <String, Animal>{};
-    for (final animal in mergedFavorites) {
-      uniqueFavorites[animal.id] = animal;
-    }
-
-    state = state.copyWith(
-      newAnimals: nextNewAnimals,
-      popularAnimals: nextPopularAnimals,
-      favoriteAnimals: uniqueFavorites.values.toList(),
-    );
   }
 }

@@ -16,7 +16,6 @@ abstract class HomeState with _$HomeState {
     @Default(LoadStatus.initial) LoadStatus status,
     String? error,
     @Default([]) List<HomeBanner> banners,
-    @Default([]) List<Animal> favoriteAnimals,
     @Default([]) List<Animal> newAnimals,
     @Default([]) List<Animal> popularAnimals,
   }) = _HomeState;

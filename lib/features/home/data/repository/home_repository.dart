@@ -60,7 +60,6 @@ class HomeRepositoryImpl implements HomeRepository {
       banners: banners,
       newAnimals: animals.take(10).toList(),
       popularAnimals: animals.skip(10).take(10).toList(),
-      favoriteAnimals: const [],
     );
   }
 }
